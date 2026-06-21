@@ -227,6 +227,9 @@
       <a href="#" @click.prevent="page='bills'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
         <span class="text-pink-400 font-bold">📱 Pay Bills</span>
       </a>
+      <a href="#" @click.prevent="page='taxi'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
+        <span class="text-yellow-400 font-bold">🚖 DrukRide</span>
+      </a>
       <template x-for="cat in categories.slice(0,4)" :key="cat.name">
         <a href="#" @click.prevent="filterCategory(cat.name)" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="cat.name"></a>
       </template>
@@ -269,6 +272,7 @@
       <a href="#" @click.prevent="page='emi'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">💳 EMI Calculator</a>
       <a href="#" @click.prevent="page='services'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🛠️ Local Services</a>
       <a href="#" @click.prevent="page='bills'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">📱 Bill Payments</a>
+      <a href="#" @click.prevent="page='taxi'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-yellow-600">🚖 DrukRide Taxi</a>
     </div>
     <button @click="sideMenu=false" class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">&times;</button>
   </div>
@@ -410,20 +414,39 @@
       </a>
     </div>
 
+    <!-- DrukRide Banner -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-6">
+      <a href="#" @click.prevent="page='taxi'" class="block bg-gradient-to-r from-gray-900 to-gray-700 rounded-lg p-6 text-white relative overflow-hidden hover:shadow-lg transition">
+        <div class="relative z-10">
+          <div class="flex items-center gap-2 mb-1"><span class="text-3xl">🚖</span><h2 class="text-2xl font-bold">DrukRide</h2></div>
+          <p class="text-sm opacity-90 mb-3">Book a taxi anywhere in Bhutan — Uber-style, Bhutanese prices</p>
+          <div class="flex items-center gap-4 text-sm">
+            <span class="bg-white/20 px-3 py-1 rounded-full">Safe rides</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full">Fair fares</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full">Track your driver</span>
+          </div>
+        </div>
+        <div class="absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-10">🚗🚕🛺</div>
+      </a>
+    </div>
+
     <!-- Quick Actions Grid -->
     <div class="max-w-[1500px] mx-auto px-4 mt-6">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <a href="#" @click.prevent="page='taxi'" class="bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-lg p-5 hover:shadow-lg transition">
+          <p class="text-2xl mb-2">🚖</p><p class="font-bold text-sm">DrukRide</p><p class="text-xs opacity-80 mt-1">Book a taxi</p>
+        </a>
         <a href="#" @click.prevent="page='rewards'" class="bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🏆</p><p class="font-bold text-sm">Loyalty Rewards</p><p class="text-xs opacity-80 mt-1" x-text="loyaltyPoints + ' points available'"></p>
+          <p class="text-2xl mb-2">🏆</p><p class="font-bold text-sm">Rewards</p><p class="text-xs opacity-80 mt-1" x-text="loyaltyPoints + ' pts'"></p>
         </a>
         <a href="#" @click.prevent="page='spin'" class="bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🎰</p><p class="font-bold text-sm">Spin & Win</p><p class="text-xs opacity-80 mt-1">Win points daily!</p>
+          <p class="text-2xl mb-2">🎰</p><p class="font-bold text-sm">Spin & Win</p><p class="text-xs opacity-80 mt-1">Win daily!</p>
         </a>
         <a href="#" @click.prevent="page='services'" class="bg-gradient-to-br from-teal-500 to-cyan-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🛠️</p><p class="font-bold text-sm">Local Services</p><p class="text-xs opacity-80 mt-1">Hire professionals</p>
+          <p class="text-2xl mb-2">🛠️</p><p class="font-bold text-sm">Services</p><p class="text-xs opacity-80 mt-1">Hire pros</p>
         </a>
         <a href="#" @click.prevent="page='bills'" class="bg-gradient-to-br from-pink-500 to-rose-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">📱</p><p class="font-bold text-sm">Pay Bills</p><p class="text-xs opacity-80 mt-1">Recharge & payments</p>
+          <p class="text-2xl mb-2">📱</p><p class="font-bold text-sm">Pay Bills</p><p class="text-xs opacity-80 mt-1">Recharge</p>
         </a>
       </div>
     </div>
@@ -2265,6 +2288,193 @@
     </div>
   </div>
 
+  <!-- TAXI - MAIN PAGE -->
+  <div x-show="page === 'taxi'" class="max-w-[900px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <div class="relative z-10">
+        <h1 class="text-2xl font-bold flex items-center gap-2">🚖 DrukRide</h1>
+        <p class="text-sm opacity-80 mt-1">Book a ride anywhere in Bhutan</p>
+      </div>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-7xl opacity-10">🚗</div>
+    </div>
+
+    <!-- Booking Form -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div class="space-y-4">
+        <div class="relative">
+          <label class="text-xs font-bold text-gray-500 block mb-1">📍 PICKUP LOCATION</label>
+          <select x-model="taxiPickup" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 text-sm font-medium focus:border-green-500 focus:outline-none">
+            <option value="">Select pickup point</option>
+            <template x-for="loc in taxiLocations" :key="loc"><option :value="loc" x-text="loc"></option></template>
+          </select>
+          <div class="absolute left-[-12px] top-[38px] w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow"></div>
+        </div>
+        <div class="border-l-2 border-dashed border-gray-300 h-4 ml-[-6px]"></div>
+        <div class="relative">
+          <label class="text-xs font-bold text-gray-500 block mb-1">📌 DROP-OFF LOCATION</label>
+          <select x-model="taxiDropoff" class="w-full border-2 border-gray-200 rounded-lg px-4 py-3 text-sm font-medium focus:border-red-500 focus:outline-none">
+            <option value="">Select destination</option>
+            <template x-for="loc in taxiLocations" :key="loc"><option :value="loc" x-text="loc"></option></template>
+          </select>
+          <div class="absolute left-[-12px] top-[38px] w-3 h-3 bg-red-500 rounded-full border-2 border-white shadow"></div>
+        </div>
+      </div>
+
+      <button @click="searchTaxiRides()" :disabled="!taxiPickup || !taxiDropoff || taxiPickup === taxiDropoff" class="w-full bg-gray-900 hover:bg-gray-800 disabled:bg-gray-300 text-white py-3.5 rounded-lg font-bold text-sm mt-6 transition">
+        Search Rides
+      </button>
+    </div>
+
+    <!-- Available Rides -->
+    <template x-if="taxiRides.length > 0">
+      <div>
+        <div class="flex justify-between items-center mb-3">
+          <h2 class="font-bold text-lg">Available Rides</h2>
+          <p class="text-xs text-gray-500" x-text="taxiPickup + ' → ' + taxiDropoff"></p>
+        </div>
+        <div class="space-y-3">
+          <template x-for="ride in taxiRides" :key="ride.type">
+            <div class="bg-white rounded-xl p-4 hover:shadow-lg transition cursor-pointer border-2" :class="selectedTaxiRide?.type === ride.type ? 'border-gray-900' : 'border-transparent'" @click="selectedTaxiRide = ride">
+              <div class="flex items-center gap-4">
+                <div class="text-4xl" x-text="ride.icon"></div>
+                <div class="flex-1">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <h3 class="font-bold" x-text="ride.type"></h3>
+                      <p class="text-xs text-gray-500" x-text="ride.desc"></p>
+                    </div>
+                    <div class="text-right">
+                      <p class="font-bold text-lg" x-text="'Nu. ' + ride.fare"></p>
+                      <p class="text-xs text-gray-400" x-text="ride.distance + ' km'"></p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                    <span class="flex items-center gap-1">🕐 <span x-text="ride.eta + ' min'"></span></span>
+                    <span class="flex items-center gap-1">👥 <span x-text="ride.seats + ' seats'"></span></span>
+                    <span class="flex items-center gap-1" x-show="ride.ac">❄️ AC</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <button @click="bookTaxi()" :disabled="!selectedTaxiRide" class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white py-3.5 rounded-lg font-bold mt-4 transition">
+          <span x-text="selectedTaxiRide ? 'Book ' + selectedTaxiRide.type + ' — Nu. ' + selectedTaxiRide.fare : 'Select a ride to book'"></span>
+        </button>
+      </div>
+    </template>
+
+    <!-- Active Ride -->
+    <template x-if="activeTaxiRide">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+        <div class="bg-green-600 text-white p-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="text-xs opacity-80">YOUR RIDE</p>
+              <p class="font-bold text-lg" x-text="activeTaxiRide.type"></p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold" :class="activeTaxiRide.status === 'confirmed' ? 'bg-yellow-400 text-gray-900' : activeTaxiRide.status === 'arriving' ? 'bg-blue-400 text-white' : activeTaxiRide.status === 'in_ride' ? 'bg-green-400 text-gray-900' : 'bg-gray-200 text-gray-700'" x-text="activeTaxiRide.status === 'confirmed' ? 'Driver Assigned' : activeTaxiRide.status === 'arriving' ? 'Driver Arriving' : activeTaxiRide.status === 'in_ride' ? 'On the Way' : 'Completed'"></span>
+          </div>
+        </div>
+
+        <!-- Driver Info -->
+        <div class="p-4 border-b">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gray-200 rounded-full flex items-center justify-center text-2xl" x-text="activeTaxiRide.driver.name[0]"></div>
+            <div class="flex-1">
+              <p class="font-bold" x-text="activeTaxiRide.driver.name"></p>
+              <div class="flex items-center gap-2 text-sm">
+                <span class="text-amz-star">★ <span x-text="activeTaxiRide.driver.rating"></span></span>
+                <span class="text-gray-400">•</span>
+                <span class="text-gray-500" x-text="activeTaxiRide.driver.trips + ' trips'"></span>
+              </div>
+              <p class="text-xs text-gray-500 mt-0.5" x-text="activeTaxiRide.driver.car + ' • ' + activeTaxiRide.driver.plate"></p>
+            </div>
+            <div class="flex gap-2">
+              <button @click="showToast('Calling ' + activeTaxiRide.driver.name + '...')" class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600">📞</button>
+              <button @click="showToast('Chat opened with ' + activeTaxiRide.driver.name)" class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">💬</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trip Progress -->
+        <div class="p-4 border-b">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+            <p class="text-sm" x-text="activeTaxiRide.pickup"></p>
+          </div>
+          <div class="ml-1.5 border-l-2 border-dashed border-gray-300 h-8 flex items-center pl-5">
+            <template x-if="activeTaxiRide.status === 'in_ride'">
+              <div class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full animate-pulse">🚗 On the road...</div>
+            </template>
+          </div>
+          <div class="flex items-center gap-3 mt-3">
+            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+            <p class="text-sm" x-text="activeTaxiRide.dropoff"></p>
+          </div>
+        </div>
+
+        <!-- Fare -->
+        <div class="p-4 flex justify-between items-center">
+          <div>
+            <p class="text-xs text-gray-500">Estimated Fare</p>
+            <p class="text-xl font-bold" x-text="'Nu. ' + activeTaxiRide.fare"></p>
+          </div>
+          <div class="flex gap-2">
+            <template x-if="activeTaxiRide.status !== 'completed'">
+              <button @click="cancelTaxiRide()" class="border border-red-500 text-red-500 px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-50">Cancel Ride</button>
+            </template>
+            <template x-if="activeTaxiRide.status === 'completed'">
+              <button @click="rateTaxiDriver()" class="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-bold">⭐ Rate Driver</button>
+            </template>
+          </div>
+        </div>
+
+        <!-- Simulate Progress Button (demo) -->
+        <template x-if="activeTaxiRide.status !== 'completed'">
+          <div class="px-4 pb-4">
+            <button @click="simulateTaxiProgress()" class="w-full border border-gray-300 text-gray-500 py-2 rounded-lg text-xs hover:bg-gray-50">▶️ Simulate next step (demo)</button>
+          </div>
+        </template>
+      </div>
+    </template>
+
+    <!-- Ride History -->
+    <div class="mt-6" x-show="taxiHistory.length > 0">
+      <h2 class="font-bold text-lg mb-3">Ride History</h2>
+      <div class="space-y-2">
+        <template x-for="ride in taxiHistory" :key="ride.id">
+          <div class="bg-white rounded-lg p-4 flex items-center gap-4">
+            <div class="text-2xl" x-text="ride.icon"></div>
+            <div class="flex-1">
+              <p class="text-sm font-medium" x-text="ride.pickup + ' → ' + ride.dropoff"></p>
+              <p class="text-xs text-gray-500" x-text="ride.date + ' • ' + ride.driver"></p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-sm" x-text="'Nu. ' + ride.fare"></p>
+              <span class="text-xs text-green-600 font-bold">Completed</span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Fare Estimator -->
+    <div class="mt-6 bg-amber-50 border border-amber-200 rounded-lg p-5">
+      <h3 class="font-bold text-sm mb-3 flex items-center gap-2">💡 Fare Guide (Approximate)</h3>
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <template x-for="route in taxiFareGuide" :key="route.route">
+          <div class="flex justify-between bg-white rounded px-3 py-2">
+            <span x-text="route.route"></span>
+            <span class="font-bold" x-text="'Nu. ' + route.fare"></span>
+          </div>
+        </template>
+      </div>
+      <p class="text-xs text-gray-500 mt-3">* Fares are estimates. Final fare is agreed between rider and driver.</p>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -2631,6 +2841,41 @@ function marketplace() {
     billAmount: '',
     billPayMethod: 'mBoB',
 
+    // Taxi / DrukRide
+    taxiPickup: '',
+    taxiDropoff: '',
+    taxiRides: [],
+    selectedTaxiRide: null,
+    activeTaxiRide: null,
+    taxiHistory: [],
+    taxiLocations: [
+      'Thimphu - Clock Tower', 'Thimphu - Norzin Lam', 'Thimphu - Motithang', 'Thimphu - Changzamtog', 'Thimphu - Babesa',
+      'Thimphu - Dechencholing', 'Thimphu - Lungtenphu', 'Thimphu - Simtokha', 'Thimphu - Taba',
+      'Paro - Town Center', 'Paro - Airport', 'Paro - Bondey', 'Paro - Shaba',
+      'Punakha - Dzong Area', 'Punakha - Khuruthang',
+      'Wangdue Phodrang', 'Haa Town', 'Bumthang - Jakar',
+      'Phuentsholing - Gate Area', 'Phuentsholing - Rinchending',
+      'Gelephu Town', 'Samdrup Jongkhar', 'Trongsa Town', 'Mongar Town',
+    ],
+    taxiDrivers: [
+      { name: 'Tshering Dorji', rating: 4.9, trips: 1247, car: 'Maruti Swift Dzire', plate: 'BP-1-A-2345' },
+      { name: 'Karma Wangchuk', rating: 4.7, trips: 892, car: 'Hyundai i20', plate: 'BP-1-B-6789' },
+      { name: 'Sonam Penjor', rating: 4.8, trips: 1534, car: 'Toyota Innova', plate: 'BP-1-C-1122' },
+      { name: 'Ugyen Tshomo', rating: 4.6, trips: 567, car: 'Maruti Ertiga', plate: 'BP-2-A-3344' },
+      { name: 'Dorji Wangmo', rating: 4.9, trips: 2103, car: 'Hyundai Creta', plate: 'BP-1-D-5566' },
+      { name: 'Pema Tshering', rating: 4.5, trips: 345, car: 'Tata Nexon', plate: 'BP-3-A-7788' },
+    ],
+    taxiFareGuide: [
+      { route: 'Thimphu ↔ Paro', fare: 800 },
+      { route: 'Thimphu ↔ Punakha', fare: 1800 },
+      { route: 'Thimphu ↔ Airport', fare: 1000 },
+      { route: 'Paro ↔ Haa', fare: 1500 },
+      { route: 'Within Thimphu', fare: '150-400' },
+      { route: 'Thimphu ↔ Phuentsholing', fare: 3500 },
+      { route: 'Thimphu ↔ Bumthang', fare: 5000 },
+      { route: 'Thimphu ↔ Wangdue', fare: 2000 },
+    ],
+
     // Hardware Store Data
     hwSearch: '',
     hwCategory: '',
@@ -2956,6 +3201,63 @@ function marketplace() {
       this.addNotification(this.selectedBill + ' payment of Nu. ' + amt + ' successful!');
       this.showToast('Payment successful! Earned ' + Math.floor(amt / 10) + ' points.');
       this.billAccount = ''; this.billAmount = '';
+    },
+
+    // Taxi / DrukRide methods
+    searchTaxiRides() {
+      if (!this.taxiPickup || !this.taxiDropoff || this.taxiPickup === this.taxiDropoff) return;
+      const p = this.taxiPickup; const d = this.taxiDropoff;
+      const sameCity = p.split(' - ')[0] === d.split(' - ')[0];
+      const baseDist = sameCity ? Math.floor(Math.random() * 8) + 3 : Math.floor(Math.random() * 80) + 30;
+      const baseRate = sameCity ? 20 : 15;
+      this.selectedTaxiRide = null;
+      this.taxiRides = [
+        { type: 'DrukRide Mini', icon: '🚗', desc: 'Affordable compact rides', fare: Math.round(baseDist * baseRate * 0.8 / 10) * 10 + 50, distance: baseDist, eta: sameCity ? Math.floor(Math.random() * 5) + 3 : Math.floor(Math.random() * 10) + 5, seats: 4, ac: false },
+        { type: 'DrukRide Comfort', icon: '🚙', desc: 'Spacious & comfortable', fare: Math.round(baseDist * baseRate / 10) * 10 + 100, distance: baseDist, eta: sameCity ? Math.floor(Math.random() * 5) + 5 : Math.floor(Math.random() * 10) + 8, seats: 4, ac: true },
+        { type: 'DrukRide XL', icon: '🚐', desc: 'For groups & families', fare: Math.round(baseDist * baseRate * 1.4 / 10) * 10 + 150, distance: baseDist, eta: sameCity ? Math.floor(Math.random() * 8) + 5 : Math.floor(Math.random() * 15) + 10, seats: 7, ac: true },
+        { type: 'DrukRide Shared', icon: '🛺', desc: 'Share ride, save more', fare: Math.round(baseDist * baseRate * 0.5 / 10) * 10 + 30, distance: baseDist, eta: sameCity ? Math.floor(Math.random() * 10) + 8 : Math.floor(Math.random() * 20) + 15, seats: 3, ac: false },
+      ];
+    },
+    bookTaxi() {
+      if (!this.selectedTaxiRide) return;
+      if (!this.user) { this.page = 'login'; return; }
+      const driver = this.taxiDrivers[Math.floor(Math.random() * this.taxiDrivers.length)];
+      this.activeTaxiRide = {
+        ...this.selectedTaxiRide,
+        id: 'RIDE-' + Date.now().toString().slice(-6),
+        pickup: this.taxiPickup,
+        dropoff: this.taxiDropoff,
+        driver: driver,
+        status: 'confirmed',
+        bookedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+      this.taxiRides = [];
+      this.selectedTaxiRide = null;
+      this.addNotification('Ride booked! ' + driver.name + ' is on the way in a ' + driver.car);
+      this.showToast('Ride confirmed! ' + driver.name + ' assigned.');
+    },
+    simulateTaxiProgress() {
+      if (!this.activeTaxiRide) return;
+      const statuses = ['confirmed', 'arriving', 'in_ride', 'completed'];
+      const idx = statuses.indexOf(this.activeTaxiRide.status);
+      if (idx < statuses.length - 1) {
+        this.activeTaxiRide.status = statuses[idx + 1];
+        const msgs = { arriving: 'Your driver is arriving!', in_ride: 'You\'re on your way to ' + this.activeTaxiRide.dropoff, completed: 'You\'ve arrived! Fare: Nu. ' + this.activeTaxiRide.fare };
+        this.showToast(msgs[this.activeTaxiRide.status] || '');
+        if (this.activeTaxiRide.status === 'completed') {
+          this.taxiHistory.unshift({ id: this.activeTaxiRide.id, pickup: this.activeTaxiRide.pickup, dropoff: this.activeTaxiRide.dropoff, fare: this.activeTaxiRide.fare, driver: this.activeTaxiRide.driver.name, date: new Date().toLocaleDateString(), icon: this.activeTaxiRide.icon });
+          this.earnPoints(Math.floor(this.activeTaxiRide.fare / 10), 'DrukRide trip');
+        }
+      }
+    },
+    cancelTaxiRide() {
+      this.addNotification('Ride cancelled.');
+      this.showToast('Ride cancelled');
+      this.activeTaxiRide = null;
+    },
+    rateTaxiDriver() {
+      this.showToast('Thank you for rating ' + this.activeTaxiRide.driver.name + '! ⭐');
+      this.activeTaxiRide = null;
     },
 
     // Hardware methods
