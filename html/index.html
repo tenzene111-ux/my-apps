@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyMarket - Your Trusted Marketplace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af' },
+            accent: { 500: '#f59e0b', 600: '#d97706' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    [x-cloak] { display: none !important; }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col" x-data="marketplace()">
+
+<!-- Navbar -->
+<nav class="bg-primary-700 text-white sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex items-center h-16 gap-4">
+      <a href="#" @click.prevent="page='home'" class="text-2xl font-bold shrink-0">MyMarket</a>
+      <form @submit.prevent="searchProducts()" class="flex-1 max-w-2xl">
+        <div class="flex">
+          <input type="text" x-model="searchQuery" placeholder="Search products..."
+            class="w-full px-4 py-2 rounded-l-lg text-gray-900 focus:outline-none">
+          <button type="submit" class="bg-accent-500 px-6 py-2 rounded-r-lg hover:bg-accent-600 font-semibold">Search</button>
+        </div>
+      </form>
+      <div class="flex items-center gap-4">
+        <a href="#" @click.prevent="page='cart'" class="relative hover:text-gray-200">
+          Cart
+          <span x-show="cart.length > 0" class="absolute -top-2 -right-3 bg-accent-500 text-xs rounded-full w-5 h-5 flex items-center justify-center" x-text="cart.length"></span>
+        </a>
+        <template x-if="user">
+          <div class="relative">
+            <button @click="menuOpen = !menuOpen" class="hover:text-gray-200" x-text="user.name"></button>
+            <div x-show="menuOpen" @click.away="menuOpen = false" x-cloak
+              class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-lg shadow-lg py-2 z-50">
+              <a href="#" @click.prevent="page='orders'; menuOpen=false" class="block px-4 py-2 hover:bg-gray-100">My Orders</a>
+              <a href="#" @click.prevent="page='messages'; menuOpen=false" class="block px-4 py-2 hover:bg-gray-100">Messages</a>
+              <template x-if="user.role === 'seller' || user.role === 'admin'">
+                <a href="#" @click.prevent="page='dashboard'; menuOpen=false" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
+              </template>
+              <template x-if="user.role === 'admin'">
+                <a href="#" @click.prevent="page='admin'; menuOpen=false" class="block px-4 py-2 hover:bg-gray-100">Admin</a>
+              </template>
+              <button @click="logout(); menuOpen=false" class="block w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600">Logout</button>
+            </div>
+          </div>
+        </template>
+        <template x-if="!user">
+          <div class="flex gap-2">
+            <a href="#" @click.prevent="page='login'" class="hover:text-gray-200">Login</a>
+            <a href="#" @click.prevent="page='register'" class="bg-accent-500 px-4 py-1 rounded hover:bg-accent-600">Register</a>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+  <div class="bg-primary-600 border-t border-primary-500">
+    <div class="max-w-7xl mx-auto px-4 flex gap-6 py-2 text-sm overflow-x-auto hide-scrollbar">
+      <template x-for="cat in categories" :key="cat.name">
+        <a href="#" @click.prevent="filterCategory(cat.name)" class="whitespace-nowrap hover:text-accent-500" x-text="cat.name"></a>
+      </template>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="flex-1">
+
+  <!-- HOME PAGE -->
+  <div x-show="page === 'home'">
+    <section class="bg-gradient-to-r from-primary-700 to-primary-500 text-white py-20">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <h1 class="text-5xl font-bold mb-4">Welcome to MyMarket</h1>
+        <p class="text-xl mb-8 text-gray-200">Discover millions of products from trusted sellers worldwide</p>
+        <div class="flex gap-4 justify-center">
+          <a href="#" @click.prevent="page='products'" class="bg-accent-500 hover:bg-accent-600 px-8 py-3 rounded-lg font-semibold text-lg">Start Shopping</a>
+          <a href="#" @click.prevent="page='register'; registerRole='seller'" class="border-2 border-white hover:bg-white hover:text-primary-700 px-8 py-3 rounded-lg font-semibold text-lg">Sell on MyMarket</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-12">
+      <h2 class="text-2xl font-bold mb-6">Shop by Category</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+        <template x-for="cat in categories" :key="cat.name">
+          <a href="#" @click.prevent="filterCategory(cat.name)"
+            :class="cat.color" class="rounded-xl p-4 text-center hover:shadow-lg transition">
+            <div class="text-3xl mb-2" x-text="cat.icon"></div>
+            <div class="text-sm font-medium text-gray-700" x-text="cat.name"></div>
+          </a>
+        </template>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">Best Sellers</h2>
+        <a href="#" @click.prevent="page='products'; sortBy='popular'" class="text-primary-600 hover:underline">View All</a>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <template x-for="product in getPopularProducts()" :key="product.id">
+          <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden group">
+            <a href="#" @click.prevent="viewProduct(product)">
+              <div class="aspect-square bg-gray-100 relative overflow-hidden">
+                <img :src="product.image" :alt="product.title" class="w-full h-full object-cover group-hover:scale-105 transition">
+                <span x-show="product.discount > 0" class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded" x-text="'-' + product.discount + '%'"></span>
+              </div>
+            </a>
+            <div class="p-3">
+              <a href="#" @click.prevent="viewProduct(product)">
+                <h3 class="text-sm font-medium text-gray-800 line-clamp-2 hover:text-primary-600" x-text="product.title"></h3>
+              </a>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-yellow-400 text-sm" x-text="'★'.repeat(Math.round(product.rating))"></span>
+                <span class="text-xs text-gray-500" x-text="'(' + product.reviews + ')'"></span>
+              </div>
+              <div class="mt-2 flex items-baseline gap-2">
+                <span class="text-lg font-bold text-primary-700" x-text="'$' + product.price.toFixed(2)"></span>
+                <span x-show="product.originalPrice" class="text-sm text-gray-400 line-through" x-text="'$' + (product.originalPrice || 0).toFixed(2)"></span>
+              </div>
+              <span x-show="product.freeShipping" class="text-xs text-green-600 font-medium">Free Shipping</span>
+              <p class="text-xs text-gray-500 mt-1" x-text="product.store"></p>
+              <button @click="addToCart(product)" class="mt-2 w-full bg-primary-600 text-white py-1.5 rounded text-sm hover:bg-primary-700">Add to Cart</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-4 py-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">New Arrivals</h2>
+        <a href="#" @click.prevent="page='products'; sortBy='newest'" class="text-primary-600 hover:underline">View All</a>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <template x-for="product in getNewestProducts()" :key="product.id">
+          <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden group">
+            <a href="#" @click.prevent="viewProduct(product)">
+              <div class="aspect-square bg-gray-100 relative overflow-hidden">
+                <img :src="product.image" :alt="product.title" class="w-full h-full object-cover group-hover:scale-105 transition">
+              </div>
+            </a>
+            <div class="p-3">
+              <a href="#" @click.prevent="viewProduct(product)"><h3 class="text-sm font-medium text-gray-800 line-clamp-2 hover:text-primary-600" x-text="product.title"></h3></a>
+              <div class="flex items-center gap-1 mt-1">
+                <span class="text-yellow-400 text-sm" x-text="'★'.repeat(Math.round(product.rating))"></span>
+                <span class="text-xs text-gray-500" x-text="'(' + product.reviews + ')'"></span>
+              </div>
+              <div class="mt-2"><span class="text-lg font-bold text-primary-700" x-text="'$' + product.price.toFixed(2)"></span></div>
+              <button @click="addToCart(product)" class="mt-2 w-full bg-primary-600 text-white py-1.5 rounded text-sm hover:bg-primary-700">Add to Cart</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <section class="bg-gray-100 py-16 mt-8">
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Start Selling Today</h2>
+        <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Join thousands of sellers and reach millions of buyers. Easy setup, powerful tools, and dedicated support.</p>
+        <a href="#" @click.prevent="page='register'; registerRole='seller'" class="bg-primary-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-700">Create Seller Account</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- PRODUCTS PAGE -->
+  <div x-show="page === 'products'" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold" x-text="activeCategory || searchQuery ? 'Results for \"' + (activeCategory || searchQuery) + '\"' : 'All Products'"></h1>
+        <p class="text-gray-500" x-text="filteredProducts().length + ' products found'"></p>
+      </div>
+      <select x-model="sortBy" class="border rounded-lg px-3 py-2">
+        <option value="newest">Newest</option>
+        <option value="popular">Most Popular</option>
+        <option value="rating">Highest Rated</option>
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+      </select>
+    </div>
+    <div class="flex gap-8">
+      <div class="w-56 shrink-0 hidden md:block">
+        <div class="bg-white rounded-lg p-4 shadow">
+          <h3 class="font-semibold mb-3">Price Range</h3>
+          <div class="flex gap-2">
+            <input type="number" placeholder="Min" x-model="priceMin" class="w-full border rounded px-2 py-1 text-sm">
+            <input type="number" placeholder="Max" x-model="priceMax" class="w-full border rounded px-2 py-1 text-sm">
+          </div>
+          <h3 class="font-semibold mt-4 mb-3">Categories</h3>
+          <a href="#" @click.prevent="activeCategory = ''" class="block py-1 text-sm hover:text-primary-600" :class="!activeCategory ? 'text-primary-600 font-medium' : 'text-gray-600'">All</a>
+          <template x-for="cat in categories" :key="cat.name">
+            <a href="#" @click.prevent="activeCategory = cat.name"
+              class="block py-1 text-sm hover:text-primary-600"
+              :class="activeCategory === cat.name ? 'text-primary-600 font-medium' : 'text-gray-600'"
+              x-text="cat.name"></a>
+          </template>
+        </div>
+      </div>
+      <div class="flex-1">
+        <template x-if="filteredProducts().length > 0">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <template x-for="product in filteredProducts()" :key="product.id">
+              <div class="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden group">
+                <a href="#" @click.prevent="viewProduct(product)">
+                  <div class="aspect-square bg-gray-100 relative overflow-hidden">
+                    <img :src="product.image" :alt="product.title" class="w-full h-full object-cover group-hover:scale-105 transition">
+                    <span x-show="product.discount > 0" class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded" x-text="'-' + product.discount + '%'"></span>
+                  </div>
+                </a>
+                <div class="p-3">
+                  <a href="#" @click.prevent="viewProduct(product)"><h3 class="text-sm font-medium text-gray-800 line-clamp-2 hover:text-primary-600" x-text="product.title"></h3></a>
+                  <div class="flex items-center gap-1 mt-1">
+                    <span class="text-yellow-400 text-sm" x-text="'★'.repeat(Math.round(product.rating))"></span>
+                    <span class="text-xs text-gray-500" x-text="'(' + product.reviews + ')'"></span>
+                  </div>
+                  <div class="mt-2 flex items-baseline gap-2">
+                    <span class="text-lg font-bold text-primary-700" x-text="'$' + product.price.toFixed(2)"></span>
+                    <span x-show="product.originalPrice" class="text-sm text-gray-400 line-through" x-text="'$' + (product.originalPrice||0).toFixed(2)"></span>
+                  </div>
+                  <span x-show="product.freeShipping" class="text-xs text-green-600 font-medium">Free Shipping</span>
+                  <button @click="addToCart(product)" class="mt-2 w-full bg-primary-600 text-white py-1.5 rounded text-sm hover:bg-primary-700">Add to Cart</button>
+                </div>
+              </div>
+            </template>
+          </div>
+        </template>
+        <template x-if="filteredProducts().length === 0">
+          <div class="text-center py-20 text-gray-500">No products found</div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAIL PAGE -->
+  <div x-show="page === 'product-detail'" class="max-w-7xl mx-auto px-4 py-8">
+    <template x-if="selectedProduct">
+      <div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div>
+            <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
+              <img :src="selectedProduct.images ? selectedProduct.images[selectedImage] : selectedProduct.image" :alt="selectedProduct.title" class="w-full h-full object-cover">
+            </div>
+            <div x-show="selectedProduct.images && selectedProduct.images.length > 1" class="flex gap-2">
+              <template x-for="(img, i) in selectedProduct.images" :key="i">
+                <button @click="selectedImage = i" :class="i === selectedImage ? 'border-primary-500' : 'border-gray-200'" class="w-16 h-16 rounded border-2 overflow-hidden">
+                  <img :src="img" alt="" class="w-full h-full object-cover">
+                </button>
+              </template>
+            </div>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold mb-2" x-text="selectedProduct.title"></h1>
+            <div class="flex items-center gap-2 mb-4">
+              <span class="text-yellow-400" x-text="'★'.repeat(Math.round(selectedProduct.rating))"></span>
+              <span class="text-gray-500" x-text="'(' + selectedProduct.reviews + ' reviews)'"></span>
+              <span class="text-gray-400">|</span>
+              <span class="text-gray-500" x-text="selectedProduct.sold + ' sold'"></span>
+            </div>
+            <div class="flex items-baseline gap-3 mb-4">
+              <span class="text-3xl font-bold text-primary-700" x-text="'$' + selectedProduct.price.toFixed(2)"></span>
+              <span x-show="selectedProduct.originalPrice" class="text-xl text-gray-400 line-through" x-text="'$' + (selectedProduct.originalPrice||0).toFixed(2)"></span>
+            </div>
+            <div x-show="selectedProduct.freeShipping" class="text-green-600 font-medium mb-4">Free Shipping</div>
+            <p class="text-gray-600 mb-6" x-text="selectedProduct.description"></p>
+            <div x-show="selectedProduct.stock > 0" class="flex items-center gap-4 mb-6">
+              <div class="flex items-center border rounded">
+                <button @click="quantity = Math.max(1, quantity - 1)" class="px-3 py-2 hover:bg-gray-100">-</button>
+                <span class="px-4 py-2 border-x" x-text="quantity"></span>
+                <button @click="quantity = Math.min(selectedProduct.stock, quantity + 1)" class="px-3 py-2 hover:bg-gray-100">+</button>
+              </div>
+              <span class="text-gray-500 text-sm" x-text="selectedProduct.stock + ' available'"></span>
+            </div>
+            <div x-show="selectedProduct.stock <= 0" class="text-red-500 font-semibold mb-6">Out of Stock</div>
+            <button x-show="selectedProduct.stock > 0" @click="addToCart(selectedProduct, quantity)" class="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-primary-700">Add to Cart</button>
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+              <p class="font-medium" x-text="'Sold by: ' + selectedProduct.store"></p>
+            </div>
+            <div x-show="selectedProduct.specs" class="mt-6">
+              <h3 class="font-semibold mb-2">Specifications</h3>
+              <template x-for="(val, key) in selectedProduct.specs" :key="key">
+                <div class="flex text-sm py-1 border-b border-gray-100">
+                  <span class="text-gray-500 w-1/3" x-text="key"></span>
+                  <span x-text="val"></span>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reviews Section -->
+        <section class="mt-12">
+          <h2 class="text-xl font-bold mb-6">Customer Reviews</h2>
+          <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <h3 class="font-semibold mb-4">Write a Review</h3>
+            <div class="flex gap-2 mb-4">
+              <template x-for="n in 5" :key="n">
+                <button @click="reviewRating = n" :class="n <= reviewRating ? 'text-yellow-400' : 'text-gray-300'" class="text-2xl">★</button>
+              </template>
+            </div>
+            <input type="text" placeholder="Review title" x-model="reviewTitle" class="w-full border rounded px-3 py-2 mb-3">
+            <textarea placeholder="Your review..." x-model="reviewComment" class="w-full border rounded px-3 py-2 mb-3 h-24"></textarea>
+            <button @click="submitReview()" class="bg-primary-600 text-white px-6 py-2 rounded hover:bg-primary-700">Submit Review</button>
+          </div>
+          <div class="space-y-4">
+            <template x-for="review in selectedProduct.reviewList || []" :key="review.id">
+              <div class="bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="font-medium" x-text="review.user"></span>
+                  <span class="text-yellow-400" x-text="'★'.repeat(review.rating)"></span>
+                  <span class="text-gray-400 text-sm" x-text="review.date"></span>
+                </div>
+                <p x-show="review.title" class="font-medium" x-text="review.title"></p>
+                <p class="text-gray-600" x-text="review.comment"></p>
+              </div>
+            </template>
+          </div>
+        </section>
+      </div>
+    </template>
+  </div>
+
+  <!-- CART PAGE -->
+  <div x-show="page === 'cart'" class="max-w-7xl mx-auto px-4 py-8">
+    <template x-if="cart.length === 0">
+      <div class="text-center py-20">
+        <h1 class="text-2xl font-bold mb-4">Your Cart is Empty</h1>
+        <a href="#" @click.prevent="page='products'" class="text-primary-600 hover:underline">Continue Shopping</a>
+      </div>
+    </template>
+    <template x-if="cart.length > 0">
+      <div>
+        <h1 class="text-2xl font-bold mb-6" x-text="'Shopping Cart (' + cart.length + ' items)'"></h1>
+        <div class="grid lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2 space-y-4">
+            <template x-for="(item, index) in cart" :key="item.product.id + '-' + index">
+              <div class="bg-white rounded-lg shadow p-4 flex gap-4">
+                <div class="w-24 h-24 bg-gray-100 rounded shrink-0"><img :src="item.product.image" alt="" class="w-full h-full object-cover rounded"></div>
+                <div class="flex-1">
+                  <a href="#" @click.prevent="viewProduct(item.product)" class="font-medium hover:text-primary-600" x-text="item.product.title"></a>
+                  <p class="text-lg font-bold text-primary-700 mt-1" x-text="'$' + item.product.price.toFixed(2)"></p>
+                  <div class="flex items-center gap-4 mt-2">
+                    <div class="flex items-center border rounded">
+                      <button @click="updateCartQty(index, -1)" class="px-2 py-1 hover:bg-gray-100">-</button>
+                      <span class="px-3 py-1 border-x" x-text="item.qty"></span>
+                      <button @click="updateCartQty(index, 1)" class="px-2 py-1 hover:bg-gray-100">+</button>
+                    </div>
+                    <button @click="removeFromCart(index)" class="text-red-500 text-sm hover:underline">Remove</button>
+                  </div>
+                </div>
+                <div class="text-right font-bold" x-text="'$' + (item.product.price * item.qty).toFixed(2)"></div>
+              </div>
+            </template>
+          </div>
+          <div class="bg-white rounded-lg shadow p-6 h-fit">
+            <h2 class="text-lg font-bold mb-4">Order Summary</h2>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between"><span>Subtotal</span><span x-text="'$' + cartSubtotal().toFixed(2)"></span></div>
+              <div class="flex justify-between"><span>Shipping</span><span x-text="cartShipping() === 0 ? 'Free' : '$' + cartShipping().toFixed(2)"></span></div>
+              <div class="flex justify-between"><span>Tax</span><span x-text="'$' + cartTax().toFixed(2)"></span></div>
+              <hr class="my-2">
+              <div class="flex justify-between text-lg font-bold"><span>Total</span><span x-text="'$' + cartTotal().toFixed(2)"></span></div>
+            </div>
+            <p x-show="cartSubtotal() < 50" class="text-sm text-green-600 mt-2" x-text="'Add $' + (50 - cartSubtotal()).toFixed(2) + ' more for free shipping!'"></p>
+            <button @click="checkout()" class="w-full mt-4 bg-accent-500 text-white py-3 rounded-lg font-semibold hover:bg-accent-600">Proceed to Checkout</button>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- LOGIN PAGE -->
+  <div x-show="page === 'login'" class="max-w-md mx-auto px-4 py-20">
+    <h1 class="text-2xl font-bold text-center mb-8">Sign In</h1>
+    <div x-show="authError" class="bg-red-50 text-red-600 p-3 rounded mb-4" x-text="authError"></div>
+    <form @submit.prevent="loginUser()" class="bg-white p-6 rounded-lg shadow space-y-4">
+      <input type="email" placeholder="Email" x-model="loginEmail" required class="w-full border rounded px-3 py-2">
+      <input type="password" placeholder="Password" x-model="loginPassword" required class="w-full border rounded px-3 py-2">
+      <button type="submit" class="w-full bg-primary-600 text-white py-2 rounded font-semibold hover:bg-primary-700">Sign In</button>
+    </form>
+    <p class="text-center mt-4 text-gray-600">Don't have an account? <a href="#" @click.prevent="page='register'" class="text-primary-600 hover:underline">Register</a></p>
+  </div>
+
+  <!-- REGISTER PAGE -->
+  <div x-show="page === 'register'" class="max-w-md mx-auto px-4 py-20">
+    <h1 class="text-2xl font-bold text-center mb-8">Create Account</h1>
+    <div x-show="authError" class="bg-red-50 text-red-600 p-3 rounded mb-4" x-text="authError"></div>
+    <form @submit.prevent="registerUser()" class="bg-white p-6 rounded-lg shadow space-y-4">
+      <input type="text" placeholder="Full Name" x-model="regName" required class="w-full border rounded px-3 py-2">
+      <input type="email" placeholder="Email" x-model="regEmail" required class="w-full border rounded px-3 py-2">
+      <input type="password" placeholder="Password (min 6 chars)" x-model="regPassword" required class="w-full border rounded px-3 py-2">
+      <input type="password" placeholder="Confirm Password" x-model="regConfirm" required class="w-full border rounded px-3 py-2">
+      <div class="flex gap-4">
+        <label :class="registerRole === 'buyer' ? 'border-primary-500 bg-primary-50' : ''" class="flex-1 p-3 border rounded-lg text-center cursor-pointer">
+          <input type="radio" value="buyer" x-model="registerRole" class="sr-only"><div class="font-medium">Buyer</div><div class="text-xs text-gray-500">Shop products</div>
+        </label>
+        <label :class="registerRole === 'seller' ? 'border-primary-500 bg-primary-50' : ''" class="flex-1 p-3 border rounded-lg text-center cursor-pointer">
+          <input type="radio" value="seller" x-model="registerRole" class="sr-only"><div class="font-medium">Seller</div><div class="text-xs text-gray-500">Sell products</div>
+        </label>
+      </div>
+      <button type="submit" class="w-full bg-primary-600 text-white py-2 rounded font-semibold hover:bg-primary-700">Create Account</button>
+    </form>
+    <p class="text-center mt-4 text-gray-600">Already have an account? <a href="#" @click.prevent="page='login'" class="text-primary-600 hover:underline">Sign In</a></p>
+  </div>
+
+  <!-- ORDERS PAGE -->
+  <div x-show="page === 'orders'" class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">My Orders</h1>
+    <template x-if="orders.length === 0">
+      <p class="text-gray-500 text-center py-20">No orders yet.</p>
+    </template>
+    <div class="space-y-4">
+      <template x-for="order in orders" :key="order.id">
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="text-sm text-gray-500" x-text="'Order #' + order.id"></p>
+              <p class="text-sm text-gray-500" x-text="order.date"></p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-sm font-medium"
+              :class="{'bg-yellow-100 text-yellow-800': order.status==='pending', 'bg-blue-100 text-blue-800': order.status==='processing', 'bg-purple-100 text-purple-800': order.status==='shipped', 'bg-green-100 text-green-800': order.status==='delivered'}"
+              x-text="order.status"></span>
+          </div>
+          <div class="space-y-2">
+            <template x-for="item in order.items" :key="item.title">
+              <div class="flex justify-between text-sm">
+                <span x-text="item.title + ' x' + item.qty"></span>
+                <span class="font-medium" x-text="'$' + (item.price * item.qty).toFixed(2)"></span>
+              </div>
+            </template>
+          </div>
+          <hr class="my-3">
+          <div class="flex justify-between font-bold"><span>Total</span><span x-text="'$' + order.total.toFixed(2)"></span></div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- DASHBOARD PAGE -->
+  <div x-show="page === 'dashboard'" class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-2xl font-bold">Seller Dashboard</h1>
+      <button @click="showProductForm = !showProductForm" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700">+ Add Product</button>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Products</p><p class="text-2xl font-bold mt-1" x-text="allProducts.length"></p></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Orders</p><p class="text-2xl font-bold mt-1" x-text="orders.length"></p></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Revenue</p><p class="text-2xl font-bold mt-1" x-text="'$' + orders.reduce((s,o) => s + o.total, 0).toFixed(2)"></p></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Avg Rating</p><p class="text-2xl font-bold mt-1" x-text="allProducts.length ? (allProducts.reduce((s,p)=>s+p.rating,0)/allProducts.length).toFixed(1) : '0'"></p></div>
+    </div>
+    <div x-show="showProductForm" class="bg-white rounded-lg shadow p-6 mb-8 grid md:grid-cols-2 gap-4">
+      <input type="text" placeholder="Product Title" x-model="newProduct.title" class="border rounded px-3 py-2">
+      <select x-model="newProduct.category" class="border rounded px-3 py-2">
+        <template x-for="cat in categories" :key="cat.name"><option :value="cat.name" x-text="cat.name"></option></template>
+      </select>
+      <input type="number" placeholder="Price" x-model="newProduct.price" step="0.01" class="border rounded px-3 py-2">
+      <input type="number" placeholder="Stock" x-model="newProduct.stock" class="border rounded px-3 py-2">
+      <input type="text" placeholder="Image URL" x-model="newProduct.image" class="border rounded px-3 py-2">
+      <textarea placeholder="Description" x-model="newProduct.description" class="border rounded px-3 py-2 md:col-span-2"></textarea>
+      <div class="md:col-span-2 flex gap-3">
+        <button @click="addProduct()" class="bg-primary-600 text-white px-6 py-2 rounded hover:bg-primary-700">Save Product</button>
+        <button @click="showProductForm = false" class="border px-6 py-2 rounded hover:bg-gray-50">Cancel</button>
+      </div>
+    </div>
+    <h2 class="text-xl font-bold mb-4">Your Products</h2>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-left"><tr><th class="p-3">Product</th><th class="p-3">Price</th><th class="p-3">Stock</th><th class="p-3">Sold</th><th class="p-3">Status</th></tr></thead>
+        <tbody>
+          <template x-for="p in allProducts" :key="p.id">
+            <tr class="border-t hover:bg-gray-50">
+              <td class="p-3 font-medium" x-text="p.title"></td>
+              <td class="p-3" x-text="'$' + p.price.toFixed(2)"></td>
+              <td class="p-3" x-text="p.stock"></td>
+              <td class="p-3" x-text="p.sold"></td>
+              <td class="p-3"><span class="px-2 py-1 rounded text-xs bg-green-100 text-green-700">active</span></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MESSAGES PAGE -->
+  <div x-show="page === 'messages'" class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Messages</h1>
+    <div class="grid md:grid-cols-3 gap-4" style="height:600px">
+      <div class="bg-white rounded-lg shadow overflow-y-auto">
+        <template x-for="conv in conversations" :key="conv.id">
+          <button @click="openConversation(conv)" class="w-full p-4 text-left border-b hover:bg-gray-50" :class="activeConv?.id === conv.id ? 'bg-primary-50' : ''">
+            <p class="font-medium text-sm" x-text="conv.name"></p>
+            <p class="text-xs text-gray-500 truncate" x-text="conv.lastMessage"></p>
+          </button>
+        </template>
+        <p x-show="conversations.length === 0" class="p-4 text-gray-500 text-center">No conversations</p>
+      </div>
+      <div class="md:col-span-2 bg-white rounded-lg shadow flex flex-col">
+        <template x-if="activeConv">
+          <div class="flex flex-col h-full">
+            <div class="p-4 border-b font-semibold" x-text="activeConv.name"></div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-3">
+              <template x-for="msg in activeConv.messages" :key="msg.id">
+                <div :class="msg.sent ? 'justify-end' : 'justify-start'" class="flex">
+                  <div :class="msg.sent ? 'bg-primary-600 text-white' : 'bg-gray-100'" class="max-w-[70%] px-4 py-2 rounded-lg">
+                    <p class="text-sm" x-text="msg.text"></p>
+                    <p class="text-xs opacity-60 mt-1" x-text="msg.time"></p>
+                  </div>
+                </div>
+              </template>
+            </div>
+            <form @submit.prevent="sendMessage()" class="p-4 border-t flex gap-2">
+              <input type="text" x-model="newMessage" placeholder="Type a message..." class="flex-1 border rounded-lg px-3 py-2">
+              <button type="submit" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700">Send</button>
+            </form>
+          </div>
+        </template>
+        <template x-if="!activeConv">
+          <div class="flex-1 flex items-center justify-center text-gray-500">Select a conversation</div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN PAGE -->
+  <div x-show="page === 'admin'" class="max-w-7xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Total Users</p><p class="text-3xl font-bold mt-2">1,247</p></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Total Products</p><p class="text-3xl font-bold mt-2" x-text="allProducts.length"></p></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Total Orders</p><p class="text-3xl font-bold mt-2" x-text="orders.length"></p></div>
+      <div class="bg-white rounded-lg shadow p-6 text-center"><p class="text-gray-500 text-sm">Total Revenue</p><p class="text-3xl font-bold mt-2" x-text="'$' + orders.reduce((s,o)=>s+o.total,0).toFixed(2)"></p></div>
+    </div>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-gray-300 mt-12">
+  <div class="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div>
+      <h3 class="text-white text-lg font-bold mb-3">MyMarket</h3>
+      <p class="text-sm">Your trusted marketplace for everything. Buy and sell with confidence.</p>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold mb-3">Shop</h4>
+      <div class="flex flex-col gap-2 text-sm">
+        <a href="#" @click.prevent="page='products'" class="hover:text-white">All Products</a>
+        <a href="#" @click.prevent="page='products'; sortBy='popular'" class="hover:text-white">Best Sellers</a>
+        <a href="#" @click.prevent="page='products'; sortBy='newest'" class="hover:text-white">New Arrivals</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold mb-3">Sell</h4>
+      <div class="flex flex-col gap-2 text-sm">
+        <a href="#" @click.prevent="page='register'; registerRole='seller'" class="hover:text-white">Become a Seller</a>
+        <a href="#" @click.prevent="page='dashboard'" class="hover:text-white">Seller Dashboard</a>
+      </div>
+    </div>
+    <div>
+      <h4 class="text-white font-semibold mb-3">Support</h4>
+      <div class="flex flex-col gap-2 text-sm">
+        <a href="#" class="hover:text-white">Help Center</a>
+        <a href="#" class="hover:text-white">Contact Us</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-gray-700 py-4 text-center text-sm">&copy; 2024 MyMarket. All rights reserved.</div>
+</footer>
+
+<!-- Toast notification -->
+<div x-show="toast" x-transition class="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50" x-text="toast" x-cloak></div>
+
+<script>
+function marketplace() {
+  return {
+    page: 'home',
+    user: null,
+    cart: [],
+    orders: [],
+    menuOpen: false,
+    searchQuery: '',
+    activeCategory: '',
+    sortBy: 'newest',
+    priceMin: '',
+    priceMax: '',
+    selectedProduct: null,
+    selectedImage: 0,
+    quantity: 1,
+    toast: '',
+    authError: '',
+    showProductForm: false,
+    registerRole: 'buyer',
+
+    // Auth
+    loginEmail: '',
+    loginPassword: '',
+    regName: '',
+    regEmail: '',
+    regPassword: '',
+    regConfirm: '',
+
+    // Review
+    reviewRating: 5,
+    reviewTitle: '',
+    reviewComment: '',
+
+    // Messages
+    conversations: [
+      { id: 1, name: 'TechStore Pro', lastMessage: 'Your order has been shipped!', messages: [
+        { id: 1, text: 'Hi, is the laptop still available?', sent: true, time: '10:30 AM' },
+        { id: 2, text: 'Yes, it is! Would you like to place an order?', sent: false, time: '10:32 AM' },
+        { id: 3, text: 'Your order has been shipped!', sent: false, time: '2:15 PM' }
+      ]},
+      { id: 2, name: 'Fashion Hub', lastMessage: 'Thanks for your purchase!', messages: [
+        { id: 1, text: 'Do you have size L?', sent: true, time: '9:00 AM' },
+        { id: 2, text: 'Yes we do! Adding to your order.', sent: false, time: '9:05 AM' },
+        { id: 3, text: 'Thanks for your purchase!', sent: false, time: '9:10 AM' }
+      ]}
+    ],
+    activeConv: null,
+    newMessage: '',
+
+    // New product
+    newProduct: { title: '', description: '', price: '', category: 'Electronics', stock: '', image: '' },
+
+    categories: [
+      { name: 'Electronics', icon: '💻', color: 'bg-blue-100' },
+      { name: 'Fashion', icon: '👗', color: 'bg-pink-100' },
+      { name: 'Home & Garden', icon: '🏡', color: 'bg-green-100' },
+      { name: 'Sports', icon: '⚽', color: 'bg-orange-100' },
+      { name: 'Toys', icon: '🎮', color: 'bg-purple-100' },
+      { name: 'Automotive', icon: '🚗', color: 'bg-red-100' },
+      { name: 'Books', icon: '📚', color: 'bg-yellow-100' },
+      { name: 'Health', icon: '💊', color: 'bg-teal-100' },
+    ],
+
+    allProducts: [
+      { id: 1, title: 'Wireless Bluetooth Headphones with Noise Cancellation', price: 79.99, originalPrice: 129.99, discount: 38, category: 'Electronics', image: 'https://picsum.photos/seed/headphones/400', images: ['https://picsum.photos/seed/headphones/400', 'https://picsum.photos/seed/headphones2/400'], rating: 4.5, reviews: 234, sold: 1820, stock: 45, freeShipping: true, store: 'TechStore Pro', description: 'Premium wireless headphones with active noise cancellation, 30-hour battery life, and ultra-comfortable design. Perfect for music, calls, and gaming.', specs: { 'Battery': '30 hours', 'Connectivity': 'Bluetooth 5.3', 'Driver': '40mm', 'Weight': '250g' }, reviewList: [{ id: 1, user: 'Alex M.', rating: 5, title: 'Best headphones ever!', comment: 'Amazing sound quality and the noise cancellation is incredible.', date: '2024-01-15' }, { id: 2, user: 'Sarah K.', rating: 4, title: 'Great value', comment: 'Very comfortable for long listening sessions.', date: '2024-01-10' }], dateAdded: '2024-01-01' },
+      { id: 2, title: 'Smart Watch Series 5 - Fitness Tracker & Health Monitor', price: 199.99, originalPrice: 299.99, discount: 33, category: 'Electronics', image: 'https://picsum.photos/seed/watch/400', rating: 4.7, reviews: 567, sold: 3200, stock: 28, freeShipping: true, store: 'TechStore Pro', description: 'Advanced smartwatch with heart rate monitor, GPS, sleep tracking, and 7-day battery life.', specs: { 'Display': '1.9" AMOLED', 'Battery': '7 days', 'Water': 'IP68' }, reviewList: [], dateAdded: '2024-02-01' },
+      { id: 3, title: 'Men\'s Classic Leather Jacket - Genuine Leather', price: 149.99, originalPrice: null, discount: 0, category: 'Fashion', image: 'https://picsum.photos/seed/jacket/400', rating: 4.3, reviews: 89, sold: 430, stock: 15, freeShipping: false, store: 'Fashion Hub', description: 'Handcrafted genuine leather jacket with premium stitching and classic design.', specs: { 'Material': 'Genuine Leather', 'Lining': 'Polyester', 'Sizes': 'S-XXL' }, reviewList: [], dateAdded: '2024-03-01' },
+      { id: 4, title: 'Professional 4K Drone with HD Camera', price: 459.99, originalPrice: 599.99, discount: 23, category: 'Electronics', image: 'https://picsum.photos/seed/drone/400', rating: 4.8, reviews: 145, sold: 890, stock: 12, freeShipping: true, store: 'DroneWorld', description: '4K UHD camera drone with 30-min flight time, GPS auto-return, and obstacle avoidance.', specs: { 'Camera': '4K UHD', 'Flight Time': '30 min', 'Range': '5km' }, reviewList: [], dateAdded: '2024-01-15' },
+      { id: 5, title: 'Ergonomic Office Chair with Lumbar Support', price: 289.99, originalPrice: 399.99, discount: 28, category: 'Home & Garden', image: 'https://picsum.photos/seed/chair/400', rating: 4.6, reviews: 312, sold: 1500, stock: 20, freeShipping: true, store: 'HomeComfort', description: 'Premium ergonomic chair with adjustable lumbar support, headrest, and breathable mesh.', specs: { 'Material': 'Mesh + Foam', 'Max Weight': '300 lbs', 'Adjustable': 'Height, Arms, Tilt' }, reviewList: [], dateAdded: '2024-02-15' },
+      { id: 6, title: 'Running Shoes - Ultra Lightweight Performance', price: 89.99, originalPrice: 120.00, discount: 25, category: 'Sports', image: 'https://picsum.photos/seed/shoes/400', rating: 4.4, reviews: 678, sold: 4500, stock: 60, freeShipping: false, store: 'SportGear', description: 'Ultra-lightweight running shoes with responsive cushioning and breathable upper.', specs: { 'Weight': '220g', 'Drop': '8mm', 'Sole': 'Rubber' }, reviewList: [], dateAdded: '2024-03-10' },
+      { id: 7, title: 'Portable Espresso Maker - Travel Coffee Machine', price: 49.99, originalPrice: null, discount: 0, category: 'Home & Garden', image: 'https://picsum.photos/seed/coffee/400', rating: 4.2, reviews: 201, sold: 980, stock: 35, freeShipping: false, store: 'HomeComfort', description: 'Compact portable espresso maker. Perfect for camping, travel, and office use.', specs: { 'Pressure': '15 bar', 'Weight': '350g', 'Volume': '80ml' }, reviewList: [], dateAdded: '2024-04-01' },
+      { id: 8, title: 'Mechanical Gaming Keyboard RGB Backlit', price: 69.99, originalPrice: 99.99, discount: 30, category: 'Electronics', image: 'https://picsum.photos/seed/keyboard/400', rating: 4.6, reviews: 445, sold: 2300, stock: 40, freeShipping: true, store: 'TechStore Pro', description: 'Mechanical gaming keyboard with customizable RGB, hot-swappable switches, and aluminum frame.', specs: { 'Switches': 'Mechanical', 'Backlight': 'RGB', 'Connection': 'USB-C' }, reviewList: [], dateAdded: '2024-04-15' },
+      { id: 9, title: 'Yoga Mat - Premium Non-Slip Exercise Mat', price: 34.99, originalPrice: null, discount: 0, category: 'Sports', image: 'https://picsum.photos/seed/yoga/400', rating: 4.5, reviews: 156, sold: 720, stock: 80, freeShipping: false, store: 'SportGear', description: 'Extra thick yoga mat with non-slip surface. Perfect for yoga, pilates, and stretching.', specs: { 'Thickness': '6mm', 'Material': 'TPE', 'Size': '72x24 in' }, reviewList: [], dateAdded: '2024-05-01' },
+      { id: 10, title: 'Wireless Charging Pad - Fast Charge 15W', price: 24.99, originalPrice: 39.99, discount: 37, category: 'Electronics', image: 'https://picsum.photos/seed/charger/400', rating: 4.3, reviews: 890, sold: 5600, stock: 100, freeShipping: true, store: 'TechStore Pro', description: 'Universal wireless charging pad compatible with all Qi-enabled devices. Fast 15W charging.', specs: { 'Power': '15W', 'Input': 'USB-C', 'Compatible': 'All Qi devices' }, reviewList: [], dateAdded: '2024-05-15' },
+      { id: 11, title: 'Leather Crossbody Bag - Vintage Style', price: 59.99, originalPrice: 79.99, discount: 25, category: 'Fashion', image: 'https://picsum.photos/seed/bag/400', rating: 4.4, reviews: 112, sold: 340, stock: 22, freeShipping: false, store: 'Fashion Hub', description: 'Stylish vintage leather crossbody bag with multiple compartments and adjustable strap.', specs: { 'Material': 'PU Leather', 'Size': '10x8x3 in', 'Pockets': '5' }, reviewList: [], dateAdded: '2024-06-01' },
+      { id: 12, title: 'Car Dash Camera 1080P - Night Vision', price: 44.99, originalPrice: 69.99, discount: 36, category: 'Automotive', image: 'https://picsum.photos/seed/dashcam/400', rating: 4.1, reviews: 203, sold: 1100, stock: 30, freeShipping: true, store: 'AutoParts Plus', description: 'Full HD dash camera with night vision, loop recording, and wide-angle lens.', specs: { 'Resolution': '1080P', 'Angle': '170°', 'Storage': 'Up to 128GB' }, reviewList: [], dateAdded: '2024-06-10' },
+    ],
+
+    // Methods
+    filterCategory(name) { this.activeCategory = name; this.page = 'products'; },
+
+    searchProducts() {
+      this.activeCategory = '';
+      this.page = 'products';
+    },
+
+    filteredProducts() {
+      let list = [...this.allProducts];
+      if (this.activeCategory) list = list.filter(p => p.category === this.activeCategory);
+      if (this.searchQuery) {
+        const q = this.searchQuery.toLowerCase();
+        list = list.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      }
+      if (this.priceMin) list = list.filter(p => p.price >= Number(this.priceMin));
+      if (this.priceMax) list = list.filter(p => p.price <= Number(this.priceMax));
+      const sorts = {
+        'newest': (a, b) => new Date(b.dateAdded) - new Date(a.dateAdded),
+        'popular': (a, b) => b.sold - a.sold,
+        'rating': (a, b) => b.rating - a.rating,
+        'price_asc': (a, b) => a.price - b.price,
+        'price_desc': (a, b) => b.price - a.price,
+      };
+      if (sorts[this.sortBy]) list.sort(sorts[this.sortBy]);
+      return list;
+    },
+
+    getPopularProducts() { return [...this.allProducts].sort((a, b) => b.sold - a.sold).slice(0, 8); },
+    getNewestProducts() { return [...this.allProducts].sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded)).slice(0, 8); },
+
+    viewProduct(product) {
+      this.selectedProduct = product;
+      this.selectedImage = 0;
+      this.quantity = 1;
+      this.page = 'product-detail';
+    },
+
+    addToCart(product, qty = 1) {
+      const existing = this.cart.find(i => i.product.id === product.id);
+      if (existing) existing.qty += qty;
+      else this.cart.push({ product, qty });
+      this.showToast('Added to cart!');
+    },
+
+    updateCartQty(index, delta) {
+      this.cart[index].qty += delta;
+      if (this.cart[index].qty <= 0) this.cart.splice(index, 1);
+    },
+
+    removeFromCart(index) { this.cart.splice(index, 1); },
+
+    cartSubtotal() { return this.cart.reduce((s, i) => s + i.product.price * i.qty, 0); },
+    cartShipping() { return this.cartSubtotal() > 50 ? 0 : 9.99; },
+    cartTax() { return this.cartSubtotal() * 0.1; },
+    cartTotal() { return this.cartSubtotal() + this.cartShipping() + this.cartTax(); },
+
+    checkout() {
+      if (!this.user) { this.page = 'login'; return; }
+      const order = {
+        id: 'ORD-' + Date.now().toString().slice(-6),
+        date: new Date().toLocaleDateString(),
+        items: this.cart.map(i => ({ title: i.product.title, qty: i.qty, price: i.product.price })),
+        total: this.cartTotal(),
+        status: 'pending'
+      };
+      this.orders.unshift(order);
+      this.cart = [];
+      this.showToast('Order placed successfully!');
+      this.page = 'orders';
+    },
+
+    loginUser() {
+      this.authError = '';
+      if (!this.loginEmail || !this.loginPassword) { this.authError = 'Please fill all fields'; return; }
+      this.user = { name: this.loginEmail.split('@')[0], email: this.loginEmail, role: 'buyer' };
+      this.loginEmail = ''; this.loginPassword = '';
+      this.showToast('Welcome back!');
+      this.page = 'home';
+    },
+
+    registerUser() {
+      this.authError = '';
+      if (!this.regName || !this.regEmail || !this.regPassword) { this.authError = 'Please fill all fields'; return; }
+      if (this.regPassword !== this.regConfirm) { this.authError = 'Passwords do not match'; return; }
+      if (this.regPassword.length < 6) { this.authError = 'Password must be at least 6 characters'; return; }
+      this.user = { name: this.regName, email: this.regEmail, role: this.registerRole };
+      this.regName = ''; this.regEmail = ''; this.regPassword = ''; this.regConfirm = '';
+      this.showToast('Account created!');
+      this.page = 'home';
+    },
+
+    logout() { this.user = null; this.page = 'home'; this.showToast('Logged out'); },
+
+    submitReview() {
+      if (!this.reviewComment) return;
+      if (!this.selectedProduct.reviewList) this.selectedProduct.reviewList = [];
+      this.selectedProduct.reviewList.unshift({
+        id: Date.now(), user: this.user?.name || 'Guest', rating: this.reviewRating,
+        title: this.reviewTitle, comment: this.reviewComment, date: new Date().toLocaleDateString()
+      });
+      this.reviewTitle = ''; this.reviewComment = ''; this.reviewRating = 5;
+      this.showToast('Review submitted!');
+    },
+
+    openConversation(conv) { this.activeConv = conv; },
+
+    sendMessage() {
+      if (!this.newMessage.trim() || !this.activeConv) return;
+      this.activeConv.messages.push({ id: Date.now(), text: this.newMessage, sent: true, time: new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) });
+      this.newMessage = '';
+    },
+
+    addProduct() {
+      if (!this.newProduct.title || !this.newProduct.price) return;
+      this.allProducts.unshift({
+        id: Date.now(), title: this.newProduct.title, description: this.newProduct.description || 'New product',
+        price: Number(this.newProduct.price), originalPrice: null, discount: 0, category: this.newProduct.category,
+        image: this.newProduct.image || 'https://picsum.photos/seed/' + Date.now() + '/400',
+        rating: 0, reviews: 0, sold: 0, stock: Number(this.newProduct.stock) || 10, freeShipping: false,
+        store: this.user?.name || 'My Store', specs: {}, reviewList: [], dateAdded: new Date().toISOString().split('T')[0]
+      });
+      this.newProduct = { title: '', description: '', price: '', category: 'Electronics', stock: '', image: '' };
+      this.showProductForm = false;
+      this.showToast('Product added!');
+    },
+
+    showToast(msg) {
+      this.toast = msg;
+      setTimeout(() => this.toast = '', 3000);
+    }
+  };
+}
+</script>
+
+</body>
+</html>
