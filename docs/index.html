@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyMarket.bt - Online Shopping in Bhutan</title>
+  <title>DrukHub.bt - Online Shopping in Bhutan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -66,7 +66,7 @@
   <div class="max-w-[1500px] mx-auto px-2 flex items-center h-[60px] gap-2">
     <!-- Logo -->
     <a href="#" @click.prevent="page='home'" class="flex items-center px-2 py-1 border border-transparent hover:border-white rounded shrink-0">
-      <span class="text-white text-xl font-bold">My</span><span class="text-amz-orange text-xl font-bold">Market</span>
+      <span class="text-white text-xl font-bold">Druk</span><span class="text-amz-orange text-xl font-bold">Hub</span>
       <span class="text-white text-[10px] ml-0.5">.bt</span>
     </a>
 
@@ -85,7 +85,7 @@
         <option>All</option>
         <template x-for="cat in categories" :key="cat.name"><option x-text="cat.name"></option></template>
       </select>
-      <input type="text" x-model="searchQuery" @input="updateSuggestions()" @focus="updateSuggestions()" @click.away="showSearchSuggestions=false" placeholder="Search MyMarket.bt" class="flex-1 px-3 text-sm amz-input border-none outline-none">
+      <input type="text" x-model="searchQuery" @input="updateSuggestions()" @focus="updateSuggestions()" @click.away="showSearchSuggestions=false" placeholder="Search DrukHub.bt" class="flex-1 px-3 text-sm amz-input border-none outline-none">
       <button type="submit" class="bg-amz-orange hover:bg-amz-orange2 px-4">
         <svg class="w-5 h-5" fill="none" stroke="#111" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </button>
@@ -215,7 +215,7 @@
       </template>
       <div class="border-t my-2"></div>
       <a href="#" @click.prevent="page='products'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold">All Products</a>
-      <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Sell on MyMarket</a>
+      <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Sell on DrukHub</a>
     </div>
     <button @click="sideMenu=false" class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">&times;</button>
   </div>
@@ -230,7 +230,7 @@
       <div class="max-w-[1500px] mx-auto relative">
         <div class="h-[300px] md:h-[400px] bg-gradient-to-b from-[#7ec8e3] to-[#e3e6e6] flex items-center justify-center relative overflow-hidden">
           <div class="text-center z-10 px-4">
-            <h1 class="text-3xl md:text-5xl font-bold text-amz-dark mb-3">Welcome to MyMarket.bt</h1>
+            <h1 class="text-3xl md:text-5xl font-bold text-amz-dark mb-3">Welcome to DrukHub.bt</h1>
             <p class="text-lg text-amz-dark3 mb-6">Shop the best products in Bhutan</p>
             <a href="#" @click.prevent="page='products'" class="amz-btn-cart px-8 py-3 text-sm font-bold rounded-full inline-block">Shop Now</a>
           </div>
@@ -344,7 +344,7 @@
     <!-- Sell Banner -->
     <div class="max-w-[1500px] mx-auto px-4 mb-6">
       <div class="bg-white p-5 text-center">
-        <h2 class="text-xl font-bold mb-1">Sell on MyMarket.bt</h2>
+        <h2 class="text-xl font-bold mb-1">Sell on DrukHub.bt</h2>
         <p class="text-sm text-gray-600 mb-4">Reach millions of buyers across Bhutan</p>
         <a href="#" @click.prevent="page='register'; registerRole='seller'" class="amz-btn px-6 py-2 text-sm font-bold">Register as a Seller</a>
       </div>
@@ -567,7 +567,7 @@
                 </div>
               </div>
               <div class="text-xs text-gray-500 mt-3 space-y-1">
-                <div class="flex justify-between"><span class="text-gray-500">Ships from</span><span>MyMarket.bt</span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Ships from</span><span>DrukHub.bt</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">Sold by</span><span class="text-amz-link" x-text="selectedProduct.store"></span></div>
                 <div class="flex justify-between"><span class="text-gray-500">Payment</span><span>COD / mBoB / Card</span></div>
               </div>
@@ -677,7 +677,7 @@
   <div x-show="page === 'cart'" class="max-w-[1100px] mx-auto px-4 py-4">
     <template x-if="cart.length === 0">
       <div class="bg-white p-8 rounded">
-        <h1 class="text-2xl font-bold">Your MyMarket Cart is empty.</h1>
+        <h1 class="text-2xl font-bold">Your DrukHub Cart is empty.</h1>
         <a href="#" @click.prevent="page='products'" class="text-amz-link text-sm hover:text-amz-red hover:underline">Continue shopping</a>
       </div>
     </template>
@@ -756,7 +756,7 @@
 
   <!-- LOGIN PAGE -->
   <div x-show="page === 'login'" class="max-w-[350px] mx-auto px-4 py-6">
-    <div class="text-center mb-4"><span class="text-2xl font-bold">My</span><span class="text-2xl font-bold text-amz-orange">Market</span><span class="text-sm">.bt</span></div>
+    <div class="text-center mb-4"><span class="text-2xl font-bold">Druk</span><span class="text-2xl font-bold text-amz-orange">Hub</span><span class="text-sm">.bt</span></div>
     <div class="border rounded-lg p-5">
       <h1 class="text-2xl font-normal mb-4">Sign in</h1>
       <div x-show="authError" class="bg-red-50 border border-red-300 text-sm text-amz-red p-3 rounded mb-3" x-text="authError"></div>
@@ -767,15 +767,15 @@
         <input type="password" x-model="loginPassword" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-4 amz-input">
         <button type="submit" class="amz-btn-cart w-full py-2 text-sm font-bold">Sign in</button>
       </form>
-      <p class="text-xs text-gray-600 mt-4">By continuing, you agree to MyMarket's Conditions of Use and Privacy Notice.</p>
+      <p class="text-xs text-gray-600 mt-4">By continuing, you agree to DrukHub's Conditions of Use and Privacy Notice.</p>
     </div>
-    <div class="relative mt-6 mb-3"><hr class="border-gray-300"><span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-xs text-gray-500">New to MyMarket?</span></div>
-    <button @click="page='register'" class="w-full border border-gray-400 rounded-lg py-2 text-sm bg-gray-100 hover:bg-gray-200">Create your MyMarket account</button>
+    <div class="relative mt-6 mb-3"><hr class="border-gray-300"><span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-2 text-xs text-gray-500">New to DrukHub?</span></div>
+    <button @click="page='register'" class="w-full border border-gray-400 rounded-lg py-2 text-sm bg-gray-100 hover:bg-gray-200">Create your DrukHub account</button>
   </div>
 
   <!-- REGISTER PAGE -->
   <div x-show="page === 'register'" class="max-w-[350px] mx-auto px-4 py-6">
-    <div class="text-center mb-4"><span class="text-2xl font-bold">My</span><span class="text-2xl font-bold text-amz-orange">Market</span><span class="text-sm">.bt</span></div>
+    <div class="text-center mb-4"><span class="text-2xl font-bold">Druk</span><span class="text-2xl font-bold text-amz-orange">Hub</span><span class="text-sm">.bt</span></div>
     <div class="border rounded-lg p-5">
       <h1 class="text-2xl font-normal mb-4">Create account</h1>
       <div x-show="authError" class="bg-red-50 border border-red-300 text-sm text-amz-red p-3 rounded mb-3" x-text="authError"></div>
@@ -793,7 +793,7 @@
           <label class="flex items-center gap-1.5 text-sm"><input type="radio" value="buyer" x-model="registerRole" class="accent-amz-dark"> Buy products</label>
           <label class="flex items-center gap-1.5 text-sm"><input type="radio" value="seller" x-model="registerRole" class="accent-amz-dark"> Sell products</label>
         </div>
-        <button type="submit" class="amz-btn-cart w-full py-2 text-sm font-bold">Create your MyMarket account</button>
+        <button type="submit" class="amz-btn-cart w-full py-2 text-sm font-bold">Create your DrukHub account</button>
       </form>
       <p class="text-xs text-gray-600 mt-3">Already have an account? <a href="#" @click.prevent="page='login'" class="text-amz-link hover:text-amz-red hover:underline">Sign in</a></p>
     </div>
@@ -911,7 +911,7 @@
     <template x-if="!user">
       <div class="bg-white p-10 rounded text-center">
         <h2 class="text-xl font-bold mb-2">Sign in to start selling</h2>
-        <p class="text-gray-600 mb-4">Anyone can sell on MyMarket.bt — new or used items!</p>
+        <p class="text-gray-600 mb-4">Anyone can sell on DrukHub.bt — new or used items!</p>
         <button @click="page='login'" class="amz-btn-cart px-8 py-2 font-bold text-sm">Sign In</button>
       </div>
     </template>
@@ -919,7 +919,7 @@
       <div>
         <div class="bg-amz-dark2 text-white p-5 rounded-t flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-bold">Sell on MyMarket.bt</h1>
+            <h1 class="text-xl font-bold">Sell on DrukHub.bt</h1>
             <p class="text-sm text-gray-300 mt-1">List new or pre-owned items — open to all registered users</p>
           </div>
           <span class="bg-amz-orange text-amz-dark text-xs font-bold px-3 py-1 rounded-full">Any User Can Sell</span>
@@ -1336,7 +1336,7 @@
     <div>
       <h4 class="font-bold mb-3">Get to Know Us</h4>
       <div class="space-y-2 text-gray-300">
-        <a href="#" class="block hover:underline">About MyMarket</a>
+        <a href="#" class="block hover:underline">About DrukHub</a>
         <a href="#" class="block hover:underline">Careers</a>
         <a href="#" class="block hover:underline">Press Releases</a>
       </div>
@@ -1344,7 +1344,7 @@
     <div>
       <h4 class="font-bold mb-3">Make Money with Us</h4>
       <div class="space-y-2 text-gray-300">
-        <a href="#" @click.prevent="page='register'; registerRole='seller'" class="block hover:underline">Sell on MyMarket</a>
+        <a href="#" @click.prevent="page='register'; registerRole='seller'" class="block hover:underline">Sell on DrukHub</a>
         <a href="#" @click.prevent="page='dashboard'" class="block hover:underline">Seller Central</a>
       </div>
     </div>
@@ -1370,8 +1370,8 @@
   </div>
   <div class="border-t border-gray-600">
     <div class="max-w-[1000px] mx-auto px-4 py-4 text-center">
-      <div class="mb-2"><span class="text-lg font-bold">My</span><span class="text-lg font-bold text-amz-orange">Market</span><span class="text-xs">.bt</span></div>
-      <p class="text-xs text-gray-400">&copy; 2024 MyMarket.bt | Bhutan's Online Marketplace</p>
+      <div class="mb-2"><span class="text-lg font-bold">Druk</span><span class="text-lg font-bold text-amz-orange">Hub</span><span class="text-xs">.bt</span></div>
+      <p class="text-xs text-gray-400">&copy; 2024 DrukHub.bt | Bhutan's Premier Online Marketplace</p>
     </div>
   </div>
 </footer>
@@ -1524,7 +1524,7 @@ function marketplace() {
     submitReview() { if(!this.reviewComment)return; if(!this.selectedProduct.reviewList)this.selectedProduct.reviewList=[]; this.selectedProduct.reviewList.unshift({id:Date.now(),user:this.user?.name||'Guest',rating:this.reviewRating,title:this.reviewTitle,comment:this.reviewComment,date:new Date().toLocaleDateString()}); this.reviewTitle='';this.reviewComment='';this.reviewRating=5; this.showToast('Review submitted!'); },
     openConversation(conv) { this.activeConv=conv; },
     sendMessage() { if(!this.newMessage.trim()||!this.activeConv)return; this.activeConv.messages.push({id:Date.now(),text:this.newMessage,sent:true,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}); this.newMessage=''; },
-    addProduct() { if(!this.newProduct.title||!this.newProduct.price)return; const cond=this.newProduct.condition; const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'}; const p={id:Date.now(),title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'My Store',specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New'}; if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;} this.allProducts.unshift(p); this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:'',condition:'new',conditionNote:'',usageDuration:'',defects:'',accessories:'',reason:''}; this.showProductForm=false; this.showToast('Product listed!'); },
+    addProduct() { if(!this.newProduct.title||!this.newProduct.price)return; const cond=this.newProduct.condition; const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'}; const p={id:Date.now(),title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'DrukHub Store',specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New'}; if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;} this.allProducts.unshift(p); this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:'',condition:'new',conditionNote:'',usageDuration:'',defects:'',accessories:'',reason:''}; this.showProductForm=false; this.showToast('Product listed!'); },
 
     // Wishlist
     toggleWishlist(product) { const i=this.wishlist.findIndex(p=>p.id===product.id); if(i>=0){this.wishlist.splice(i,1);this.showToast('Removed from Wishlist');}else{this.wishlist.push(product);this.showToast('Added to Wishlist');this.addNotification('Added "'+product.title.slice(0,30)+'..." to your Wishlist');} },
@@ -1566,7 +1566,7 @@ function marketplace() {
     flashTimeLeft() { const d=this.flashSaleEnd-Date.now(); if(d<=0)return'00:00:00'; const h=Math.floor(d/3600000); const m=Math.floor((d%3600000)/60000); const s=Math.floor((d%60000)/1000); return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); },
 
     // Q&A
-    askQuestion(productId) { if(!this.qaQuestion.trim())return; if(!this.qaList[productId])this.qaList[productId]=[]; this.qaList[productId].unshift({id:Date.now(),q:this.qaQuestion,user:this.user?.name||'Guest',date:new Date().toLocaleDateString(),answers:[{text:'Thank you for your question! The seller will respond shortly.',by:'MyMarket Bot',date:new Date().toLocaleDateString()}]}); this.qaQuestion=''; this.showToast('Question submitted!'); },
+    askQuestion(productId) { if(!this.qaQuestion.trim())return; if(!this.qaList[productId])this.qaList[productId]=[]; this.qaList[productId].unshift({id:Date.now(),q:this.qaQuestion,user:this.user?.name||'Guest',date:new Date().toLocaleDateString(),answers:[{text:'Thank you for your question! The seller will respond shortly.',by:'DrukHub Bot',date:new Date().toLocaleDateString()}]}); this.qaQuestion=''; this.showToast('Question submitted!'); },
 
     // Search suggestions
     updateSuggestions() { const q=this.searchQuery.toLowerCase().trim(); if(!q){this.searchSuggestions=[];this.showSearchSuggestions=false;return;} this.searchSuggestions=this.allProducts.filter(p=>p.title.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)).slice(0,5); this.showSearchSuggestions=this.searchSuggestions.length>0; },
