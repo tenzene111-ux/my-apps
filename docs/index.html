@@ -101,6 +101,7 @@
         <template x-if="user">
           <div class="space-y-1 text-sm">
             <a href="#" @click.prevent="page='orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Your Orders</a>
+            <a href="#" @click.prevent="page='sell'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amz-orange2">Sell Your Stuff</a>
             <a href="#" @click.prevent="page='messages'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Messages</a>
             <template x-if="user.role==='seller'||user.role==='admin'"><a href="#" @click.prevent="page='dashboard'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Seller Dashboard</a></template>
             <template x-if="user.role==='admin'"><a href="#" @click.prevent="page='admin'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Admin Panel</a></template>
@@ -310,6 +311,11 @@
             </a>
           </template>
           <hr class="my-3">
+          <h4 class="font-bold text-sm mb-2">Condition</h4>
+          <a href="#" @click.prevent="conditionFilter=''" class="block py-0.5 text-sm" :class="!conditionFilter ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">All</a>
+          <a href="#" @click.prevent="conditionFilter='new'" class="block py-0.5 text-sm" :class="conditionFilter==='new' ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">New</a>
+          <a href="#" @click.prevent="conditionFilter='used'" class="block py-0.5 text-sm" :class="conditionFilter==='used' ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">Used</a>
+          <hr class="my-3">
           <h4 class="font-bold text-sm mb-2">Shipping</h4>
           <label class="flex items-center gap-1.5 text-sm"><input type="checkbox"> Free Shipping</label>
         </div>
@@ -341,6 +347,7 @@
               <!-- Details -->
               <div class="flex-1 min-w-0">
                 <a href="#" @click.prevent="viewProduct(product)" class="text-base text-amz-dark hover:text-amz-red line-clamp-2" x-text="product.title"></a>
+                <span x-show="product.condition && product.condition!=='new'" class="inline-block text-xs px-2 py-0.5 rounded font-bold mt-1" :class="product.condition==='like_new'?'bg-blue-100 text-blue-700':product.condition==='good'?'bg-yellow-100 text-yellow-700':product.condition==='fair'?'bg-orange-100 text-orange-700':'bg-red-100 text-red-700'" x-text="product.conditionLabel||'Used'"></span>
                 <div class="flex items-center gap-1 mt-1">
                   <span class="star-rating text-sm" x-text="'★'.repeat(Math.round(product.rating))"></span>
                   <span class="text-gray-400 text-sm" x-text="'★'.repeat(5-Math.round(product.rating))"></span>
@@ -417,7 +424,21 @@
             <div x-show="selectedProduct.originalPrice" class="text-sm text-gray-500 mt-1">M.R.P.: <span class="line-through" x-text="'Nu. '+(selectedProduct.originalPrice||0).toLocaleString()"></span></div>
             <p class="text-xs text-gray-500 mt-1">Inclusive of all taxes</p>
             <hr class="my-3">
+            <div x-show="selectedProduct.condition && selectedProduct.condition!=='new'" class="mt-2 mb-2">
+              <span class="text-xs px-2 py-0.5 rounded font-bold" :class="selectedProduct.condition==='like_new'?'bg-blue-100 text-blue-700':selectedProduct.condition==='good'?'bg-yellow-100 text-yellow-700':selectedProduct.condition==='fair'?'bg-orange-100 text-orange-700':'bg-red-100 text-red-700'" x-text="'Condition: '+(selectedProduct.conditionLabel||'Used')"></span>
+            </div>
             <div class="text-sm leading-relaxed text-gray-700" x-text="selectedProduct.description"></div>
+            <!-- Used Item Details -->
+            <div x-show="selectedProduct.condition && selectedProduct.condition!=='new'" class="mt-4 bg-amber-50 border border-amber-200 rounded p-4">
+              <h4 class="font-bold text-sm mb-2">Pre-Owned Item Details</h4>
+              <div class="text-sm space-y-1 text-gray-700">
+                <p x-show="selectedProduct.usageDuration"><span class="font-bold">Used for:</span> <span x-text="selectedProduct.usageDuration"></span></p>
+                <p x-show="selectedProduct.reason"><span class="font-bold">Reason for selling:</span> <span x-text="selectedProduct.reason"></span></p>
+                <p x-show="selectedProduct.defects"><span class="font-bold">Defects:</span> <span x-text="selectedProduct.defects"></span></p>
+                <p x-show="selectedProduct.accessories"><span class="font-bold">Included accessories:</span> <span x-text="selectedProduct.accessories"></span></p>
+                <p x-show="selectedProduct.conditionNote"><span class="font-bold">Notes:</span> <span x-text="selectedProduct.conditionNote"></span></p>
+              </div>
+            </div>
             <div x-show="selectedProduct.specs" class="mt-4">
               <table class="w-full text-sm">
                 <template x-for="(val, key) in selectedProduct.specs" :key="key">
@@ -648,7 +669,16 @@
       <div><label class="text-xs font-bold">Price (Nu.)</label><input type="number" x-model="newProduct.price" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
       <div><label class="text-xs font-bold">Stock</label><input type="number" x-model="newProduct.stock" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
       <div><label class="text-xs font-bold">Image URL</label><input type="text" x-model="newProduct.image" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+      <div><label class="text-xs font-bold">Condition</label><select x-model="newProduct.condition" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mt-1"><option value="new">New</option><option value="like_new">Like New</option><option value="good">Good</option><option value="fair">Fair</option><option value="poor">Poor</option></select></div>
       <div class="md:col-span-2"><label class="text-xs font-bold">Description</label><textarea x-model="newProduct.description" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1 h-16"></textarea></div>
+      <template x-if="newProduct.condition !== 'new'">
+        <div class="md:col-span-2 grid md:grid-cols-2 gap-3 bg-amber-50 border border-amber-200 rounded p-3">
+          <div><label class="text-xs font-bold">Usage Duration</label><input type="text" x-model="newProduct.usageDuration" placeholder="e.g. 6 months" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+          <div><label class="text-xs font-bold">Reason for Selling</label><input type="text" x-model="newProduct.reason" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+          <div><label class="text-xs font-bold">Any Defects</label><input type="text" x-model="newProduct.defects" placeholder="e.g. Minor scratch" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+          <div><label class="text-xs font-bold">Included Accessories</label><input type="text" x-model="newProduct.accessories" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+        </div>
+      </template>
       <div class="md:col-span-2 flex gap-2"><button @click="addProduct()" class="amz-btn-cart px-5 py-1.5 text-sm font-bold">Save</button><button @click="showProductForm=false" class="border border-gray-400 rounded px-5 py-1.5 text-sm hover:bg-gray-100">Cancel</button></div>
     </div>
     <div class="bg-white rounded overflow-hidden">
@@ -668,6 +698,93 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+  <!-- SELL YOUR STUFF PAGE -->
+  <div x-show="page === 'sell'" class="max-w-[900px] mx-auto px-4 py-4">
+    <template x-if="!user">
+      <div class="bg-white p-10 rounded text-center">
+        <h2 class="text-xl font-bold mb-2">Sign in to start selling</h2>
+        <p class="text-gray-600 mb-4">Anyone can sell on MyMarket.bt — new or used items!</p>
+        <button @click="page='login'" class="amz-btn-cart px-8 py-2 font-bold text-sm">Sign In</button>
+      </div>
+    </template>
+    <template x-if="user">
+      <div>
+        <div class="bg-amz-dark2 text-white p-5 rounded-t flex items-center justify-between">
+          <div>
+            <h1 class="text-xl font-bold">Sell on MyMarket.bt</h1>
+            <p class="text-sm text-gray-300 mt-1">List new or pre-owned items — open to all registered users</p>
+          </div>
+          <span class="bg-amz-orange text-amz-dark text-xs font-bold px-3 py-1 rounded-full">Any User Can Sell</span>
+        </div>
+        <div class="bg-white p-6 rounded-b">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div><label class="text-xs font-bold block mb-1">Product Title *</label><input type="text" x-model="newProduct.title" placeholder="e.g. Samsung Galaxy S24 Ultra" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Category *</label><select x-model="newProduct.category" class="w-full border border-gray-400 rounded px-3 py-2 text-sm"><template x-for="cat in categories" :key="cat.name"><option :value="cat.name" x-text="cat.name"></option></template></select></div>
+            <div><label class="text-xs font-bold block mb-1">Selling Price (Nu.) *</label><input type="number" x-model="newProduct.price" placeholder="e.g. 5000" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Quantity</label><input type="number" x-model="newProduct.stock" placeholder="1" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Image URL</label><input type="text" x-model="newProduct.image" placeholder="Paste image link" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+
+            <!-- Condition Selector -->
+            <div>
+              <label class="text-xs font-bold block mb-1">Condition *</label>
+              <select x-model="newProduct.condition" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
+                <option value="new">New — Brand new, unused, sealed</option>
+                <option value="like_new">Like New — Opened but never used</option>
+                <option value="good">Good — Used, minor wear, fully functional</option>
+                <option value="fair">Fair — Noticeable wear, works properly</option>
+                <option value="poor">Poor — Heavy wear, may need repair</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Description *</label><textarea x-model="newProduct.description" placeholder="Describe your item in detail — brand, model, features, what's included..." class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input h-20"></textarea></div>
+
+            <!-- Used Item Details (shown only when condition is not new) -->
+            <template x-if="newProduct.condition !== 'new'">
+              <div class="md:col-span-2 bg-amber-50 border border-amber-200 rounded p-4">
+                <h3 class="font-bold text-sm mb-3 flex items-center gap-2"><svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Pre-Owned Item Details</h3>
+                <div class="grid md:grid-cols-2 gap-3">
+                  <div><label class="text-xs font-bold block mb-1">How long have you used it?</label><input type="text" x-model="newProduct.usageDuration" placeholder="e.g. 6 months, 2 years" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
+                  <div><label class="text-xs font-bold block mb-1">Reason for selling</label><input type="text" x-model="newProduct.reason" placeholder="e.g. Upgrading, no longer needed" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
+                  <div><label class="text-xs font-bold block mb-1">Any defects or issues?</label><input type="text" x-model="newProduct.defects" placeholder="e.g. Minor scratch on back, None" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
+                  <div><label class="text-xs font-bold block mb-1">Included accessories</label><input type="text" x-model="newProduct.accessories" placeholder="e.g. Charger, box, earphones" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
+                  <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Additional condition notes</label><textarea x-model="newProduct.conditionNote" placeholder="Anything else the buyer should know about the item's condition..." class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input h-14"></textarea></div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="flex gap-3 mt-5 pt-4 border-t">
+            <button @click="addProduct(); if(allProducts[0]?.id){page='product-detail'; selectedProduct=allProducts[0]; selectedImage=0;}" class="amz-btn-cart px-8 py-2 text-sm font-bold">List Item for Sale</button>
+            <button @click="page='home'" class="border border-gray-400 rounded px-6 py-2 text-sm hover:bg-gray-100">Cancel</button>
+          </div>
+        </div>
+
+        <!-- My Listings -->
+        <div class="mt-6">
+          <h2 class="text-lg font-bold mb-3">Your Listings</h2>
+          <div class="bg-white rounded overflow-hidden">
+            <template x-if="allProducts.filter(p=>p.store===user?.name).length===0">
+              <p class="p-6 text-gray-500 text-center text-sm">You haven't listed any items yet.</p>
+            </template>
+            <template x-for="p in allProducts.filter(p=>p.store===user?.name)" :key="p.id">
+              <div class="flex items-center gap-4 p-4 border-b hover:bg-gray-50">
+                <img :src="p.image" class="w-16 h-16 object-contain rounded">
+                <div class="flex-1">
+                  <p class="text-sm font-medium line-clamp-2" x-text="p.title"></p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="font-bold text-sm" x-text="'Nu. '+p.price.toLocaleString()"></span>
+                    <span class="text-xs px-2 py-0.5 rounded-full font-bold" :class="p.condition==='new'?'bg-green-100 text-green-700':p.condition==='like_new'?'bg-blue-100 text-blue-700':p.condition==='good'?'bg-yellow-100 text-yellow-700':p.condition==='fair'?'bg-orange-100 text-orange-700':'bg-red-100 text-red-700'" x-text="p.conditionLabel||'New'"></span>
+                  </div>
+                </div>
+                <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-amz-green font-bold">Active</span>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 
   <!-- MESSAGES PAGE -->
@@ -788,6 +905,7 @@ function marketplace() {
     sortBy: 'newest',
     priceMin: '',
     priceMax: '',
+    conditionFilter: '',
     selectedProduct: null,
     selectedImage: 0,
     quantity: 1,
@@ -811,7 +929,7 @@ function marketplace() {
       ]}
     ],
     activeConv: null, newMessage: '',
-    newProduct: { title: '', description: '', price: '', category: 'Electronics', stock: '', image: '' },
+    newProduct: { title: '', description: '', price: '', category: 'Electronics', stock: '', image: '', condition: 'new', conditionNote: '', usageDuration: '', defects: '', accessories: '', reason: '' },
 
     categories: [
       { name: 'Electronics', img: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=300&h=200&fit=crop' },
@@ -847,6 +965,8 @@ function marketplace() {
       if (this.searchQuery) { const q = this.searchQuery.toLowerCase(); list = list.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)); }
       if (this.priceMin) list = list.filter(p => p.price >= Number(this.priceMin));
       if (this.priceMax) list = list.filter(p => p.price <= Number(this.priceMax));
+      if (this.conditionFilter==='new') list = list.filter(p => !p.condition || p.condition==='new');
+      if (this.conditionFilter==='used') list = list.filter(p => p.condition && p.condition!=='new');
       const sorts = { 'newest': (a,b) => new Date(b.dateAdded)-new Date(a.dateAdded), 'popular': (a,b) => b.sold-a.sold, 'rating': (a,b) => b.rating-a.rating, 'price_asc': (a,b) => a.price-b.price, 'price_desc': (a,b) => b.price-a.price };
       if (sorts[this.sortBy]) list.sort(sorts[this.sortBy]);
       return list;
@@ -872,7 +992,7 @@ function marketplace() {
     submitReview() { if(!this.reviewComment)return; if(!this.selectedProduct.reviewList)this.selectedProduct.reviewList=[]; this.selectedProduct.reviewList.unshift({id:Date.now(),user:this.user?.name||'Guest',rating:this.reviewRating,title:this.reviewTitle,comment:this.reviewComment,date:new Date().toLocaleDateString()}); this.reviewTitle='';this.reviewComment='';this.reviewRating=5; this.showToast('Review submitted!'); },
     openConversation(conv) { this.activeConv=conv; },
     sendMessage() { if(!this.newMessage.trim()||!this.activeConv)return; this.activeConv.messages.push({id:Date.now(),text:this.newMessage,sent:true,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}); this.newMessage=''; },
-    addProduct() { if(!this.newProduct.title||!this.newProduct.price)return; this.allProducts.unshift({id:Date.now(),title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://picsum.photos/seed/'+Date.now()+'/400',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||10,freeShipping:false,store:this.user?.name||'My Store',specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0]}); this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:''}; this.showProductForm=false; this.showToast('Product listed!'); },
+    addProduct() { if(!this.newProduct.title||!this.newProduct.price)return; const cond=this.newProduct.condition; const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'}; const p={id:Date.now(),title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'My Store',specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New'}; if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;} this.allProducts.unshift(p); this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:'',condition:'new',conditionNote:'',usageDuration:'',defects:'',accessories:'',reason:''}; this.showProductForm=false; this.showToast('Product listed!'); },
     showToast(msg) { this.toast=msg; setTimeout(()=>this.toast='',3000); }
   };
 }
