@@ -220,6 +220,13 @@
       <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-amz-orange">🍔 Food</a>
       <a href="#" @click.prevent="page='taxi'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-yellow-400">🚖 Ride</a>
       <a href="#" @click.prevent="page='services'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-cyan-400">🛠️ Services</a>
+      <a href="#" @click.prevent="page='grocery'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-green-400">🧺 Grocery</a>
+      <span class="text-gray-500 shrink-0">|</span>
+      <!-- Daily Life -->
+      <a href="#" @click.prevent="page='health'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🏥 Health</a>
+      <a href="#" @click.prevent="page='jobs'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">💼 Jobs</a>
+      <a href="#" @click.prevent="page='realestate'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🏠 Property</a>
+      <a href="#" @click.prevent="page='travel'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">✈️ Travel</a>
       <span class="text-gray-500 shrink-0">|</span>
       <!-- Payments & Rewards -->
       <a href="#" @click.prevent="page='bills'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">📱 Bills</a>
@@ -259,6 +266,14 @@
       <a href="#" @click.prevent="page='food'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-red-500">🍔 Order Food</a>
       <a href="#" @click.prevent="page='food-orders'; sideMenu=false" class="flex items-center gap-3 px-8 py-2 hover:bg-gray-100 text-sm text-gray-600">My Food Orders</a>
       <a href="#" @click.prevent="page='taxi'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-yellow-600">🚖 DrukRide Taxi</a>
+
+      <!-- 🏪 DAILY LIFE -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">🏪 Daily Life</div>
+      <a href="#" @click.prevent="page='grocery'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-green-600">🧺 Grocery Delivery</a>
+      <a href="#" @click.prevent="page='health'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🏥 Health & Pharmacy</a>
+      <a href="#" @click.prevent="page='jobs'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">💼 Jobs Board</a>
+      <a href="#" @click.prevent="page='realestate'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🏠 Real Estate</a>
+      <a href="#" @click.prevent="page='travel'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">✈️ Travel & Tourism</a>
 
       <!-- 🛠️ SERVICES & PAYMENTS -->
       <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">💼 Services & Payments</div>
@@ -456,6 +471,28 @@
         </a>
         <a href="#" @click.prevent="page='refer'" class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
           <p class="text-2xl mb-1">👥</p><p class="font-bold text-sm">Refer & Earn</p><p class="text-xs opacity-80 mt-1">Invite friends</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- 🏪 Daily Life -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">🏪 Daily Life</h2>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <a href="#" @click.prevent="page='grocery'" class="bg-gradient-to-br from-green-500 to-emerald-700 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🧺</p><p class="font-bold text-sm">Grocery</p><p class="text-xs opacity-80 mt-1">30 min delivery</p>
+        </a>
+        <a href="#" @click.prevent="page='health'" class="bg-gradient-to-br from-blue-500 to-cyan-700 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🏥</p><p class="font-bold text-sm">Health</p><p class="text-xs opacity-80 mt-1">Pharmacy & Doctors</p>
+        </a>
+        <a href="#" @click.prevent="page='jobs'" class="bg-gradient-to-br from-indigo-500 to-violet-700 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">💼</p><p class="font-bold text-sm">Jobs</p><p class="text-xs opacity-80 mt-1">Find & hire</p>
+        </a>
+        <a href="#" @click.prevent="page='realestate'" class="bg-gradient-to-br from-emerald-600 to-teal-800 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🏠</p><p class="font-bold text-sm">Property</p><p class="text-xs opacity-80 mt-1">Rent & buy</p>
+        </a>
+        <a href="#" @click.prevent="page='travel'" class="bg-gradient-to-br from-sky-500 to-blue-800 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">✈️</p><p class="font-bold text-sm">Travel</p><p class="text-xs opacity-80 mt-1">Bus, hotels, tours</p>
         </a>
       </div>
     </div>
@@ -2484,6 +2521,348 @@
     </div>
   </div>
 
+  <!-- GROCERY DELIVERY PAGE -->
+  <div x-show="page === 'grocery'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-green-600 to-emerald-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🧺 DrukMart Grocery</h1>
+      <p class="text-sm opacity-90 mt-1">Fresh groceries delivered to your door in 30 minutes</p>
+      <div class="flex gap-2 mt-3">
+        <span class="bg-white/20 px-3 py-1 rounded-full text-xs">⚡ Express 30 min</span>
+        <span class="bg-white/20 px-3 py-1 rounded-full text-xs">🆓 Free on Nu. 500+</span>
+      </div>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🥬🍎🥛</div>
+    </div>
+
+    <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-4">
+      <button @click="groceryCat=''" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="!groceryCat ? 'bg-green-700 text-white' : 'bg-white hover:bg-gray-100'">All</button>
+      <template x-for="gc in groceryCategories" :key="gc.name">
+        <button @click="groceryCat=gc.name" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold flex items-center gap-1" :class="groceryCat===gc.name ? 'bg-green-700 text-white' : 'bg-white hover:bg-gray-100'">
+          <span x-text="gc.icon"></span> <span x-text="gc.name"></span>
+        </button>
+      </template>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+      <template x-for="item in filteredGrocery()" :key="item.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition">
+          <div class="h-[130px] bg-gray-50 flex items-center justify-center p-3"><img :src="item.image" class="max-h-full max-w-full object-contain"></div>
+          <div class="p-3">
+            <p class="text-xs line-clamp-2 font-medium" x-text="item.name"></p>
+            <p class="text-xs text-gray-500" x-text="item.unit"></p>
+            <div class="flex justify-between items-center mt-2">
+              <p class="font-bold text-sm" x-text="'Nu. ' + item.price"></p>
+              <button @click="addGroceryToCart(item)" class="bg-green-600 text-white text-xs px-3 py-1 rounded-full font-bold hover:bg-green-700">+ Add</button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- HEALTH & PHARMACY PAGE -->
+  <div x-show="page === 'health'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-blue-600 to-cyan-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🏥 DrukHealth</h1>
+      <p class="text-sm opacity-90 mt-1">Medicines, doctor consultations & health services</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">💊🩺</div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <button @click="healthTab='pharmacy'" class="bg-white rounded-lg p-5 text-center hover:shadow-lg border-2 transition" :class="healthTab==='pharmacy' ? 'border-blue-500' : 'border-transparent'">
+        <p class="text-3xl mb-2">💊</p><p class="font-bold text-sm">Pharmacy</p><p class="text-xs text-gray-500">Order medicines online</p>
+      </button>
+      <button @click="healthTab='doctor'" class="bg-white rounded-lg p-5 text-center hover:shadow-lg border-2 transition" :class="healthTab==='doctor' ? 'border-blue-500' : 'border-transparent'">
+        <p class="text-3xl mb-2">🩺</p><p class="font-bold text-sm">Book Doctor</p><p class="text-xs text-gray-500">Consult with specialists</p>
+      </button>
+      <button @click="healthTab='checkup'" class="bg-white rounded-lg p-5 text-center hover:shadow-lg border-2 transition" :class="healthTab==='checkup' ? 'border-blue-500' : 'border-transparent'">
+        <p class="text-3xl mb-2">🔬</p><p class="font-bold text-sm">Health Checkups</p><p class="text-xs text-gray-500">Lab tests & packages</p>
+      </button>
+    </div>
+
+    <!-- Pharmacy Tab -->
+    <div x-show="healthTab==='pharmacy'">
+      <div class="flex gap-2 mb-4">
+        <input type="text" x-model="pharmaSearch" placeholder="Search medicines, vitamins, first-aid..." class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input">
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <template x-for="med in filteredMedicines()" :key="med.id">
+          <div class="bg-white rounded-lg p-4 hover:shadow-md transition">
+            <div class="h-[80px] bg-blue-50 rounded flex items-center justify-center text-3xl mb-2" x-text="med.icon"></div>
+            <p class="text-sm font-medium line-clamp-2" x-text="med.name"></p>
+            <p class="text-xs text-gray-500" x-text="med.type"></p>
+            <div class="flex justify-between items-center mt-2">
+              <p class="font-bold text-sm" x-text="'Nu. ' + med.price"></p>
+              <button @click="addToCart({product:{id:'med-'+med.id,title:med.name,price:med.price,image:'',category:'Health'},qty:1}); showToast(med.name+' added to cart')" class="bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-bold">+ Add</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Doctor Tab -->
+    <div x-show="healthTab==='doctor'">
+      <div class="space-y-3">
+        <template x-for="doc in doctors" :key="doc.name">
+          <div class="bg-white rounded-lg p-5 flex items-center gap-4 hover:shadow-md">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-2xl">🩺</div>
+            <div class="flex-1">
+              <h3 class="font-bold" x-text="doc.name"></h3>
+              <p class="text-xs text-blue-600 font-medium" x-text="doc.specialty"></p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-amz-star text-xs" x-text="'★'.repeat(Math.round(doc.rating))"></span>
+                <span class="text-xs text-gray-500" x-text="doc.experience + ' yrs exp'"></span>
+              </div>
+              <p class="text-xs text-gray-500" x-text="doc.hospital"></p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold" x-text="'Nu. ' + doc.fee"></p>
+              <p class="text-xs text-gray-500">consultation</p>
+              <button @click="showToast('Appointment booked with ' + doc.name + '!')" class="amz-btn-cart px-4 py-1 text-xs font-bold mt-2">Book Now</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Health Checkup Tab -->
+    <div x-show="healthTab==='checkup'">
+      <div class="grid md:grid-cols-2 gap-4">
+        <template x-for="pkg in healthPackages" :key="pkg.name">
+          <div class="bg-white rounded-lg p-5 hover:shadow-md border">
+            <div class="flex justify-between items-start">
+              <div><h3 class="font-bold" x-text="pkg.name"></h3><p class="text-xs text-gray-500 mt-1" x-text="pkg.tests + ' tests included'"></p></div>
+              <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-bold" x-text="pkg.duration"></span>
+            </div>
+            <ul class="mt-3 space-y-1">
+              <template x-for="t in pkg.includes" :key="t"><li class="text-xs text-gray-600 flex items-center gap-1"><span class="text-green-500">✓</span> <span x-text="t"></span></li></template>
+            </ul>
+            <div class="flex justify-between items-center mt-4 pt-3 border-t">
+              <div><span class="font-bold text-lg" x-text="'Nu. ' + pkg.price"></span> <span class="text-xs text-gray-400 line-through" x-text="'Nu. ' + pkg.originalPrice" x-show="pkg.originalPrice"></span></div>
+              <button @click="showToast(pkg.name + ' booked! Visit date will be confirmed.')" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Book Package</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOBS BOARD PAGE -->
+  <div x-show="page === 'jobs'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-indigo-600 to-violet-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">💼 DrukJobs</h1>
+      <p class="text-sm opacity-90 mt-1">Find jobs or hire talent across Bhutan</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">👔📋</div>
+    </div>
+
+    <div class="flex gap-3 mb-4">
+      <input type="text" x-model="jobSearch" placeholder="Search jobs, companies, skills..." class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input">
+      <select x-model="jobType" class="border rounded-lg px-3 py-2 text-sm">
+        <option value="">All Types</option><option value="Full-time">Full-time</option><option value="Part-time">Part-time</option><option value="Contract">Contract</option><option value="Internship">Internship</option>
+      </select>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4">
+      <button @click="jobCategory=''" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="!jobCategory ? 'bg-indigo-700 text-white' : 'bg-white hover:bg-gray-100'">All</button>
+      <template x-for="jc in ['IT & Tech', 'Tourism', 'Education', 'Healthcare', 'Government', 'Construction', 'Hospitality', 'Finance', 'Agriculture']" :key="jc">
+        <button @click="jobCategory=jc" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="jobCategory===jc ? 'bg-indigo-700 text-white' : 'bg-white hover:bg-gray-100'" x-text="jc"></button>
+      </template>
+    </div>
+
+    <div class="space-y-3">
+      <template x-for="job in filteredJobs()" :key="job.id">
+        <div class="bg-white rounded-lg p-5 hover:shadow-md transition border-l-4" :class="job.urgent ? 'border-red-500' : 'border-indigo-500'">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-bold" x-text="job.title"></h3>
+              <p class="text-sm text-indigo-600 font-medium" x-text="job.company"></p>
+              <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                <span class="flex items-center gap-1">📍 <span x-text="job.location"></span></span>
+                <span class="flex items-center gap-1">💼 <span x-text="job.type"></span></span>
+                <span class="flex items-center gap-1">🕐 <span x-text="job.posted"></span></span>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-green-600" x-text="job.salary"></p>
+              <span x-show="job.urgent" class="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold">Urgent</span>
+            </div>
+          </div>
+          <p class="text-xs text-gray-600 mt-2 line-clamp-2" x-text="job.desc"></p>
+          <div class="flex gap-2 mt-3">
+            <button @click="showToast('Application submitted for ' + job.title + '!')" class="amz-btn-cart px-5 py-1.5 text-xs font-bold">Apply Now</button>
+            <button @click="showToast('Job saved!')" class="border border-gray-300 px-4 py-1.5 rounded-full text-xs hover:bg-gray-50">Save</button>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class="bg-indigo-50 rounded-lg p-5 mt-6 text-center">
+      <h3 class="font-bold mb-1">Are you hiring?</h3>
+      <p class="text-sm text-gray-600 mb-3">Post your job openings and find talent in Bhutan</p>
+      <button @click="showToast('Job posting feature coming soon!')" class="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700">Post a Job — Free</button>
+    </div>
+  </div>
+
+  <!-- REAL ESTATE PAGE -->
+  <div x-show="page === 'realestate'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-emerald-700 to-teal-800 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🏠 DrukProperty</h1>
+      <p class="text-sm opacity-90 mt-1">Find rooms, apartments & houses to rent or buy in Bhutan</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🏘️🔑</div>
+    </div>
+
+    <div class="flex gap-3 mb-4">
+      <button @click="propertyMode='rent'" class="px-6 py-2 rounded-lg text-sm font-bold" :class="propertyMode==='rent' ? 'bg-emerald-700 text-white' : 'bg-white border'">🏠 Rent</button>
+      <button @click="propertyMode='buy'" class="px-6 py-2 rounded-lg text-sm font-bold" :class="propertyMode==='buy' ? 'bg-emerald-700 text-white' : 'bg-white border'">🏡 Buy</button>
+      <select x-model="propertyLocation" class="border rounded-lg px-3 py-2 text-sm ml-auto">
+        <option value="">All Locations</option><option value="Thimphu">Thimphu</option><option value="Paro">Paro</option><option value="Punakha">Punakha</option><option value="Phuentsholing">Phuentsholing</option><option value="Wangdue">Wangdue</option>
+      </select>
+    </div>
+
+    <div class="space-y-4">
+      <template x-for="prop in filteredProperties()" :key="prop.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition">
+          <div class="md:flex">
+            <div class="md:w-[280px] h-[200px] bg-gray-100 flex-shrink-0">
+              <img :src="prop.image" class="w-full h-full object-cover">
+            </div>
+            <div class="p-5 flex-1">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-bold text-lg" x-text="prop.title"></h3>
+                  <p class="text-sm text-gray-500 flex items-center gap-1 mt-1">📍 <span x-text="prop.location + ', ' + prop.area"></span></p>
+                </div>
+                <div class="text-right">
+                  <p class="text-xl font-bold text-emerald-700" x-text="'Nu. ' + prop.price.toLocaleString()"></p>
+                  <p class="text-xs text-gray-500" x-text="prop.mode === 'rent' ? '/month' : ''"></p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                <span x-text="prop.beds + ' Beds'"></span><span>•</span>
+                <span x-text="prop.baths + ' Baths'"></span><span>•</span>
+                <span x-text="prop.sqft + ' sq ft'"></span><span>•</span>
+                <span x-text="prop.type"></span>
+              </div>
+              <div class="flex gap-2 mt-2">
+                <template x-for="tag in prop.amenities.slice(0,4)" :key="tag">
+                  <span class="text-xs bg-gray-100 px-2 py-0.5 rounded-full" x-text="tag"></span>
+                </template>
+              </div>
+              <div class="flex gap-2 mt-4">
+                <button @click="showToast('Inquiry sent to ' + prop.owner + '!')" class="amz-btn-cart px-5 py-1.5 text-xs font-bold">Contact Owner</button>
+                <button @click="showToast('Viewing scheduled!')" class="border border-gray-300 px-4 py-1.5 rounded-full text-xs hover:bg-gray-50">Schedule Visit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class="bg-emerald-50 rounded-lg p-5 mt-6 text-center">
+      <h3 class="font-bold mb-1">List your property</h3>
+      <p class="text-sm text-gray-600 mb-3">Rent or sell your property to thousands of buyers in Bhutan</p>
+      <button @click="showToast('Property listing feature coming soon!')" class="bg-emerald-700 text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-emerald-800">List Property — Free</button>
+    </div>
+  </div>
+
+  <!-- TRAVEL & TOURISM PAGE -->
+  <div x-show="page === 'travel'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-sky-600 to-blue-800 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">✈️ DrukTravel</h1>
+      <p class="text-sm opacity-90 mt-1">Bus bookings, hotels & tour packages across Bhutan</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🏔️🛫</div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <button @click="travelTab='bus'" class="bg-white rounded-lg p-5 text-center hover:shadow-lg border-2 transition" :class="travelTab==='bus' ? 'border-sky-500' : 'border-transparent'">
+        <p class="text-3xl mb-2">🚌</p><p class="font-bold text-sm">Bus Booking</p><p class="text-xs text-gray-500">Inter-city buses</p>
+      </button>
+      <button @click="travelTab='hotel'" class="bg-white rounded-lg p-5 text-center hover:shadow-lg border-2 transition" :class="travelTab==='hotel' ? 'border-sky-500' : 'border-transparent'">
+        <p class="text-3xl mb-2">🏨</p><p class="font-bold text-sm">Hotels</p><p class="text-xs text-gray-500">Book stays</p>
+      </button>
+      <button @click="travelTab='tours'" class="bg-white rounded-lg p-5 text-center hover:shadow-lg border-2 transition" :class="travelTab==='tours' ? 'border-sky-500' : 'border-transparent'">
+        <p class="text-3xl mb-2">🏔️</p><p class="font-bold text-sm">Tour Packages</p><p class="text-xs text-gray-500">Explore Bhutan</p>
+      </button>
+    </div>
+
+    <!-- Bus Tab -->
+    <div x-show="travelTab==='bus'">
+      <div class="bg-white rounded-lg p-5 mb-4">
+        <div class="grid md:grid-cols-3 gap-3">
+          <div><label class="text-xs font-bold block mb-1">From</label><select x-model="busFrom" class="w-full border rounded px-3 py-2 text-sm"><option value="">Select city</option><template x-for="c in busCities" :key="c"><option :value="c" x-text="c"></option></template></select></div>
+          <div><label class="text-xs font-bold block mb-1">To</label><select x-model="busTo" class="w-full border rounded px-3 py-2 text-sm"><option value="">Select city</option><template x-for="c in busCities" :key="c"><option :value="c" x-text="c"></option></template></select></div>
+          <div><label class="text-xs font-bold block mb-1">Date</label><input type="date" x-model="busDate" class="w-full border rounded px-3 py-2 text-sm"></div>
+        </div>
+        <button @click="searchBuses()" class="amz-btn-cart px-8 py-2 text-sm font-bold mt-3 w-full">Search Buses</button>
+      </div>
+      <div class="space-y-3">
+        <template x-for="bus in busResults" :key="bus.id">
+          <div class="bg-white rounded-lg p-4 flex items-center gap-4 hover:shadow-md">
+            <div class="text-center"><p class="font-bold" x-text="bus.depart"></p><p class="text-xs text-gray-500" x-text="bus.from"></p></div>
+            <div class="flex-1 flex items-center gap-2 text-gray-400"><div class="flex-1 border-t border-dashed"></div><span class="text-xs" x-text="bus.duration"></span><div class="flex-1 border-t border-dashed"></div></div>
+            <div class="text-center"><p class="font-bold" x-text="bus.arrive"></p><p class="text-xs text-gray-500" x-text="bus.to"></p></div>
+            <div class="text-right ml-4">
+              <p class="font-bold text-lg" x-text="'Nu. ' + bus.fare"></p>
+              <p class="text-xs text-gray-500" x-text="bus.operator"></p>
+              <button @click="showToast('Bus ticket booked! ' + bus.from + ' → ' + bus.to)" class="amz-btn-cart px-4 py-1 text-xs font-bold mt-1">Book</button>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Hotel Tab -->
+    <div x-show="travelTab==='hotel'">
+      <div class="space-y-3">
+        <template x-for="hotel in hotels" :key="hotel.name">
+          <div class="bg-white rounded-lg overflow-hidden hover:shadow-md">
+            <div class="md:flex">
+              <div class="md:w-[220px] h-[160px] bg-gray-100 flex-shrink-0"><img :src="hotel.image" class="w-full h-full object-cover"></div>
+              <div class="p-4 flex-1">
+                <div class="flex justify-between">
+                  <div>
+                    <h3 class="font-bold" x-text="hotel.name"></h3>
+                    <p class="text-xs text-gray-500 mt-0.5" x-text="'📍 ' + hotel.location"></p>
+                    <div class="flex items-center gap-1 mt-1"><span class="text-amz-star text-xs" x-text="'★'.repeat(hotel.stars)"></span><span class="text-xs text-gray-500" x-text="hotel.rating + ' rating'"></span></div>
+                    <div class="flex gap-1 mt-2"><template x-for="a in hotel.amenities.slice(0,4)" :key="a"><span class="text-xs bg-gray-100 px-2 py-0.5 rounded" x-text="a"></span></template></div>
+                  </div>
+                  <div class="text-right">
+                    <p class="text-lg font-bold" x-text="'Nu. ' + hotel.price.toLocaleString()"></p>
+                    <p class="text-xs text-gray-500">/night</p>
+                    <button @click="showToast('Room booked at ' + hotel.name + '!')" class="amz-btn-cart px-4 py-1.5 text-xs font-bold mt-2">Book Room</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <!-- Tours Tab -->
+    <div x-show="travelTab==='tours'">
+      <div class="grid md:grid-cols-2 gap-4">
+        <template x-for="tour in tourPackages" :key="tour.name">
+          <div class="bg-white rounded-lg overflow-hidden hover:shadow-md">
+            <div class="h-[180px] bg-gray-100"><img :src="tour.image" class="w-full h-full object-cover"></div>
+            <div class="p-4">
+              <h3 class="font-bold" x-text="tour.name"></h3>
+              <div class="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                <span x-text="'📅 ' + tour.days + ' days'"></span>
+                <span x-text="'📍 ' + tour.places + ' places'"></span>
+                <span class="text-amz-star" x-text="'★ ' + tour.rating"></span>
+              </div>
+              <p class="text-xs text-gray-600 mt-2 line-clamp-2" x-text="tour.desc"></p>
+              <div class="flex justify-between items-center mt-3 pt-3 border-t">
+                <div><span class="text-lg font-bold" x-text="'Nu. ' + tour.price.toLocaleString()"></span><span class="text-xs text-gray-500"> /person</span></div>
+                <button @click="showToast('Tour booked! ' + tour.name)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Book Tour</button>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -2933,6 +3312,116 @@ function marketplace() {
       { name: 'Renovation Kit', icon: '🔨', price: 55000, desc: 'Interior renovation essentials', parts: { 'Lumber & Wood': 'hw13', 'Paint & Finishing': 'hw7', 'Electrical': 'hw9', 'Plumbing': 'hw8', 'Fasteners & Fittings': 'hw14' } },
     ],
 
+    // Grocery Delivery
+    groceryCat: '',
+    groceryCategories: [
+      { name: 'Fruits & Vegetables', icon: '🥬' }, { name: 'Dairy & Eggs', icon: '🥛' }, { name: 'Rice & Grains', icon: '🌾' },
+      { name: 'Snacks', icon: '🍿' }, { name: 'Beverages', icon: '🧃' }, { name: 'Meat & Fish', icon: '🥩' },
+      { name: 'Spices & Masala', icon: '🌶️' }, { name: 'Household', icon: '🧹' }, { name: 'Baby Care', icon: '🍼' },
+    ],
+    groceryItems: [
+      { id: 'g1', name: 'Red Rice (Bhutanese)', price: 120, unit: '1 kg', category: 'Rice & Grains', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&h=200&fit=crop' },
+      { id: 'g2', name: 'Fresh Ema (Green Chili)', price: 80, unit: '250g', category: 'Fruits & Vegetables', image: 'https://images.unsplash.com/photo-1583119022894-919a68a3d0e3?w=300&h=200&fit=crop' },
+      { id: 'g3', name: 'Local Datshi (Cheese)', price: 250, unit: '500g', category: 'Dairy & Eggs', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=300&h=200&fit=crop' },
+      { id: 'g4', name: 'Farm Fresh Eggs', price: 150, unit: '12 pcs', category: 'Dairy & Eggs', image: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=300&h=200&fit=crop' },
+      { id: 'g5', name: 'Sikkam (Dried Pork)', price: 450, unit: '500g', category: 'Meat & Fish', image: 'https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?w=300&h=200&fit=crop' },
+      { id: 'g6', name: 'Bhutanese Butter', price: 200, unit: '250g', category: 'Dairy & Eggs', image: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=300&h=200&fit=crop' },
+      { id: 'g7', name: 'Ara (Local Rice Wine)', price: 300, unit: '750ml', category: 'Beverages', image: 'https://images.unsplash.com/photo-1516594915697-87eb3b1c14ea?w=300&h=200&fit=crop' },
+      { id: 'g8', name: 'Dried Red Chili', price: 180, unit: '200g', category: 'Spices & Masala', image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&h=200&fit=crop' },
+      { id: 'g9', name: 'Fresh Mushrooms (Shamu)', price: 160, unit: '250g', category: 'Fruits & Vegetables', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&h=200&fit=crop' },
+      { id: 'g10', name: 'Potatoes (Local)', price: 60, unit: '1 kg', category: 'Fruits & Vegetables', image: 'https://images.unsplash.com/photo-1518977676601-b53f82ber3?w=300&h=200&fit=crop' },
+      { id: 'g11', name: 'Druk Chips (Spicy)', price: 40, unit: '100g', category: 'Snacks', image: 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=300&h=200&fit=crop' },
+      { id: 'g12', name: 'Liquid Detergent', price: 220, unit: '1L', category: 'Household', image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=300&h=200&fit=crop' },
+      { id: 'g13', name: 'Apple (Paro)', price: 180, unit: '1 kg', category: 'Fruits & Vegetables', image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&h=200&fit=crop' },
+      { id: 'g14', name: 'Fresh Milk', price: 70, unit: '1L', category: 'Dairy & Eggs', image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=300&h=200&fit=crop' },
+      { id: 'g15', name: 'Turmeric Powder', price: 90, unit: '100g', category: 'Spices & Masala', image: 'https://images.unsplash.com/photo-1615485500704-8e990f9900f7?w=300&h=200&fit=crop' },
+      { id: 'g16', name: 'River Fish (Fresh)', price: 350, unit: '500g', category: 'Meat & Fish', image: 'https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=300&h=200&fit=crop' },
+    ],
+
+    // Health & Pharmacy
+    healthTab: 'pharmacy',
+    pharmaSearch: '',
+    medicines: [
+      { id: 'm1', name: 'Paracetamol 500mg', type: 'Tablet - Strip of 10', price: 25, icon: '💊' },
+      { id: 'm2', name: 'Cetrizine 10mg', type: 'Allergy - Strip of 10', price: 35, icon: '💊' },
+      { id: 'm3', name: 'ORS Sachets', type: 'Rehydration - Pack of 5', price: 40, icon: '📦' },
+      { id: 'm4', name: 'Cough Syrup 100ml', type: 'Syrup - 100ml', price: 85, icon: '🧴' },
+      { id: 'm5', name: 'Bandage Roll', type: 'First Aid - 1 roll', price: 50, icon: '🩹' },
+      { id: 'm6', name: 'Vitamin C 500mg', type: 'Supplement - 30 tabs', price: 180, icon: '💊' },
+      { id: 'm7', name: 'Antiseptic Cream', type: 'Topical - 20g', price: 65, icon: '🧴' },
+      { id: 'm8', name: 'Digital Thermometer', type: 'Device', price: 350, icon: '🌡️' },
+      { id: 'm9', name: 'Ibuprofen 400mg', type: 'Pain Relief - Strip of 10', price: 30, icon: '💊' },
+      { id: 'm10', name: 'Multivitamin Tablets', type: 'Supplement - 30 tabs', price: 250, icon: '💊' },
+      { id: 'm11', name: 'Hand Sanitizer 200ml', type: 'Hygiene', price: 120, icon: '🧴' },
+      { id: 'm12', name: 'Face Mask N95 (5pc)', type: 'Protection', price: 200, icon: '😷' },
+    ],
+    doctors: [
+      { name: 'Dr. Tshering Dorji', specialty: 'General Physician', hospital: 'JDWNRH, Thimphu', fee: 500, rating: 4.8, experience: 15 },
+      { name: 'Dr. Karma Wangmo', specialty: 'Pediatrician', hospital: 'JDWNRH, Thimphu', fee: 600, rating: 4.9, experience: 12 },
+      { name: 'Dr. Sonam Tobgay', specialty: 'Dentist', hospital: 'Dental Clinic, Thimphu', fee: 400, rating: 4.6, experience: 8 },
+      { name: 'Dr. Pema Lhamo', specialty: 'Dermatologist', hospital: 'City Clinic, Thimphu', fee: 700, rating: 4.7, experience: 10 },
+      { name: 'Dr. Ugyen Tshering', specialty: 'Orthopedic', hospital: 'Paro Hospital', fee: 800, rating: 4.8, experience: 18 },
+      { name: 'Dr. Dechen Zangmo', specialty: 'Gynecologist', hospital: 'JDWNRH, Thimphu', fee: 650, rating: 4.9, experience: 14 },
+    ],
+    healthPackages: [
+      { name: 'Basic Health Checkup', tests: 12, duration: '2 hours', price: 1500, originalPrice: 2200, includes: ['Blood Sugar', 'Blood Pressure', 'BMI', 'Urine Test', 'CBC'] },
+      { name: 'Comprehensive Health Screen', tests: 28, duration: '4 hours', price: 3500, originalPrice: 5000, includes: ['Liver Function', 'Kidney Function', 'Thyroid', 'Lipid Profile', 'ECG', 'X-Ray'] },
+      { name: 'Cardiac Health Package', tests: 15, duration: '3 hours', price: 5000, originalPrice: 7500, includes: ['ECG', 'Echo', 'Stress Test', 'Lipid Profile', 'Troponin'] },
+      { name: 'Women\'s Wellness Package', tests: 20, duration: '3 hours', price: 4000, originalPrice: 6000, includes: ['Pap Smear', 'Mammogram', 'Thyroid', 'Bone Density', 'Iron Profile'] },
+    ],
+
+    // Jobs Board
+    jobSearch: '',
+    jobType: '',
+    jobCategory: '',
+    jobs: [
+      { id: 'j1', title: 'Software Developer', company: 'Druk Holding & Investments', location: 'Thimphu', type: 'Full-time', salary: 'Nu. 35,000 - 50,000', category: 'IT & Tech', posted: '2 days ago', urgent: false, desc: 'Develop and maintain web applications using modern frameworks. Experience with React, Node.js preferred.' },
+      { id: 'j2', title: 'Tour Guide', company: 'Bhutan Tourism Corp', location: 'Paro', type: 'Full-time', salary: 'Nu. 20,000 - 30,000', category: 'Tourism', posted: '1 day ago', urgent: true, desc: 'Guide international tourists through cultural sites and trekking routes across Bhutan.' },
+      { id: 'j3', title: 'Primary School Teacher', company: 'Royal Education Council', location: 'Punakha', type: 'Full-time', salary: 'Nu. 25,000 - 35,000', category: 'Education', posted: '3 days ago', urgent: false, desc: 'Teach primary level students in English and Mathematics. B.Ed required.' },
+      { id: 'j4', title: 'Staff Nurse', company: 'JDWNRH', location: 'Thimphu', type: 'Full-time', salary: 'Nu. 22,000 - 32,000', category: 'Healthcare', posted: '5 days ago', urgent: true, desc: 'Provide patient care in general ward. BSc Nursing qualification required.' },
+      { id: 'j5', title: 'Civil Engineer', company: 'Lhaki Construction', location: 'Thimphu', type: 'Full-time', salary: 'Nu. 40,000 - 55,000', category: 'Construction', posted: '1 week ago', urgent: false, desc: 'Supervise construction projects, prepare BOQ, site management. 3+ years experience.' },
+      { id: 'j6', title: 'Hotel Receptionist', company: 'Taj Tashi Hotel', location: 'Thimphu', type: 'Full-time', salary: 'Nu. 18,000 - 25,000', category: 'Hospitality', posted: '4 days ago', urgent: false, desc: 'Handle guest check-in/out, reservations, and front desk operations. English fluency required.' },
+      { id: 'j7', title: 'Accountant', company: 'Bank of Bhutan', location: 'Phuentsholing', type: 'Full-time', salary: 'Nu. 30,000 - 42,000', category: 'Finance', posted: '2 days ago', urgent: false, desc: 'Manage financial records, prepare statements, handle audits. CA/CMA preferred.' },
+      { id: 'j8', title: 'Agricultural Officer', company: 'Ministry of Agriculture', location: 'Bumthang', type: 'Contract', salary: 'Nu. 28,000 - 38,000', category: 'Agriculture', posted: '6 days ago', urgent: false, desc: 'Support farmers with modern techniques, conduct field visits, manage crop improvement programs.' },
+      { id: 'j9', title: 'Data Entry Operator', company: 'BICMA', location: 'Thimphu', type: 'Part-time', salary: 'Nu. 12,000 - 15,000', category: 'IT & Tech', posted: '3 days ago', urgent: false, desc: 'Accurate data entry and record management. Basic computer skills required.' },
+      { id: 'j10', title: 'Electrician', company: 'BPC', location: 'Wangdue', type: 'Full-time', salary: 'Nu. 20,000 - 28,000', category: 'Construction', posted: '1 week ago', urgent: true, desc: 'Install and maintain electrical systems. ITI/Diploma in Electrical required.' },
+    ],
+
+    // Real Estate
+    propertyMode: 'rent',
+    propertyLocation: '',
+    properties: [
+      { id: 'p1', title: '2BHK Apartment in Changzamtog', mode: 'rent', price: 15000, location: 'Thimphu', area: 'Changzamtog', beds: 2, baths: 1, sqft: 800, type: 'Apartment', owner: 'Karma Dorji', amenities: ['Parking', 'Water Supply', 'Furnished', 'Balcony'], image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&h=250&fit=crop' },
+      { id: 'p2', title: '3BHK House in Motithang', mode: 'rent', price: 25000, location: 'Thimphu', area: 'Motithang', beds: 3, baths: 2, sqft: 1200, type: 'House', owner: 'Tshering Wangmo', amenities: ['Garden', 'Parking', 'Water Tank', 'Semi-furnished'], image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=250&fit=crop' },
+      { id: 'p3', title: 'Studio Room Near Clock Tower', mode: 'rent', price: 8000, location: 'Thimphu', area: 'Norzin Lam', beds: 1, baths: 1, sqft: 400, type: 'Studio', owner: 'Pema Rinzin', amenities: ['Central Location', 'WiFi Ready', 'Furnished'], image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&h=250&fit=crop' },
+      { id: 'p4', title: 'Land for Sale - 30 Decimals', mode: 'buy', price: 3500000, location: 'Paro', area: 'Bondey', beds: 0, baths: 0, sqft: 13068, type: 'Land', owner: 'Ugyen Dorji', amenities: ['Road Access', 'Flat Land', 'River View', 'Registered'], image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=250&fit=crop' },
+      { id: 'p5', title: '4BHK Villa with Garden', mode: 'buy', price: 8500000, location: 'Paro', area: 'Shaba', beds: 4, baths: 3, sqft: 2200, type: 'Villa', owner: 'Sonam Tobgay', amenities: ['Garden', 'Garage', 'Modern Kitchen', 'Mountain View'], image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=250&fit=crop' },
+      { id: 'p6', title: '2BHK Flat in Phuentsholing', mode: 'rent', price: 10000, location: 'Phuentsholing', area: 'Rinchending', beds: 2, baths: 1, sqft: 750, type: 'Apartment', owner: 'Dorji Tshering', amenities: ['Market Nearby', 'Parking', 'Water Supply'], image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=400&h=250&fit=crop' },
+      { id: 'p7', title: 'Commercial Space in Norzin Lam', mode: 'rent', price: 35000, location: 'Thimphu', area: 'Norzin Lam', beds: 0, baths: 1, sqft: 600, type: 'Commercial', owner: 'Kinley Wangchuk', amenities: ['Prime Location', 'Ground Floor', 'Display Window'], image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop' },
+      { id: 'p8', title: '3BHK House in Punakha', mode: 'buy', price: 5200000, location: 'Punakha', area: 'Khuruthang', beds: 3, baths: 2, sqft: 1500, type: 'House', owner: 'Namgay Dorji', amenities: ['River View', 'Garden', 'Traditional Design', 'Parking'], image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=250&fit=crop' },
+    ],
+
+    // Travel & Tourism
+    travelTab: 'bus',
+    busFrom: '',
+    busTo: '',
+    busDate: '',
+    busResults: [],
+    busCities: ['Thimphu', 'Paro', 'Punakha', 'Wangdue', 'Bumthang', 'Trongsa', 'Phuentsholing', 'Gelephu', 'Samdrup Jongkhar', 'Mongar', 'Haa'],
+    hotels: [
+      { name: 'Hotel Druk', location: 'Thimphu', stars: 4, rating: 4.5, price: 3500, amenities: ['WiFi', 'Restaurant', 'Spa', 'Parking'], image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=250&fit=crop' },
+      { name: 'Zhiwaling Heritage Hotel', location: 'Paro', stars: 5, rating: 4.8, price: 8500, amenities: ['Pool', 'Spa', 'Restaurant', 'Bar', 'Gym'], image: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&h=250&fit=crop' },
+      { name: 'Meri Puensum Resort', location: 'Punakha', stars: 4, rating: 4.6, price: 4500, amenities: ['River View', 'Restaurant', 'Garden', 'WiFi'], image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=250&fit=crop' },
+      { name: 'Wangchuk Hotel', location: 'Bumthang', stars: 3, rating: 4.2, price: 2000, amenities: ['WiFi', 'Restaurant', 'Heater', 'Parking'], image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=250&fit=crop' },
+      { name: 'Lhaki Hotel', location: 'Phuentsholing', stars: 3, rating: 4.0, price: 1800, amenities: ['AC', 'WiFi', 'Restaurant', 'Parking'], image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=400&h=250&fit=crop' },
+    ],
+    tourPackages: [
+      { name: 'Tiger\'s Nest & Paro Valley', days: 3, places: 5, rating: 4.9, price: 12000, desc: 'Visit the iconic Tiger\'s Nest monastery, Paro Dzong, National Museum, and Rinpung Dzong.', image: 'https://images.unsplash.com/photo-1553856622-d1b352e9a211?w=400&h=250&fit=crop' },
+      { name: 'Thimphu Heritage Tour', days: 2, places: 6, rating: 4.7, price: 8000, desc: 'Explore Tashichho Dzong, Buddha Dordenma, Memorial Chorten, Folk Heritage Museum.', image: 'https://images.unsplash.com/photo-1587974928442-77dc3e0748ae?w=400&h=250&fit=crop' },
+      { name: 'Punakha & Wangdue', days: 4, places: 8, rating: 4.8, price: 18000, desc: 'Visit Punakha Dzong, suspension bridge, Chimi Lhakhang, Gangtey valley.', image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400&h=250&fit=crop' },
+      { name: 'Bumthang Cultural Trail', days: 5, places: 10, rating: 4.6, price: 25000, desc: 'Ancient temples of Bumthang, Jakar Dzong, Jambay Lhakhang, local cheese & honey farms.', image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=400&h=250&fit=crop' },
+    ],
+
     init() {
       this.filteredRestaurants = [...this.restaurants];
       this.filteredHW = [...this.hardwareProducts];
@@ -3300,6 +3789,22 @@ function marketplace() {
         this.showToast('Profile updated!');
       }
     },
+
+    // Grocery methods
+    filteredGrocery() { let list = [...this.groceryItems]; if (this.groceryCat) list = list.filter(i => i.category === this.groceryCat); return list; },
+    addGroceryToCart(item) { const existing = this.cart.find(c => c.product.id === item.id); if (existing) { existing.qty++; } else { this.cart.push({ product: { id: item.id, title: item.name, price: item.price, image: item.image, category: 'Grocery' }, qty: 1 }); } this.showToast(item.name + ' added to cart'); },
+
+    // Health methods
+    filteredMedicines() { if (!this.pharmaSearch) return this.medicines; const q = this.pharmaSearch.toLowerCase(); return this.medicines.filter(m => m.name.toLowerCase().includes(q) || m.type.toLowerCase().includes(q)); },
+
+    // Jobs methods
+    filteredJobs() { let list = [...this.jobs]; if (this.jobSearch) { const q = this.jobSearch.toLowerCase(); list = list.filter(j => j.title.toLowerCase().includes(q) || j.company.toLowerCase().includes(q) || j.desc.toLowerCase().includes(q)); } if (this.jobType) list = list.filter(j => j.type === this.jobType); if (this.jobCategory) list = list.filter(j => j.category === this.jobCategory); return list; },
+
+    // Real Estate methods
+    filteredProperties() { let list = [...this.properties]; list = list.filter(p => p.mode === this.propertyMode); if (this.propertyLocation) list = list.filter(p => p.location === this.propertyLocation); return list; },
+
+    // Travel methods
+    searchBuses() { if (!this.busFrom || !this.busTo) { this.showToast('Please select From and To cities'); return; } if (this.busFrom === this.busTo) { this.showToast('From and To cannot be the same'); return; } const operators = ['BRTC', 'Metho Transport', 'Sernya Transport', 'Meto Express']; this.busResults = []; for (let i = 0; i < 4; i++) { const h = 6 + i * 3; const dur = 2 + Math.floor(Math.random() * 6); this.busResults.push({ id: 'bus' + i, from: this.busFrom, to: this.busTo, depart: (h < 10 ? '0' : '') + h + ':00 AM', arrive: ((h + dur) % 12 || 12) + ':00 ' + (h + dur >= 12 ? 'PM' : 'AM'), duration: dur + 'h', fare: 200 + dur * 150 + Math.floor(Math.random() * 300), operator: operators[i] }); } },
 
     showToast(msg) { this.toast=msg; setTimeout(()=>this.toast='',3000); }
   };
