@@ -57,6 +57,24 @@
     html.dark .bg-\[\#e3e6e6\] { background: #1a1a2e !important; }
   </style>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script>
+    // ⚠️ REPLACE with your own Firebase project config from https://console.firebase.google.com
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "000000000000",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+  </script>
 </head>
 <body class="bg-[#e3e6e6] min-h-screen flex flex-col" x-data="marketplace()">
 
@@ -2276,7 +2294,30 @@ function marketplace() {
       { name: 'Renovation Kit', icon: '🔨', price: 55000, desc: 'Interior renovation essentials', parts: { 'Lumber & Wood': 'hw13', 'Paint & Finishing': 'hw7', 'Electrical': 'hw9', 'Plumbing': 'hw8', 'Fasteners & Fittings': 'hw14' } },
     ],
 
-    init() { this.filteredRestaurants = [...this.restaurants]; this.filteredHW = [...this.hardwareProducts]; setInterval(() => { this.$nextTick(() => {}); }, 1000); },
+    init() {
+      this.filteredRestaurants = [...this.restaurants];
+      this.filteredHW = [...this.hardwareProducts];
+      setInterval(() => { this.$nextTick(() => {}); }, 1000);
+      // Firebase Auth state listener
+      auth.onAuthStateChanged(async (firebaseUser) => {
+        if (firebaseUser) {
+          const doc = await db.collection('users').doc(firebaseUser.uid).get();
+          const data = doc.exists ? doc.data() : {};
+          this.user = { uid: firebaseUser.uid, name: data.name || firebaseUser.displayName || firebaseUser.email.split('@')[0], email: firebaseUser.email, role: data.role || 'buyer', phone: data.phone || '' };
+        } else { this.user = null; }
+      });
+      // Load user-added products from Firestore
+      this.loadFirebaseProducts();
+    },
+    async loadFirebaseProducts() {
+      try {
+        const snap = await db.collection('products').orderBy('createdAt', 'desc').get();
+        snap.forEach(doc => {
+          const p = { id: doc.id, ...doc.data() };
+          if (!this.allProducts.find(x => x.id === p.id)) this.allProducts.unshift(p);
+        });
+      } catch(e) { console.log('Firestore not configured yet — using demo products'); }
+    },
     filterCategory(name) { this.activeCategory = name; this.page = 'products'; },
     searchProducts() { this.activeCategory = ''; this.page = 'products'; },
     filteredProducts() {
@@ -2302,13 +2343,51 @@ function marketplace() {
     cartTax() { return this.cartSubtotal()*0.1; },
     cartTotal() { return this.cartSubtotal()+this.cartShipping()+this.cartTax(); },
     checkout() { this.startCheckout(); },
-    loginUser() { this.authError=''; if(!this.loginEmail||!this.loginPassword){this.authError='Please fill all fields';return;} this.user={name:this.loginEmail.split('@')[0],email:this.loginEmail,role:'buyer'}; this.loginEmail='';this.loginPassword=''; this.showToast('Welcome back!'); this.page='home'; },
-    registerUser() { this.authError=''; if(!this.regName||!this.regEmail||!this.regPassword){this.authError='Please fill all fields';return;} if(this.regPassword!==this.regConfirm){this.authError='Passwords do not match';return;} if(this.regPassword.length<6){this.authError='Password must be at least 6 characters';return;} this.user={name:this.regName,email:this.regEmail,role:this.registerRole}; this.regName='';this.regEmail='';this.regPassword='';this.regConfirm=''; this.showToast('Account created!'); this.page='home'; },
-    logout() { this.user=null; this.page='home'; this.showToast('Signed out'); },
+    async loginUser() {
+      this.authError='';
+      if(!this.loginEmail||!this.loginPassword){this.authError='Please fill all fields';return;}
+      try {
+        await auth.signInWithEmailAndPassword(this.loginEmail, this.loginPassword);
+        this.loginEmail=''; this.loginPassword='';
+        this.showToast('Welcome back!'); this.page='home';
+      } catch(e) { this.authError = e.code === 'auth/invalid-credential' ? 'Invalid email or password' : e.code === 'auth/user-not-found' ? 'No account with this email' : e.message; }
+    },
+    async registerUser() {
+      this.authError='';
+      if(!this.regName||!this.regEmail||!this.regPassword){this.authError='Please fill all fields';return;}
+      if(this.regPassword!==this.regConfirm){this.authError='Passwords do not match';return;}
+      if(this.regPassword.length<6){this.authError='Password must be at least 6 characters';return;}
+      try {
+        const cred = await auth.createUserWithEmailAndPassword(this.regEmail, this.regPassword);
+        await cred.user.updateProfile({ displayName: this.regName });
+        await db.collection('users').doc(cred.user.uid).set({ name: this.regName, email: this.regEmail, role: this.registerRole || 'buyer', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        this.regName='';this.regEmail='';this.regPassword='';this.regConfirm='';
+        this.showToast('Account created!'); this.page='home';
+      } catch(e) { this.authError = e.code === 'auth/email-already-in-use' ? 'Email already registered' : e.code === 'auth/weak-password' ? 'Password too weak (min 6 chars)' : e.message; }
+    },
+    async logout() { await auth.signOut(); this.user=null; this.page='home'; this.showToast('Signed out'); },
     submitReview() { if(!this.reviewComment)return; if(!this.selectedProduct.reviewList)this.selectedProduct.reviewList=[]; this.selectedProduct.reviewList.unshift({id:Date.now(),user:this.user?.name||'Guest',rating:this.reviewRating,title:this.reviewTitle,comment:this.reviewComment,date:new Date().toLocaleDateString()}); this.reviewTitle='';this.reviewComment='';this.reviewRating=5; this.showToast('Review submitted!'); },
     openConversation(conv) { this.activeConv=conv; },
     sendMessage() { if(!this.newMessage.trim()||!this.activeConv)return; this.activeConv.messages.push({id:Date.now(),text:this.newMessage,sent:true,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}); this.newMessage=''; },
-    addProduct() { if(!this.newProduct.title||!this.newProduct.price)return; const cond=this.newProduct.condition; const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'}; const p={id:Date.now(),title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'DrukHub Store',specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New'}; if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;} this.allProducts.unshift(p); this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:'',condition:'new',conditionNote:'',usageDuration:'',defects:'',accessories:'',reason:''}; this.showProductForm=false; this.showToast('Product listed!'); },
+    async addProduct() {
+      if(!this.newProduct.title||!this.newProduct.price)return;
+      const cond=this.newProduct.condition;
+      const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'};
+      const p={title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'DrukHub Store',sellerUid:this.user?.uid||null,specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+      if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;}
+      try {
+        const docRef = await db.collection('products').add(p);
+        p.id = docRef.id;
+        this.allProducts.unshift(p);
+        this.showToast('Product listed & saved to cloud!');
+      } catch(e) {
+        p.id = Date.now();
+        this.allProducts.unshift(p);
+        this.showToast('Product listed locally (cloud save failed)');
+      }
+      this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:'',condition:'new',conditionNote:'',usageDuration:'',defects:'',accessories:'',reason:''};
+      this.showProductForm=false;
+    },
 
     // Wishlist
     toggleWishlist(product) { const i=this.wishlist.findIndex(p=>p.id===product.id); if(i>=0){this.wishlist.splice(i,1);this.showToast('Removed from Wishlist');}else{this.wishlist.push(product);this.showToast('Added to Wishlist');this.addNotification('Added "'+product.title.slice(0,30)+'..." to your Wishlist');} },
@@ -2335,12 +2414,14 @@ function marketplace() {
     // Multi-step checkout
     startCheckout() { if(!this.user){this.page='login';return;} this.checkoutStep=1; this.page='checkout'; },
     nextCheckoutStep() { if(this.checkoutStep===1){if(!this.deliveryAddress.name||!this.deliveryAddress.phone||!this.deliveryAddress.street){this.showToast('Please fill delivery address');return;}this.selectedAddress={...this.deliveryAddress};if(!this.savedAddresses.find(a=>a.street===this.deliveryAddress.street)){this.savedAddresses.push({...this.deliveryAddress});}} this.checkoutStep++; },
-    placeOrder() {
+    async placeOrder() {
       const ship=(this.promoApplied?.type==='freeship')?0:this.cartShipping();
       const trackingSteps=[{status:'Order Placed',date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),done:true},{status:'Payment Confirmed',date:'',time:'',done:false},{status:'Processing',date:'',time:'',done:false},{status:'Shipped',date:'',time:'',done:false},{status:'Out for Delivery',date:'',time:'',done:false},{status:'Delivered',date:'',time:'',done:false}];
       const estDays=Math.floor(Math.random()*4)+3;
       const estDate=new Date(Date.now()+estDays*86400000).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-      this.orders.unshift({id:'ORD-'+Date.now().toString().slice(-6),date:new Date().toLocaleDateString(),items:this.cart.map(i=>({title:i.product.title,qty:i.qty,price:i.product.price,image:i.product.image})),total:this.cartTotalWithPromo(),status:'pending',address:{...this.selectedAddress},payment:this.paymentMethod,tracking:trackingSteps,estimatedDelivery:estDate,promo:this.promoApplied?{...this.promoApplied}:null});
+      const order={id:'ORD-'+Date.now().toString().slice(-6),date:new Date().toLocaleDateString(),items:this.cart.map(i=>({title:i.product.title,qty:i.qty,price:i.product.price,image:i.product.image})),total:this.cartTotalWithPromo(),status:'pending',address:{...this.selectedAddress},payment:this.paymentMethod,tracking:trackingSteps,estimatedDelivery:estDate,promo:this.promoApplied?{...this.promoApplied}:null,userUid:this.user?.uid||null,createdAt:new Date().toISOString()};
+      this.orders.unshift(order);
+      try { await db.collection('orders').add(order); } catch(e) {}
       this.cart=[]; this.promoApplied=null; this.promoCode=''; this.checkoutStep=0;
       this.addNotification('Order placed! Estimated delivery: '+estDate);
       this.showToast('Order placed successfully!'); this.page='orders';
@@ -2433,7 +2514,13 @@ function marketplace() {
 
     // Profile
     initProfile() { if(this.user){this.editProfile={name:this.user.name,email:this.user.email,phone:this.user.phone||''};} },
-    saveProfile() { if(this.user){this.user.name=this.editProfile.name;this.user.email=this.editProfile.email;this.user.phone=this.editProfile.phone;this.showToast('Profile updated!');} },
+    async saveProfile() {
+      if(this.user){
+        this.user.name=this.editProfile.name;this.user.email=this.editProfile.email;this.user.phone=this.editProfile.phone;
+        try { await db.collection('users').doc(this.user.uid).update({ name: this.user.name, phone: this.user.phone }); } catch(e) {}
+        this.showToast('Profile updated!');
+      }
+    },
 
     showToast(msg) { this.toast=msg; setTimeout(()=>this.toast='',3000); }
   };
