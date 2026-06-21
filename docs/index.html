@@ -105,6 +105,9 @@
         <template x-for="cat in categories" :key="cat.name"><option x-text="cat.name"></option></template>
       </select>
       <input type="text" x-model="searchQuery" @input="updateSuggestions()" @focus="updateSuggestions()" @click.away="showSearchSuggestions=false" placeholder="Search DrukHub.bt" class="flex-1 px-3 text-sm amz-input border-none outline-none">
+      <button type="button" @click="voiceSearch()" class="px-2 hover:bg-gray-100" title="Voice Search">
+        <svg class="w-5 h-5" :class="isListening ? 'text-red-500 animate-pulse' : 'text-gray-400'" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+      </button>
       <button type="submit" class="bg-amz-orange hover:bg-amz-orange2 px-4">
         <svg class="w-5 h-5" fill="none" stroke="#111" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </button>
@@ -150,9 +153,9 @@
     </div>
 
     <!-- Language -->
-    <a href="#" class="hidden lg:flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white text-sm shrink-0">
-      <span class="mr-1">🇧🇹</span> EN
-    </a>
+    <button @click="toggleLang()" class="hidden lg:flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white text-sm shrink-0">
+      <span class="mr-1">🇧🇹</span> <span x-text="lang === 'en' ? 'EN' : 'DZ'"></span>
+    </button>
 
     <!-- Account -->
     <div class="relative">
@@ -174,6 +177,8 @@
             <a href="#" @click.prevent="page='wishlist'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Wishlist (<span x-text="wishlist.length"></span>)</a>
             <a href="#" @click.prevent="page='sell'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amz-orange2">Sell Your Stuff</a>
             <a href="#" @click.prevent="page='food-orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Food Orders</a>
+            <a href="#" @click.prevent="page='rewards'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amber-600">🏆 Rewards (<span x-text="loyaltyPoints"></span> pts)</a>
+            <a href="#" @click.prevent="page='refer'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">👥 Refer & Earn</a>
             <a href="#" @click.prevent="page='messages'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Messages</a>
             <template x-if="user.role==='seller'||user.role==='admin'"><a href="#" @click.prevent="page='dashboard'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Seller Dashboard</a></template>
             <template x-if="user.role==='admin'"><a href="#" @click.prevent="page='admin'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Admin Panel</a></template>
@@ -216,6 +221,12 @@
       <a href="#" @click.prevent="page='hardware'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
         <span class="text-green-400 font-bold">🔨 Hardware Store</span>
       </a>
+      <a href="#" @click.prevent="page='services'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
+        <span class="text-cyan-400 font-bold">🛠️ Services</span>
+      </a>
+      <a href="#" @click.prevent="page='bills'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
+        <span class="text-pink-400 font-bold">📱 Pay Bills</span>
+      </a>
       <template x-for="cat in categories.slice(0,4)" :key="cat.name">
         <a href="#" @click.prevent="filterCategory(cat.name)" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="cat.name"></a>
       </template>
@@ -247,6 +258,17 @@
       <a href="#" @click.prevent="page='food-orders'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Food Orders</a>
       <div class="border-t my-2"></div>
       <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Sell on DrukHub</a>
+      <div class="border-t my-2"></div>
+      <div class="px-6 py-2 text-lg font-bold border-b flex items-center gap-2">🔨 Hardware Store</div>
+      <a href="#" @click.prevent="page='hardware'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-green-600">Browse Hardware</a>
+      <div class="border-t my-2"></div>
+      <div class="px-6 py-2 text-lg font-bold border-b flex items-center gap-2">⭐ Rewards & More</div>
+      <a href="#" @click.prevent="page='rewards'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🏆 Loyalty Rewards</a>
+      <a href="#" @click.prevent="page='spin'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🎰 Spin & Win</a>
+      <a href="#" @click.prevent="page='refer'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">👥 Refer & Earn</a>
+      <a href="#" @click.prevent="page='emi'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">💳 EMI Calculator</a>
+      <a href="#" @click.prevent="page='services'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🛠️ Local Services</a>
+      <a href="#" @click.prevent="page='bills'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">📱 Bill Payments</a>
     </div>
     <button @click="sideMenu=false" class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">&times;</button>
   </div>
@@ -386,6 +408,24 @@
         </div>
         <div class="absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-20">🍕🍜🥘</div>
       </a>
+    </div>
+
+    <!-- Quick Actions Grid -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="#" @click.prevent="page='rewards'" class="bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-lg p-5 hover:shadow-lg transition">
+          <p class="text-2xl mb-2">🏆</p><p class="font-bold text-sm">Loyalty Rewards</p><p class="text-xs opacity-80 mt-1" x-text="loyaltyPoints + ' points available'"></p>
+        </a>
+        <a href="#" @click.prevent="page='spin'" class="bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-lg p-5 hover:shadow-lg transition">
+          <p class="text-2xl mb-2">🎰</p><p class="font-bold text-sm">Spin & Win</p><p class="text-xs opacity-80 mt-1">Win points daily!</p>
+        </a>
+        <a href="#" @click.prevent="page='services'" class="bg-gradient-to-br from-teal-500 to-cyan-600 text-white rounded-lg p-5 hover:shadow-lg transition">
+          <p class="text-2xl mb-2">🛠️</p><p class="font-bold text-sm">Local Services</p><p class="text-xs opacity-80 mt-1">Hire professionals</p>
+        </a>
+        <a href="#" @click.prevent="page='bills'" class="bg-gradient-to-br from-pink-500 to-rose-600 text-white rounded-lg p-5 hover:shadow-lg transition">
+          <p class="text-2xl mb-2">📱</p><p class="font-bold text-sm">Pay Bills</p><p class="text-xs opacity-80 mt-1">Recharge & payments</p>
+        </a>
+      </div>
     </div>
 
     <!-- Sell Banner -->
@@ -615,7 +655,7 @@
               </div>
               <div class="text-xs text-gray-500 mt-3 space-y-1">
                 <div class="flex justify-between"><span class="text-gray-500">Ships from</span><span>DrukHub.bt</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Sold by</span><span class="text-amz-link" x-text="selectedProduct.store"></span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Sold by</span><a href="#" @click.prevent="viewStore(selectedProduct.store)" class="text-amz-link hover:text-amz-red hover:underline" x-text="selectedProduct.store"></a></div>
                 <div class="flex justify-between"><span class="text-gray-500">Payment</span><span>COD / mBoB / Card</span></div>
               </div>
             </div>
@@ -1968,6 +2008,263 @@
     </div>
   </div>
 
+  <!-- LOYALTY & REWARDS PAGE -->
+  <div x-show="page === 'rewards'" class="max-w-[900px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-lg p-6 mb-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold flex items-center gap-2">🏆 DrukHub Rewards</h1>
+          <p class="text-sm opacity-90 mt-1">Earn points on every purchase, redeem for discounts</p>
+        </div>
+        <div class="text-right">
+          <p class="text-sm opacity-80">Your Balance</p>
+          <p class="text-4xl font-bold" x-text="loyaltyPoints"></p>
+          <p class="text-xs opacity-80">points (= Nu. <span x-text="Math.floor(loyaltyPoints/10)"></span> value)</p>
+        </div>
+      </div>
+      <div class="mt-4 bg-white/20 rounded-full h-3 overflow-hidden">
+        <div class="bg-white h-full rounded-full transition-all" :style="'width:' + Math.min((loyaltyPoints % 500) / 500 * 100, 100) + '%'"></div>
+      </div>
+      <p class="text-xs mt-1 opacity-80" x-text="(500 - (loyaltyPoints % 500)) + ' points to next reward tier'"></p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-white rounded-lg p-5 text-center border-2" :class="loyaltyPoints >= 100 ? 'border-green-400' : 'border-gray-200'">
+        <p class="text-3xl mb-2">🎫</p><h3 class="font-bold">Nu. 10 Off</h3><p class="text-xs text-gray-500 mb-3">100 points</p>
+        <button @click="redeemPoints(100, 10)" :disabled="loyaltyPoints < 100" class="amz-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
+      </div>
+      <div class="bg-white rounded-lg p-5 text-center border-2" :class="loyaltyPoints >= 250 ? 'border-green-400' : 'border-gray-200'">
+        <p class="text-3xl mb-2">🎁</p><h3 class="font-bold">Nu. 30 Off</h3><p class="text-xs text-gray-500 mb-3">250 points</p>
+        <button @click="redeemPoints(250, 30)" :disabled="loyaltyPoints < 250" class="amz-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
+      </div>
+      <div class="bg-white rounded-lg p-5 text-center border-2" :class="loyaltyPoints >= 500 ? 'border-green-400' : 'border-gray-200'">
+        <p class="text-3xl mb-2">💎</p><h3 class="font-bold">Nu. 75 Off</h3><p class="text-xs text-gray-500 mb-3">500 points</p>
+        <button @click="redeemPoints(500, 75)" :disabled="loyaltyPoints < 500" class="amz-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
+      </div>
+    </div>
+
+    <h2 class="font-bold text-lg mb-3">How to Earn Points</h2>
+    <div class="bg-white rounded-lg p-5 space-y-3">
+      <div class="flex items-center gap-3"><span class="bg-green-100 text-green-700 w-10 h-10 rounded-full flex items-center justify-center text-lg">🛒</span><div><p class="font-bold text-sm">Shop & Earn</p><p class="text-xs text-gray-500">Earn 1 point per Nu. 10 spent</p></div></div>
+      <div class="flex items-center gap-3"><span class="bg-blue-100 text-blue-700 w-10 h-10 rounded-full flex items-center justify-center text-lg">⭐</span><div><p class="font-bold text-sm">Write Reviews</p><p class="text-xs text-gray-500">Earn 20 points per review</p></div></div>
+      <div class="flex items-center gap-3"><span class="bg-purple-100 text-purple-700 w-10 h-10 rounded-full flex items-center justify-center text-lg">👥</span><div><p class="font-bold text-sm">Refer Friends</p><p class="text-xs text-gray-500">Earn 50 points per referral</p></div></div>
+      <div class="flex items-center gap-3"><span class="bg-amber-100 text-amber-700 w-10 h-10 rounded-full flex items-center justify-center text-lg">🎰</span><div><p class="font-bold text-sm">Daily Spin</p><p class="text-xs text-gray-500">Win up to 100 points daily</p></div></div>
+    </div>
+
+    <h2 class="font-bold text-lg mt-6 mb-3">Points History</h2>
+    <div class="bg-white rounded-lg overflow-hidden">
+      <template x-if="pointsHistory.length === 0"><p class="p-6 text-gray-500 text-center text-sm">No points earned yet. Start shopping!</p></template>
+      <template x-for="h in pointsHistory" :key="h.id">
+        <div class="flex justify-between items-center px-5 py-3 border-b text-sm">
+          <div><p class="font-medium" x-text="h.desc"></p><p class="text-xs text-gray-400" x-text="h.date"></p></div>
+          <span class="font-bold" :class="h.amount > 0 ? 'text-green-600' : 'text-red-600'" x-text="(h.amount > 0 ? '+' : '') + h.amount + ' pts'"></span>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- SPIN THE WHEEL PAGE -->
+  <div x-show="page === 'spin'" class="max-w-[600px] mx-auto px-4 py-6">
+    <h1 class="text-2xl font-bold text-center mb-2">🎰 Daily Spin & Win</h1>
+    <p class="text-center text-sm text-gray-500 mb-6">Spin once every day for a chance to win points & coupons!</p>
+
+    <div class="relative mx-auto w-[300px] h-[300px] mb-6">
+      <div class="w-full h-full rounded-full border-8 border-amber-500 overflow-hidden relative" :class="spinAnimating ? 'animate-spin' : ''" :style="!spinAnimating && spinResult ? 'transform: rotate(' + spinAngle + 'deg)' : ''">
+        <template x-for="(prize, i) in spinPrizes" :key="i">
+          <div class="absolute w-full h-full" :style="'transform: rotate(' + (i * 45) + 'deg)'">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-[150px] text-center pt-6" :class="i % 2 === 0 ? 'bg-amber-100' : 'bg-orange-100'" style="clip-path: polygon(50% 100%, 0% 0%, 100% 0%)">
+              <span class="text-xs font-bold block" x-text="prize.label"></span>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 text-3xl">🔻</div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-gradient-to-b from-amber-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg">
+        <span class="text-white text-xs font-bold">SPIN</span>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <template x-if="spinResult">
+        <div class="bg-green-50 border-2 border-green-400 rounded-lg p-4 mb-4 animate-bounce">
+          <p class="text-lg font-bold text-green-700" x-text="'🎉 You won: ' + spinResult"></p>
+        </div>
+      </template>
+      <button @click="spinWheel()" :disabled="spinAnimating || !canSpinToday()" class="bg-gradient-to-b from-amber-400 to-orange-500 text-white px-10 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed">
+        <span x-text="spinAnimating ? 'Spinning...' : canSpinToday() ? '🎰 SPIN NOW!' : 'Come back tomorrow!'"></span>
+      </button>
+      <p class="text-xs text-gray-400 mt-3" x-show="!canSpinToday()">Next spin available at midnight</p>
+    </div>
+  </div>
+
+  <!-- REFER & EARN PAGE -->
+  <div x-show="page === 'refer'" class="max-w-[700px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-purple-600 to-indigo-700 text-white rounded-lg p-6 mb-6">
+      <h1 class="text-2xl font-bold mb-1">👥 Refer & Earn</h1>
+      <p class="text-sm opacity-90">Invite friends to DrukHub and earn Nu. 50 + 50 bonus points for each referral!</p>
+    </div>
+    <div class="bg-white rounded-lg p-6 mb-4">
+      <h2 class="font-bold mb-3">Your Referral Code</h2>
+      <div class="flex gap-2">
+        <div class="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono font-bold text-lg tracking-widest text-center" x-text="referralCode"></div>
+        <button @click="navigator.clipboard?.writeText(referralCode); showToast('Referral code copied!')" class="amz-btn-cart px-6 font-bold text-sm">Copy</button>
+      </div>
+      <div class="flex gap-2 mt-3">
+        <button @click="window.open('https://wa.me/?text=Join%20DrukHub%20with%20my%20code:%20' + referralCode + '%20and%20get%20Nu.50%20off!')" class="flex-1 bg-green-500 text-white py-2 rounded text-sm font-bold">Share on WhatsApp</button>
+        <button @click="window.open('https://www.facebook.com/sharer/sharer.php?quote=Join%20DrukHub%20with%20code:%20' + referralCode)" class="flex-1 bg-blue-600 text-white py-2 rounded text-sm font-bold">Share on Facebook</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-lg p-6">
+      <h2 class="font-bold mb-3">How it works</h2>
+      <div class="space-y-4">
+        <div class="flex items-center gap-4"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center font-bold text-purple-700">1</div><div><p class="font-bold text-sm">Share your code</p><p class="text-xs text-gray-500">Send your referral code to friends</p></div></div>
+        <div class="flex items-center gap-4"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center font-bold text-purple-700">2</div><div><p class="font-bold text-sm">Friend signs up</p><p class="text-xs text-gray-500">They register and get Nu. 50 welcome discount</p></div></div>
+        <div class="flex items-center gap-4"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center font-bold text-purple-700">3</div><div><p class="font-bold text-sm">You earn rewards</p><p class="text-xs text-gray-500">Get 50 loyalty points + Nu. 50 coupon per referral</p></div></div>
+      </div>
+      <div class="mt-4 pt-4 border-t">
+        <p class="text-sm"><span class="font-bold">Total Referrals:</span> <span x-text="referralCount" class="text-amz-green font-bold"></span></p>
+        <p class="text-sm"><span class="font-bold">Total Earned:</span> <span x-text="'Nu. ' + (referralCount * 50)" class="text-amz-green font-bold"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMI CALCULATOR PAGE -->
+  <div x-show="page === 'emi'" class="max-w-[700px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-4 flex items-center gap-2">💳 Buy Now, Pay Later (EMI)</h1>
+    <div class="bg-white rounded-lg p-6 mb-4">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div><label class="text-xs font-bold block mb-1">Product Price (Nu.)</label><input type="number" x-model="emiPrice" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input" placeholder="Enter amount"></div>
+        <div><label class="text-xs font-bold block mb-1">Down Payment (Nu.)</label><input type="number" x-model="emiDown" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input" placeholder="0"></div>
+        <div>
+          <label class="text-xs font-bold block mb-1">Tenure</label>
+          <select x-model="emiTenure" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
+            <option value="3">3 Months</option><option value="6">6 Months</option><option value="9">9 Months</option><option value="12">12 Months</option>
+          </select>
+        </div>
+        <div><label class="text-xs font-bold block mb-1">Interest Rate (%)</label><input type="number" x-model="emiRate" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input" placeholder="12"></div>
+      </div>
+      <button @click="calculateEMI()" class="amz-btn-cart px-8 py-2 text-sm font-bold mt-4">Calculate EMI</button>
+    </div>
+    <template x-if="emiResult">
+      <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg p-6">
+        <h2 class="font-bold text-lg mb-3">Your EMI Breakdown</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div><p class="text-xs opacity-80">Monthly EMI</p><p class="text-2xl font-bold" x-text="'Nu. ' + emiResult.monthly.toLocaleString()"></p></div>
+          <div><p class="text-xs opacity-80">Total Interest</p><p class="text-2xl font-bold" x-text="'Nu. ' + emiResult.interest.toLocaleString()"></p></div>
+          <div><p class="text-xs opacity-80">Total Amount</p><p class="text-2xl font-bold" x-text="'Nu. ' + emiResult.total.toLocaleString()"></p></div>
+          <div><p class="text-xs opacity-80">Tenure</p><p class="text-2xl font-bold" x-text="emiTenure + ' months'"></p></div>
+        </div>
+        <div class="mt-4 pt-4 border-t border-white/30 space-y-1">
+          <template x-for="(m, i) in emiResult.schedule" :key="i">
+            <div class="flex justify-between text-sm"><span x-text="'Month ' + (i+1)"></span><span x-text="'Nu. ' + m.emi.toLocaleString()"></span><span class="opacity-70" x-text="'Balance: Nu. ' + m.balance.toLocaleString()"></span></div>
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- SELLER STORE PAGE -->
+  <div x-show="page === 'store'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-amz-dark to-amz-dark2 text-white rounded-lg p-6 mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-20 h-20 bg-amz-orange rounded-full flex items-center justify-center text-3xl font-bold text-amz-dark" x-text="(viewingStore?.name || 'S')[0].toUpperCase()"></div>
+        <div>
+          <h1 class="text-2xl font-bold" x-text="viewingStore?.name || 'Store'"></h1>
+          <div class="flex items-center gap-3 mt-1">
+            <span class="text-amz-star text-sm" x-text="'★'.repeat(Math.round(viewingStore?.rating || 4))"></span>
+            <span class="text-xs opacity-80" x-text="(viewingStore?.rating || 4) + ' rating'"></span>
+            <span class="text-xs bg-green-500 px-2 py-0.5 rounded-full">Verified Seller</span>
+          </div>
+          <p class="text-xs opacity-70 mt-1" x-text="'Member since 2024 • ' + storeProducts().length + ' products listed'"></p>
+        </div>
+      </div>
+    </div>
+    <h2 class="text-lg font-bold mb-4" x-text="'Products by ' + (viewingStore?.name || 'Seller')"></h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <template x-for="product in storeProducts()" :key="product.id">
+        <a href="#" @click.prevent="viewProduct(product)" class="bg-white rounded-lg overflow-hidden product-card">
+          <div class="h-[180px] flex items-center justify-center p-3 bg-gray-50"><img :src="product.image" class="max-h-full max-w-full object-contain"></div>
+          <div class="p-3">
+            <p class="text-xs line-clamp-2 hover:text-amz-red" x-text="product.title"></p>
+            <div class="star-rating text-xs mt-1" x-text="'★'.repeat(Math.round(product.rating)) + ' (' + product.reviews + ')'"></div>
+            <p class="font-bold text-sm mt-1" x-text="'Nu. ' + product.price.toLocaleString()"></p>
+          </div>
+        </a>
+      </template>
+    </div>
+    <p x-show="storeProducts().length === 0" class="text-center text-gray-500 py-10">This seller hasn't listed any products yet.</p>
+  </div>
+
+  <!-- SERVICES PAGE -->
+  <div x-show="page === 'services'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-2">🛠️ Local Services</h1>
+    <p class="text-gray-500 text-sm mb-6">Hire trusted professionals in your area</p>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <template x-for="svc in localServices" :key="svc.name">
+        <div class="bg-white rounded-lg p-5 hover:shadow-lg transition text-center cursor-pointer" @click="selectedService=svc; page='service-detail'">
+          <span class="text-4xl block mb-3" x-text="svc.icon"></span>
+          <h3 class="font-bold text-sm" x-text="svc.name"></h3>
+          <p class="text-xs text-gray-500 mt-1" x-text="svc.providers + ' providers'"></p>
+          <p class="text-xs text-amz-green font-bold mt-1" x-text="'Starting Nu. ' + svc.startPrice"></p>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- SERVICE DETAIL PAGE -->
+  <div x-show="page === 'service-detail'" class="max-w-[900px] mx-auto px-4 py-4">
+    <button @click="page='services'" class="text-amz-link text-sm hover:underline mb-4 block">← Back to Services</button>
+    <h1 class="text-2xl font-bold mb-4 flex items-center gap-2"><span x-text="selectedService?.icon"></span> <span x-text="selectedService?.name"></span></h1>
+    <div class="space-y-3">
+      <template x-for="p in (selectedService?.providerList || [])" :key="p.name">
+        <div class="bg-white rounded-lg p-5 flex items-center gap-4">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-2xl" x-text="p.name[0]"></div>
+          <div class="flex-1">
+            <h3 class="font-bold" x-text="p.name"></h3>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-amz-star text-xs" x-text="'★'.repeat(Math.round(p.rating))"></span>
+              <span class="text-xs text-gray-500" x-text="p.rating + ' (' + p.jobs + ' jobs done)'"></span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1" x-text="p.area"></p>
+          </div>
+          <div class="text-right">
+            <p class="font-bold" x-text="'Nu. ' + p.price"></p>
+            <p class="text-xs text-gray-500">per job</p>
+            <button @click="showToast('Booking request sent to ' + p.name + '!')" class="amz-btn-cart px-4 py-1 text-xs font-bold mt-2">Book Now</button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- BILL PAYMENTS PAGE -->
+  <div x-show="page === 'bills'" class="max-w-[700px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-2">📱 Bill Payments & Recharge</h1>
+    <p class="text-gray-500 text-sm mb-6">Quick recharge and bill payments</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <template x-for="bill in billTypes" :key="bill.name">
+        <button @click="selectedBill=bill.name" class="bg-white rounded-lg p-5 text-center hover:shadow-lg transition border-2" :class="selectedBill===bill.name ? 'border-amz-blue' : 'border-transparent'">
+          <span class="text-3xl block mb-2" x-text="bill.icon"></span>
+          <p class="text-xs font-bold" x-text="bill.name"></p>
+        </button>
+      </template>
+    </div>
+    <div class="bg-white rounded-lg p-6" x-show="selectedBill">
+      <h2 class="font-bold mb-4" x-text="selectedBill + ' Payment'"></h2>
+      <div class="space-y-3">
+        <div><label class="text-xs font-bold block mb-1">Account / Phone Number</label><input type="text" x-model="billAccount" placeholder="Enter number" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Amount (Nu.)</label><input type="number" x-model="billAmount" placeholder="Enter amount" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div>
+          <label class="text-xs font-bold block mb-1">Payment Method</label>
+          <select x-model="billPayMethod" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
+            <option value="mBoB">mBoB (Mobile Banking)</option><option value="bnb">BNB mPay</option><option value="card">Debit/Credit Card</option>
+          </select>
+        </div>
+        <button @click="payBill()" class="amz-btn-cart px-8 py-2 text-sm font-bold w-full">Pay Now</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -2247,6 +2544,93 @@ function marketplace() {
       },
     ],
 
+    // Loyalty & Rewards
+    loyaltyPoints: 150,
+    pointsHistory: [
+      { id: 1, desc: 'Welcome bonus', amount: 100, date: '2024-01-15' },
+      { id: 2, desc: 'First purchase bonus', amount: 50, date: '2024-01-16' },
+    ],
+
+    // Spin the Wheel
+    spinPrizes: [
+      { label: '10 pts', points: 10 }, { label: '25 pts', points: 25 }, { label: 'Nu.20 Off', coupon: 20 }, { label: '50 pts', points: 50 },
+      { label: 'Try Again', points: 0 }, { label: '100 pts', points: 100 }, { label: 'Nu.50 Off', coupon: 50 }, { label: '5 pts', points: 5 },
+    ],
+    spinAnimating: false,
+    spinResult: null,
+    spinAngle: 0,
+    lastSpinDate: null,
+
+    // Refer & Earn
+    referralCode: 'DRUK' + Math.random().toString(36).substring(2, 7).toUpperCase(),
+    referralCount: 0,
+
+    // EMI Calculator
+    emiPrice: '',
+    emiDown: 0,
+    emiTenure: '6',
+    emiRate: 12,
+    emiResult: null,
+
+    // Seller Store
+    viewingStore: null,
+
+    // Language
+    lang: 'en',
+    isListening: false,
+
+    // Local Services
+    selectedService: null,
+    localServices: [
+      { name: 'Plumber', icon: '🔧', providers: 24, startPrice: 500, providerList: [
+        { name: 'Karma Dorji', rating: 4.8, jobs: 156, area: 'Thimphu, Paro', price: 500 },
+        { name: 'Tshering Wangchuk', rating: 4.5, jobs: 89, area: 'Thimphu', price: 600 },
+        { name: 'Pema Rinzin', rating: 4.7, jobs: 120, area: 'Punakha, Wangdue', price: 550 },
+      ]},
+      { name: 'Electrician', icon: '⚡', providers: 18, startPrice: 400, providerList: [
+        { name: 'Sonam Tobgay', rating: 4.9, jobs: 203, area: 'Thimphu', price: 400 },
+        { name: 'Dawa Tshering', rating: 4.6, jobs: 145, area: 'Paro, Haa', price: 500 },
+        { name: 'Jigme Norbu', rating: 4.4, jobs: 78, area: 'Thimphu, Punakha', price: 450 },
+      ]},
+      { name: 'Carpenter', icon: '🪚', providers: 15, startPrice: 800, providerList: [
+        { name: 'Ugyen Dorji', rating: 4.7, jobs: 98, area: 'Thimphu', price: 800 },
+        { name: 'Chencho Wangdi', rating: 4.5, jobs: 67, area: 'Bumthang', price: 900 },
+        { name: 'Kinley Tenzin', rating: 4.8, jobs: 134, area: 'Paro', price: 850 },
+      ]},
+      { name: 'Painter', icon: '🎨', providers: 12, startPrice: 600, providerList: [
+        { name: 'Tandin Wangmo', rating: 4.6, jobs: 87, area: 'Thimphu', price: 600 },
+        { name: 'Namgay Dorji', rating: 4.3, jobs: 56, area: 'Punakha', price: 700 },
+      ]},
+      { name: 'Mason', icon: '🧱', providers: 20, startPrice: 700, providerList: [
+        { name: 'Rinzin Dorji', rating: 4.7, jobs: 167, area: 'Thimphu, Paro', price: 700 },
+        { name: 'Phub Dorji', rating: 4.5, jobs: 112, area: 'Wangdue', price: 750 },
+      ]},
+      { name: 'House Cleaning', icon: '🧹', providers: 30, startPrice: 300, providerList: [
+        { name: 'Dechen Wangmo', rating: 4.8, jobs: 234, area: 'Thimphu', price: 300 },
+        { name: 'Sonam Lhamo', rating: 4.6, jobs: 178, area: 'Paro', price: 350 },
+      ]},
+      { name: 'AC Repair', icon: '❄️', providers: 8, startPrice: 500, providerList: [
+        { name: 'Dorji Tshering', rating: 4.5, jobs: 56, area: 'Thimphu', price: 500 },
+        { name: 'Tashi Norbu', rating: 4.3, jobs: 34, area: 'Paro', price: 600 },
+      ]},
+      { name: 'Movers', icon: '🚚', providers: 10, startPrice: 2000, providerList: [
+        { name: 'Dragon Movers', rating: 4.6, jobs: 189, area: 'All Bhutan', price: 2000 },
+        { name: 'Druk Packers', rating: 4.4, jobs: 98, area: 'Thimphu, Paro', price: 2500 },
+      ]},
+    ],
+
+    // Bill Payments
+    billTypes: [
+      { name: 'Mobile Recharge', icon: '📱' }, { name: 'Electricity', icon: '⚡' },
+      { name: 'Internet', icon: '🌐' }, { name: 'Water', icon: '💧' },
+      { name: 'Cable TV', icon: '📺' }, { name: 'Insurance', icon: '🛡️' },
+      { name: 'Landline', icon: '📞' }, { name: 'Education', icon: '📚' },
+    ],
+    selectedBill: null,
+    billAccount: '',
+    billAmount: '',
+    billPayMethod: 'mBoB',
+
     // Hardware Store Data
     hwSearch: '',
     hwCategory: '',
@@ -2367,7 +2751,7 @@ function marketplace() {
       } catch(e) { this.authError = e.code === 'auth/email-already-in-use' ? 'Email already registered' : e.code === 'auth/weak-password' ? 'Password too weak (min 6 chars)' : e.message; }
     },
     async logout() { await auth.signOut(); this.user=null; this.page='home'; this.showToast('Signed out'); },
-    submitReview() { if(!this.reviewComment)return; if(!this.selectedProduct.reviewList)this.selectedProduct.reviewList=[]; this.selectedProduct.reviewList.unshift({id:Date.now(),user:this.user?.name||'Guest',rating:this.reviewRating,title:this.reviewTitle,comment:this.reviewComment,date:new Date().toLocaleDateString()}); this.reviewTitle='';this.reviewComment='';this.reviewRating=5; this.showToast('Review submitted!'); },
+    submitReview() { if(!this.reviewComment)return; if(!this.selectedProduct.reviewList)this.selectedProduct.reviewList=[]; this.selectedProduct.reviewList.unshift({id:Date.now(),user:this.user?.name||'Guest',rating:this.reviewRating,title:this.reviewTitle,comment:this.reviewComment,date:new Date().toLocaleDateString()}); this.reviewTitle='';this.reviewComment='';this.reviewRating=5; this.earnPoints(20, 'Review on ' + this.selectedProduct.title); this.showToast('Review submitted! +20 reward points'); },
     openConversation(conv) { this.activeConv=conv; },
     sendMessage() { if(!this.newMessage.trim()||!this.activeConv)return; this.activeConv.messages.push({id:Date.now(),text:this.newMessage,sent:true,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}); this.newMessage=''; },
     async addProduct() {
@@ -2426,7 +2810,9 @@ function marketplace() {
       try { await db.ref('orders').push().set(order); } catch(e) {}
       this.cart=[]; this.promoApplied=null; this.promoCode=''; this.checkoutStep=0;
       this.addNotification('Order placed! Estimated delivery: '+estDate);
-      this.showToast('Order placed successfully!'); this.page='orders';
+      const earnedPts = Math.floor(order.total / 10);
+      this.earnPoints(earnedPts, 'Purchase - Order ' + order.id);
+      this.showToast('Order placed! Earned ' + earnedPts + ' reward points.'); this.page='orders';
     },
 
     // Flash Sale Timer
@@ -2490,6 +2876,86 @@ function marketplace() {
       this.foodCart = []; this.foodCartRestaurant = null; this.foodNote = '';
       this.showToast('Order placed! Your food is being prepared.');
       this.page = 'food-orders';
+    },
+
+    // Loyalty & Rewards methods
+    redeemPoints(cost, discount) {
+      if (this.loyaltyPoints < cost) return;
+      this.loyaltyPoints -= cost;
+      this.pointsHistory.unshift({ id: Date.now(), desc: 'Redeemed Nu.' + discount + ' coupon', amount: -cost, date: new Date().toLocaleDateString() });
+      this.promoCodes.push({ code: 'REWARD' + Date.now().toString().slice(-4), type: 'flat', discount: discount, minOrder: 0 });
+      this.showToast('Nu. ' + discount + ' coupon added! Use at checkout.');
+      this.addNotification('Redeemed ' + cost + ' points for Nu. ' + discount + ' discount coupon');
+    },
+    earnPoints(amount, desc) {
+      this.loyaltyPoints += amount;
+      this.pointsHistory.unshift({ id: Date.now(), desc: desc, amount: amount, date: new Date().toLocaleDateString() });
+    },
+
+    // Spin the Wheel
+    canSpinToday() { if (!this.lastSpinDate) return true; return new Date().toDateString() !== new Date(this.lastSpinDate).toDateString(); },
+    spinWheel() {
+      if (this.spinAnimating || !this.canSpinToday()) return;
+      this.spinAnimating = true; this.spinResult = null;
+      const winIndex = Math.floor(Math.random() * this.spinPrizes.length);
+      const prize = this.spinPrizes[winIndex];
+      setTimeout(() => {
+        this.spinAnimating = false;
+        this.spinAngle = 360 * 5 + (winIndex * 45);
+        this.lastSpinDate = new Date().toISOString();
+        if (prize.points > 0) { this.earnPoints(prize.points, 'Daily Spin reward'); this.spinResult = prize.points + ' Points!'; }
+        else if (prize.coupon) { this.promoCodes.push({ code: 'SPIN' + Date.now().toString().slice(-4), type: 'flat', discount: prize.coupon, minOrder: 0 }); this.spinResult = 'Nu. ' + prize.coupon + ' Coupon!'; this.addNotification('Won Nu.' + prize.coupon + ' coupon from Daily Spin!'); }
+        else { this.spinResult = 'Try again tomorrow!'; }
+      }, 2000);
+    },
+
+    // EMI Calculator
+    calculateEMI() {
+      const principal = Number(this.emiPrice) - Number(this.emiDown || 0);
+      const months = Number(this.emiTenure);
+      const rate = Number(this.emiRate) / 100 / 12;
+      if (principal <= 0 || months <= 0) return;
+      const emi = rate > 0 ? Math.round(principal * rate * Math.pow(1 + rate, months) / (Math.pow(1 + rate, months) - 1)) : Math.round(principal / months);
+      const total = emi * months;
+      const interest = total - principal;
+      const schedule = [];
+      let balance = principal;
+      for (let i = 0; i < months; i++) { const intPart = Math.round(balance * rate); const prinPart = emi - intPart; balance -= prinPart; schedule.push({ emi, interest: intPart, principal: prinPart, balance: Math.max(0, balance) }); }
+      this.emiResult = { monthly: emi, interest, total, schedule };
+    },
+
+    // Seller Store
+    viewStore(storeName) { this.viewingStore = { name: storeName, rating: 4.5 }; this.page = 'store'; window.scrollTo({top:0}); },
+    storeProducts() { return this.allProducts.filter(p => p.store === this.viewingStore?.name); },
+
+    // Voice Search
+    voiceSearch() {
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) { this.showToast('Voice search not supported in this browser'); return; }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SR();
+      recognition.lang = 'en-US'; recognition.interimResults = false;
+      this.isListening = true;
+      recognition.onresult = (e) => { this.searchQuery = e.results[0][0].transcript; this.isListening = false; this.searchProducts(); };
+      recognition.onerror = () => { this.isListening = false; this.showToast('Could not recognize speech'); };
+      recognition.onend = () => { this.isListening = false; };
+      recognition.start();
+    },
+
+    // Language Toggle
+    toggleLang() {
+      this.lang = this.lang === 'en' ? 'dz' : 'en';
+      this.showToast(this.lang === 'dz' ? 'བརྗོད་སྐད་ Dzongkha mode activated' : 'Switched to English');
+    },
+
+    // Bill Payments
+    payBill() {
+      if (!this.billAccount || !this.billAmount) { this.showToast('Please fill all fields'); return; }
+      if (!this.user) { this.page = 'login'; return; }
+      const amt = Number(this.billAmount);
+      this.earnPoints(Math.floor(amt / 10), this.selectedBill + ' payment');
+      this.addNotification(this.selectedBill + ' payment of Nu. ' + amt + ' successful!');
+      this.showToast('Payment successful! Earned ' + Math.floor(amt / 10) + ' points.');
+      this.billAccount = ''; this.billAmount = '';
     },
 
     // Hardware methods
