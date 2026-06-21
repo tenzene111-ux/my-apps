@@ -211,26 +211,22 @@
       <button @click="sideMenu=true" class="flex items-center text-white text-sm font-bold px-2 py-1 border border-transparent hover:border-white rounded shrink-0">
         <svg class="w-5 h-5 mr-1" fill="white" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg> All
       </button>
-      <template x-for="item in ['Today\'s Deals', 'Customer Service', 'Gift Cards', 'Sell']" :key="item">
-        <a href="#" @click.prevent="item==='Sell' ? (page='register', registerRole='seller') : (page='products')"
-          class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="item"></a>
-      </template>
-      <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
-        <span class="text-amz-orange font-bold">🍔 Food Delivery</span>
-      </a>
-      <a href="#" @click.prevent="page='hardware'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
-        <span class="text-green-400 font-bold">🔨 Hardware Store</span>
-      </a>
-      <a href="#" @click.prevent="page='services'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
-        <span class="text-cyan-400 font-bold">🛠️ Services</span>
-      </a>
-      <a href="#" @click.prevent="page='bills'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
-        <span class="text-pink-400 font-bold">📱 Pay Bills</span>
-      </a>
-      <a href="#" @click.prevent="page='taxi'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
-        <span class="text-yellow-400 font-bold">🚖 DrukRide</span>
-      </a>
-      <template x-for="cat in categories.slice(0,4)" :key="cat.name">
+      <!-- Shopping -->
+      <a href="#" @click.prevent="page='products'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">Today's Deals</a>
+      <a href="#" @click.prevent="page='hardware'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🔨 Hardware</a>
+      <a href="#" @click.prevent="page='register'; registerRole='seller'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">Sell</a>
+      <span class="text-gray-500 shrink-0">|</span>
+      <!-- Services -->
+      <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-amz-orange">🍔 Food</a>
+      <a href="#" @click.prevent="page='taxi'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-yellow-400">🚖 Ride</a>
+      <a href="#" @click.prevent="page='services'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-cyan-400">🛠️ Services</a>
+      <span class="text-gray-500 shrink-0">|</span>
+      <!-- Payments & Rewards -->
+      <a href="#" @click.prevent="page='bills'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">📱 Bills</a>
+      <a href="#" @click.prevent="page='rewards'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🏆 Rewards</a>
+      <span class="text-gray-500 shrink-0">|</span>
+      <!-- Categories -->
+      <template x-for="cat in categories.slice(0,5)" :key="cat.name">
         <a href="#" @click.prevent="filterCategory(cat.name)" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="cat.name"></a>
       </template>
     </div>
@@ -246,33 +242,35 @@
       <span x-text="user ? 'Hello, ' + user.name : 'Hello, sign in'"></span>
     </div>
     <div class="py-2">
-      <div class="px-6 py-2 text-lg font-bold border-b">Shop By Category</div>
+      <!-- 🛒 SHOPPING -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50">🛒 Shopping</div>
+      <a href="#" @click.prevent="page='products'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold">🏬 All Products</a>
       <template x-for="cat in categories" :key="cat.name">
-        <a href="#" @click.prevent="filterCategory(cat.name); sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">
+        <a href="#" @click.prevent="filterCategory(cat.name); sideMenu=false" class="flex justify-between items-center px-8 py-2 hover:bg-gray-100 text-sm">
           <span x-text="cat.name"></span>
           <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
         </a>
       </template>
-      <div class="border-t my-2"></div>
-      <a href="#" @click.prevent="page='products'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold">All Products</a>
-      <div class="border-t my-2"></div>
-      <div class="px-6 py-2 text-lg font-bold border-b flex items-center gap-2">🍔 DrukHub Food</div>
-      <a href="#" @click.prevent="page='food'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-red-500">Order Food Now</a>
-      <a href="#" @click.prevent="page='food-orders'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Food Orders</a>
-      <div class="border-t my-2"></div>
-      <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Sell on DrukHub</a>
-      <div class="border-t my-2"></div>
-      <div class="px-6 py-2 text-lg font-bold border-b flex items-center gap-2">🔨 Hardware Store</div>
-      <a href="#" @click.prevent="page='hardware'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-green-600">Browse Hardware</a>
-      <div class="border-t my-2"></div>
-      <div class="px-6 py-2 text-lg font-bold border-b flex items-center gap-2">⭐ Rewards & More</div>
-      <a href="#" @click.prevent="page='rewards'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🏆 Loyalty Rewards</a>
-      <a href="#" @click.prevent="page='spin'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🎰 Spin & Win</a>
-      <a href="#" @click.prevent="page='refer'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">👥 Refer & Earn</a>
-      <a href="#" @click.prevent="page='emi'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">💳 EMI Calculator</a>
-      <a href="#" @click.prevent="page='services'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">🛠️ Local Services</a>
-      <a href="#" @click.prevent="page='bills'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">📱 Bill Payments</a>
-      <a href="#" @click.prevent="page='taxi'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-yellow-600">🚖 DrukRide Taxi</a>
+      <a href="#" @click.prevent="page='hardware'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-green-600">🔨 Hardware Store</a>
+      <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex items-center px-6 py-2.5 hover:bg-gray-100 text-sm text-amz-orange2 font-bold">📦 Sell on DrukHub</a>
+
+      <!-- 🍔 FOOD & TRANSPORT -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">🚀 Food & Transport</div>
+      <a href="#" @click.prevent="page='food'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-red-500">🍔 Order Food</a>
+      <a href="#" @click.prevent="page='food-orders'; sideMenu=false" class="flex items-center gap-3 px-8 py-2 hover:bg-gray-100 text-sm text-gray-600">My Food Orders</a>
+      <a href="#" @click.prevent="page='taxi'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-yellow-600">🚖 DrukRide Taxi</a>
+
+      <!-- 🛠️ SERVICES & PAYMENTS -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">💼 Services & Payments</div>
+      <a href="#" @click.prevent="page='services'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🛠️ Local Services</a>
+      <a href="#" @click.prevent="page='bills'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">📱 Bill Payments & Recharge</a>
+      <a href="#" @click.prevent="page='emi'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">💳 EMI Calculator</a>
+
+      <!-- ⭐ REWARDS -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">⭐ Rewards & Offers</div>
+      <a href="#" @click.prevent="page='rewards'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🏆 Loyalty Rewards <span class="ml-auto text-xs font-bold text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full" x-text="loyaltyPoints + ' pts'"></span></a>
+      <a href="#" @click.prevent="page='spin'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🎰 Spin & Win</a>
+      <a href="#" @click.prevent="page='refer'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">👥 Refer & Earn</a>
     </div>
     <button @click="sideMenu=false" class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">&times;</button>
   </div>
@@ -398,62 +396,73 @@
       </div>
     </div>
 
-    <!-- Food Delivery Banner -->
-    <div class="max-w-[1500px] mx-auto px-4 mt-6">
-      <a href="#" @click.prevent="page='food'" class="block bg-gradient-to-r from-red-500 to-orange-500 rounded-lg p-6 text-white relative overflow-hidden hover:shadow-lg transition">
-        <div class="relative z-10">
-          <div class="flex items-center gap-2 mb-1"><span class="text-3xl">🍔</span><h2 class="text-2xl font-bold">DrukHub Food</h2></div>
-          <p class="text-sm opacity-90 mb-3">Craving something delicious? Order from the best restaurants in Bhutan!</p>
-          <div class="flex items-center gap-4 text-sm">
-            <span class="bg-white/20 px-3 py-1 rounded-full">30 min delivery</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full">Free delivery on Nu. 500+</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full">Live tracking</span>
+    <!-- ═══════════ FOOD & TRANSPORT SECTION ═══════════ -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">🚀 Food & Transport</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <a href="#" @click.prevent="page='food'" class="block bg-gradient-to-r from-red-500 to-orange-500 rounded-lg p-5 text-white relative overflow-hidden hover:shadow-lg transition">
+          <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-1"><span class="text-2xl">🍔</span><h3 class="text-lg font-bold">DrukHub Food</h3></div>
+            <p class="text-xs opacity-90 mb-2">Order from the best restaurants in Bhutan</p>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="bg-white/20 px-2 py-0.5 rounded-full">30 min delivery</span>
+              <span class="bg-white/20 px-2 py-0.5 rounded-full">Free on Nu. 500+</span>
+            </div>
           </div>
-        </div>
-        <div class="absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-20">🍕🍜🥘</div>
-      </a>
+          <div class="absolute right-4 top-1/2 -translate-y-1/2 text-5xl opacity-15">🍕🍜</div>
+        </a>
+        <a href="#" @click.prevent="page='taxi'" class="block bg-gradient-to-r from-gray-900 to-gray-700 rounded-lg p-5 text-white relative overflow-hidden hover:shadow-lg transition">
+          <div class="relative z-10">
+            <div class="flex items-center gap-2 mb-1"><span class="text-2xl">🚖</span><h3 class="text-lg font-bold">DrukRide</h3></div>
+            <p class="text-xs opacity-90 mb-2">Book a taxi anywhere in Bhutan</p>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="bg-white/20 px-2 py-0.5 rounded-full">Safe rides</span>
+              <span class="bg-white/20 px-2 py-0.5 rounded-full">Fair fares</span>
+            </div>
+          </div>
+          <div class="absolute right-4 top-1/2 -translate-y-1/2 text-5xl opacity-10">🚗🚕</div>
+        </a>
+      </div>
     </div>
 
-    <!-- DrukRide Banner -->
-    <div class="max-w-[1500px] mx-auto px-4 mt-6">
-      <a href="#" @click.prevent="page='taxi'" class="block bg-gradient-to-r from-gray-900 to-gray-700 rounded-lg p-6 text-white relative overflow-hidden hover:shadow-lg transition">
-        <div class="relative z-10">
-          <div class="flex items-center gap-2 mb-1"><span class="text-3xl">🚖</span><h2 class="text-2xl font-bold">DrukRide</h2></div>
-          <p class="text-sm opacity-90 mb-3">Book a taxi anywhere in Bhutan — Uber-style, Bhutanese prices</p>
-          <div class="flex items-center gap-4 text-sm">
-            <span class="bg-white/20 px-3 py-1 rounded-full">Safe rides</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full">Fair fares</span>
-            <span class="bg-white/20 px-3 py-1 rounded-full">Track your driver</span>
-          </div>
-        </div>
-        <div class="absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-10">🚗🚕🛺</div>
-      </a>
+    <!-- ═══════════ SERVICES & PAYMENTS SECTION ═══════════ -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">💼 Services & Payments</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <a href="#" @click.prevent="page='services'" class="bg-white rounded-lg p-5 hover:shadow-lg transition text-center border">
+          <p class="text-3xl mb-2">🛠️</p><p class="font-bold text-sm">Local Services</p><p class="text-xs text-gray-500 mt-1">Hire professionals</p>
+        </a>
+        <a href="#" @click.prevent="page='bills'" class="bg-white rounded-lg p-5 hover:shadow-lg transition text-center border">
+          <p class="text-3xl mb-2">📱</p><p class="font-bold text-sm">Pay Bills</p><p class="text-xs text-gray-500 mt-1">Recharge & utilities</p>
+        </a>
+        <a href="#" @click.prevent="page='hardware'" class="bg-white rounded-lg p-5 hover:shadow-lg transition text-center border">
+          <p class="text-3xl mb-2">🔨</p><p class="font-bold text-sm">Hardware Store</p><p class="text-xs text-gray-500 mt-1">Construction supplies</p>
+        </a>
+        <a href="#" @click.prevent="page='emi'" class="bg-white rounded-lg p-5 hover:shadow-lg transition text-center border">
+          <p class="text-3xl mb-2">💳</p><p class="font-bold text-sm">EMI Calculator</p><p class="text-xs text-gray-500 mt-1">Buy now, pay later</p>
+        </a>
+      </div>
     </div>
 
-    <!-- Quick Actions Grid -->
-    <div class="max-w-[1500px] mx-auto px-4 mt-6">
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <a href="#" @click.prevent="page='taxi'" class="bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🚖</p><p class="font-bold text-sm">DrukRide</p><p class="text-xs opacity-80 mt-1">Book a taxi</p>
+    <!-- ═══════════ REWARDS & OFFERS SECTION ═══════════ -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">⭐ Rewards & Offers</h2>
+      <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
+        <a href="#" @click.prevent="page='rewards'" class="bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🏆</p><p class="font-bold text-sm">Rewards</p><p class="text-xs opacity-80 mt-1" x-text="loyaltyPoints + ' pts'"></p>
         </a>
-        <a href="#" @click.prevent="page='rewards'" class="bg-gradient-to-br from-amber-500 to-orange-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🏆</p><p class="font-bold text-sm">Rewards</p><p class="text-xs opacity-80 mt-1" x-text="loyaltyPoints + ' pts'"></p>
+        <a href="#" @click.prevent="page='spin'" class="bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🎰</p><p class="font-bold text-sm">Spin & Win</p><p class="text-xs opacity-80 mt-1">Daily prizes!</p>
         </a>
-        <a href="#" @click.prevent="page='spin'" class="bg-gradient-to-br from-purple-500 to-indigo-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🎰</p><p class="font-bold text-sm">Spin & Win</p><p class="text-xs opacity-80 mt-1">Win daily!</p>
-        </a>
-        <a href="#" @click.prevent="page='services'" class="bg-gradient-to-br from-teal-500 to-cyan-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">🛠️</p><p class="font-bold text-sm">Services</p><p class="text-xs opacity-80 mt-1">Hire pros</p>
-        </a>
-        <a href="#" @click.prevent="page='bills'" class="bg-gradient-to-br from-pink-500 to-rose-600 text-white rounded-lg p-5 hover:shadow-lg transition">
-          <p class="text-2xl mb-2">📱</p><p class="font-bold text-sm">Pay Bills</p><p class="text-xs opacity-80 mt-1">Recharge</p>
+        <a href="#" @click.prevent="page='refer'" class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">👥</p><p class="font-bold text-sm">Refer & Earn</p><p class="text-xs opacity-80 mt-1">Invite friends</p>
         </a>
       </div>
     </div>
 
     <!-- Sell Banner -->
-    <div class="max-w-[1500px] mx-auto px-4 mb-6 mt-6">
-      <div class="bg-white p-5 text-center">
+    <div class="max-w-[1500px] mx-auto px-4 mb-6 mt-8">
+      <div class="bg-white p-5 text-center rounded-lg border">
         <h2 class="text-xl font-bold mb-1">Sell on DrukHub.bt</h2>
         <p class="text-sm text-gray-600 mb-4">Reach millions of buyers across Bhutan</p>
         <a href="#" @click.prevent="page='register'; registerRole='seller'" class="amz-btn px-6 py-2 text-sm font-bold">Register as a Seller</a>
