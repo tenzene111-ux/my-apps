@@ -60,7 +60,7 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <script>
     // ⚠️ REPLACE with your own Firebase project config from https://console.firebase.google.com
     const firebaseConfig = {
@@ -69,10 +69,11 @@
       projectId: "YOUR_PROJECT_ID",
       storageBucket: "YOUR_PROJECT.appspot.com",
       messagingSenderId: "000000000000",
-      appId: "YOUR_APP_ID"
+      appId: "YOUR_APP_ID",
+      databaseURL: "https://YOUR_PROJECT-default-rtdb.asia-southeast1.firebasedatabase.app"
     };
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    const db = firebase.database();
     const auth = firebase.auth();
   </script>
 </head>
@@ -2301,8 +2302,8 @@ function marketplace() {
       // Firebase Auth state listener
       auth.onAuthStateChanged(async (firebaseUser) => {
         if (firebaseUser) {
-          const doc = await db.collection('users').doc(firebaseUser.uid).get();
-          const data = doc.exists ? doc.data() : {};
+          const snap = await db.ref('users/' + firebaseUser.uid).get();
+          const data = snap.exists() ? snap.val() : {};
           this.user = { uid: firebaseUser.uid, name: data.name || firebaseUser.displayName || firebaseUser.email.split('@')[0], email: firebaseUser.email, role: data.role || 'buyer', phone: data.phone || '' };
         } else { this.user = null; }
       });
@@ -2311,11 +2312,11 @@ function marketplace() {
     },
     async loadFirebaseProducts() {
       try {
-        const snap = await db.collection('products').orderBy('createdAt', 'desc').get();
-        snap.forEach(doc => {
-          const p = { id: doc.id, ...doc.data() };
+        const snap = await db.ref('products').orderByChild('createdAt').get();
+        if (snap.exists()) { const data = snap.val(); Object.keys(data).reverse().forEach(key => {
+          const p = { id: key, ...data[key] };
           if (!this.allProducts.find(x => x.id === p.id)) this.allProducts.unshift(p);
-        });
+        }); }
       } catch(e) { console.log('Firestore not configured yet — using demo products'); }
     },
     filterCategory(name) { this.activeCategory = name; this.page = 'products'; },
@@ -2360,7 +2361,7 @@ function marketplace() {
       try {
         const cred = await auth.createUserWithEmailAndPassword(this.regEmail, this.regPassword);
         await cred.user.updateProfile({ displayName: this.regName });
-        await db.collection('users').doc(cred.user.uid).set({ name: this.regName, email: this.regEmail, role: this.registerRole || 'buyer', createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+        await db.ref('users/' + cred.user.uid).set({ name: this.regName, email: this.regEmail, role: this.registerRole || 'buyer', createdAt: new Date().toISOString() });
         this.regName='';this.regEmail='';this.regPassword='';this.regConfirm='';
         this.showToast('Account created!'); this.page='home';
       } catch(e) { this.authError = e.code === 'auth/email-already-in-use' ? 'Email already registered' : e.code === 'auth/weak-password' ? 'Password too weak (min 6 chars)' : e.message; }
@@ -2373,11 +2374,12 @@ function marketplace() {
       if(!this.newProduct.title||!this.newProduct.price)return;
       const cond=this.newProduct.condition;
       const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'};
-      const p={title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'DrukHub Store',sellerUid:this.user?.uid||null,specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New',createdAt:firebase.firestore.FieldValue.serverTimestamp()};
+      const p={title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'DrukHub Store',sellerUid:this.user?.uid||null,specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New',createdAt:new Date().toISOString()};
       if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;}
       try {
-        const docRef = await db.collection('products').add(p);
-        p.id = docRef.id;
+        const newRef = db.ref('products').push();
+        await newRef.set(p);
+        p.id = newRef.key;
         this.allProducts.unshift(p);
         this.showToast('Product listed & saved to cloud!');
       } catch(e) {
@@ -2421,7 +2423,7 @@ function marketplace() {
       const estDate=new Date(Date.now()+estDays*86400000).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
       const order={id:'ORD-'+Date.now().toString().slice(-6),date:new Date().toLocaleDateString(),items:this.cart.map(i=>({title:i.product.title,qty:i.qty,price:i.product.price,image:i.product.image})),total:this.cartTotalWithPromo(),status:'pending',address:{...this.selectedAddress},payment:this.paymentMethod,tracking:trackingSteps,estimatedDelivery:estDate,promo:this.promoApplied?{...this.promoApplied}:null,userUid:this.user?.uid||null,createdAt:new Date().toISOString()};
       this.orders.unshift(order);
-      try { await db.collection('orders').add(order); } catch(e) {}
+      try { await db.ref('orders').push().set(order); } catch(e) {}
       this.cart=[]; this.promoApplied=null; this.promoCode=''; this.checkoutStep=0;
       this.addNotification('Order placed! Estimated delivery: '+estDate);
       this.showToast('Order placed successfully!'); this.page='orders';
@@ -2517,7 +2519,7 @@ function marketplace() {
     async saveProfile() {
       if(this.user){
         this.user.name=this.editProfile.name;this.user.email=this.editProfile.email;this.user.phone=this.editProfile.phone;
-        try { await db.collection('users').doc(this.user.uid).update({ name: this.user.name, phone: this.user.phone }); } catch(e) {}
+        try { await db.ref('users/' + this.user.uid).update({ name: this.user.name, phone: this.user.phone }); } catch(e) {}
         this.showToast('Profile updated!');
       }
     },
