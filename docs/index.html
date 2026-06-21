@@ -154,6 +154,7 @@
             <a href="#" @click.prevent="page='orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Your Orders</a>
             <a href="#" @click.prevent="page='wishlist'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Wishlist (<span x-text="wishlist.length"></span>)</a>
             <a href="#" @click.prevent="page='sell'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amz-orange2">Sell Your Stuff</a>
+            <a href="#" @click.prevent="page='food-orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Food Orders</a>
             <a href="#" @click.prevent="page='messages'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Messages</a>
             <template x-if="user.role==='seller'||user.role==='admin'"><a href="#" @click.prevent="page='dashboard'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Seller Dashboard</a></template>
             <template x-if="user.role==='admin'"><a href="#" @click.prevent="page='admin'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Admin Panel</a></template>
@@ -190,6 +191,9 @@
         <a href="#" @click.prevent="item==='Sell' ? (page='register', registerRole='seller') : (page='products')"
           class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="item"></a>
       </template>
+      <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
+        <span class="text-amz-orange font-bold">🍔 Food Delivery</span>
+      </a>
       <template x-for="cat in categories.slice(0,4)" :key="cat.name">
         <a href="#" @click.prevent="filterCategory(cat.name)" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="cat.name"></a>
       </template>
@@ -215,6 +219,11 @@
       </template>
       <div class="border-t my-2"></div>
       <a href="#" @click.prevent="page='products'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold">All Products</a>
+      <div class="border-t my-2"></div>
+      <div class="px-6 py-2 text-lg font-bold border-b flex items-center gap-2">🍔 DrukHub Food</div>
+      <a href="#" @click.prevent="page='food'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-red-500">Order Food Now</a>
+      <a href="#" @click.prevent="page='food-orders'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Food Orders</a>
+      <div class="border-t my-2"></div>
       <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm">Sell on DrukHub</a>
     </div>
     <button @click="sideMenu=false" class="absolute top-2 right-2 text-white text-2xl font-bold hover:text-gray-300">&times;</button>
@@ -341,8 +350,24 @@
       </div>
     </div>
 
+    <!-- Food Delivery Banner -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-6">
+      <a href="#" @click.prevent="page='food'" class="block bg-gradient-to-r from-red-500 to-orange-500 rounded-lg p-6 text-white relative overflow-hidden hover:shadow-lg transition">
+        <div class="relative z-10">
+          <div class="flex items-center gap-2 mb-1"><span class="text-3xl">🍔</span><h2 class="text-2xl font-bold">DrukHub Food</h2></div>
+          <p class="text-sm opacity-90 mb-3">Craving something delicious? Order from the best restaurants in Bhutan!</p>
+          <div class="flex items-center gap-4 text-sm">
+            <span class="bg-white/20 px-3 py-1 rounded-full">30 min delivery</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full">Free delivery on Nu. 500+</span>
+            <span class="bg-white/20 px-3 py-1 rounded-full">Live tracking</span>
+          </div>
+        </div>
+        <div class="absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-20">🍕🍜🥘</div>
+      </a>
+    </div>
+
     <!-- Sell Banner -->
-    <div class="max-w-[1500px] mx-auto px-4 mb-6">
+    <div class="max-w-[1500px] mx-auto px-4 mb-6 mt-6">
       <div class="bg-white p-5 text-center">
         <h2 class="text-xl font-bold mb-1">Sell on DrukHub.bt</h2>
         <p class="text-sm text-gray-600 mb-4">Reach millions of buyers across Bhutan</p>
@@ -1314,6 +1339,324 @@
     </div>
   </div>
 
+  <!-- FOOD DELIVERY - Main Page -->
+  <div x-show="page === 'food'" class="max-w-[1500px] mx-auto px-4 py-4">
+    <!-- Food Hero -->
+    <div class="bg-gradient-to-r from-red-600 to-orange-500 rounded-xl p-8 mb-6 text-white relative overflow-hidden">
+      <div class="relative z-10">
+        <h1 class="text-3xl md:text-4xl font-bold mb-2">DrukHub Food</h1>
+        <p class="text-lg opacity-90 mb-4">Order food from the best restaurants in Bhutan</p>
+        <div class="flex items-center gap-2 max-w-lg">
+          <div class="flex-1 relative">
+            <input type="text" x-model="foodSearch" @input="filterRestaurants()" placeholder="Search for restaurants, cuisines, or dishes..." class="w-full px-4 py-3 rounded-lg text-gray-800 text-sm pr-10">
+            <svg class="w-5 h-5 absolute right-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="absolute right-4 bottom-2 text-8xl opacity-10">🍽️</div>
+    </div>
+
+    <!-- Delivery Location -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-amz-red" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span class="text-sm"><span class="font-bold">Delivering to:</span> <span x-text="deliveryAddress.city || 'Thimphu'"></span>, Bhutan</span>
+      </div>
+      <div class="flex gap-2 text-xs">
+        <span class="bg-green-100 text-green-700 px-2 py-1 rounded-full font-bold">Open Now</span>
+        <select x-model="foodSortBy" @change="filterRestaurants()" class="border rounded px-2 py-1 text-sm">
+          <option value="popular">Most Popular</option>
+          <option value="rating">Top Rated</option>
+          <option value="delivery">Fastest Delivery</option>
+          <option value="price_low">Price: Low to High</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Cuisine Filter -->
+    <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-6 pb-1">
+      <button @click="foodCuisine=''" class="shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-full text-xs font-bold transition" :class="!foodCuisine ? 'bg-red-500 text-white' : 'bg-white hover:bg-gray-100'">
+        <span class="text-2xl">🍽️</span> All
+      </button>
+      <template x-for="c in foodCuisines" :key="c.name">
+        <button @click="foodCuisine=c.name; filterRestaurants()" class="shrink-0 flex flex-col items-center gap-1 px-4 py-2 rounded-full text-xs font-bold transition" :class="foodCuisine===c.name ? 'bg-red-500 text-white' : 'bg-white hover:bg-gray-100'">
+          <span class="text-2xl" x-text="c.icon"></span> <span x-text="c.name"></span>
+        </button>
+      </template>
+    </div>
+
+    <!-- Quick Offers -->
+    <div class="flex gap-3 overflow-x-auto hide-scrollbar mb-6">
+      <div class="shrink-0 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-lg px-5 py-3 w-[250px]">
+        <p class="font-bold text-sm">60% OFF up to Nu. 300</p>
+        <p class="text-xs opacity-80 mt-1">Use code: DRUKFOOD60</p>
+      </div>
+      <div class="shrink-0 bg-gradient-to-r from-orange-500 to-yellow-400 text-white rounded-lg px-5 py-3 w-[250px]">
+        <p class="font-bold text-sm">Free Delivery</p>
+        <p class="text-xs opacity-80 mt-1">On orders above Nu. 500</p>
+      </div>
+      <div class="shrink-0 bg-gradient-to-r from-green-600 to-green-400 text-white rounded-lg px-5 py-3 w-[250px]">
+        <p class="font-bold text-sm">Buy 1 Get 1 Free</p>
+        <p class="text-xs opacity-80 mt-1">On select restaurants</p>
+      </div>
+      <div class="shrink-0 bg-gradient-to-r from-purple-600 to-pink-400 text-white rounded-lg px-5 py-3 w-[250px]">
+        <p class="font-bold text-sm">New User Special</p>
+        <p class="text-xs opacity-80 mt-1">Flat 50% off first order</p>
+      </div>
+    </div>
+
+    <!-- Restaurant Grid -->
+    <h2 class="text-xl font-bold mb-4" x-text="foodCuisine ? foodCuisine + ' Restaurants' : 'All Restaurants'"></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <template x-for="rest in filteredRestaurants" :key="rest.id">
+        <a href="#" @click.prevent="openRestaurant(rest)" class="bg-white rounded-xl overflow-hidden hover:shadow-lg transition group">
+          <div class="relative h-[180px] overflow-hidden">
+            <img :src="rest.image" :alt="rest.name" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+              <div class="flex items-end justify-between">
+                <div>
+                  <span x-show="rest.promoted" class="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">PROMOTED</span>
+                  <span x-show="rest.offer" class="bg-blue-700 text-white text-xs font-bold px-2 py-0.5 rounded mt-1 inline-block" x-text="rest.offer"></span>
+                </div>
+                <span class="bg-white text-xs px-2 py-0.5 rounded text-gray-700" x-text="rest.deliveryTime + ' min'"></span>
+              </div>
+            </div>
+          </div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-base" x-text="rest.name"></h3>
+              <span class="text-xs font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5" :class="rest.rating >= 4 ? 'bg-green-600 text-white' : rest.rating >= 3 ? 'bg-yellow-500 text-white' : 'bg-red-500 text-white'">
+                <span x-text="rest.rating"></span> ★
+              </span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1" x-text="rest.cuisines.join(', ')"></p>
+            <div class="flex items-center justify-between mt-2 text-xs text-gray-500">
+              <span x-text="rest.location"></span>
+              <span x-text="'Nu. ' + rest.priceForTwo + ' for two'"></span>
+            </div>
+            <div class="flex gap-2 mt-2">
+              <span x-show="rest.freeDelivery" class="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-bold">FREE DELIVERY</span>
+              <span x-show="rest.isNew" class="text-[10px] bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded font-bold">NEW</span>
+              <span x-show="rest.veg" class="text-[10px] bg-green-50 text-green-600 px-1.5 py-0.5 rounded font-bold">PURE VEG</span>
+            </div>
+          </div>
+        </a>
+      </template>
+    </div>
+    <p x-show="filteredRestaurants.length===0" class="text-center text-gray-500 py-10">No restaurants found. Try a different search or cuisine.</p>
+  </div>
+
+  <!-- RESTAURANT DETAIL PAGE -->
+  <div x-show="page === 'restaurant'" class="max-w-[900px] mx-auto px-4 py-4">
+    <template x-if="selectedRestaurant">
+      <div>
+        <!-- Restaurant Header -->
+        <div class="bg-white rounded-xl overflow-hidden mb-4">
+          <div class="h-[200px] relative">
+            <img :src="selectedRestaurant.image" class="w-full h-full object-cover">
+            <button @click="page='food'" class="absolute top-3 left-3 bg-white/90 rounded-full p-2 hover:bg-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+          </div>
+          <div class="p-5">
+            <div class="flex justify-between items-start">
+              <div>
+                <h1 class="text-2xl font-bold" x-text="selectedRestaurant.name"></h1>
+                <p class="text-sm text-gray-500 mt-1" x-text="selectedRestaurant.cuisines.join(', ')"></p>
+                <p class="text-sm text-gray-500" x-text="selectedRestaurant.location + ' • ' + selectedRestaurant.deliveryTime + ' min delivery'"></p>
+              </div>
+              <div class="text-center">
+                <span class="text-lg font-bold px-3 py-1 rounded" :class="selectedRestaurant.rating >= 4 ? 'bg-green-600 text-white' : 'bg-yellow-500 text-white'" x-text="selectedRestaurant.rating + ' ★'"></span>
+                <p class="text-[10px] text-gray-500 mt-1" x-text="selectedRestaurant.totalRatings + ' ratings'"></p>
+              </div>
+            </div>
+            <div class="flex gap-4 mt-3 text-xs">
+              <span class="flex items-center gap-1"><svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> <span x-text="selectedRestaurant.hours"></span></span>
+              <span class="flex items-center gap-1"><svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg> <span x-text="selectedRestaurant.address"></span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menu Category Tabs -->
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4 sticky top-[99px] z-30 bg-[#e3e6e6] py-2">
+          <template x-for="cat in selectedRestaurant.menuCategories" :key="cat">
+            <button @click="foodMenuCat=cat" class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition" :class="foodMenuCat===cat ? 'bg-red-500 text-white' : 'bg-white hover:bg-gray-100'" x-text="cat"></button>
+          </template>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="bg-white rounded-xl p-5">
+          <h2 class="text-lg font-bold mb-4" x-text="foodMenuCat || 'All Items'"></h2>
+          <div class="space-y-4">
+            <template x-for="item in selectedRestaurant.menu.filter(m => !foodMenuCat || m.category === foodMenuCat)" :key="item.id">
+              <div class="flex justify-between items-center py-3 border-b last:border-0">
+                <div class="flex-1 pr-4">
+                  <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 border rounded-sm flex items-center justify-center" :class="item.veg ? 'border-green-600' : 'border-red-600'">
+                      <span class="w-2 h-2 rounded-full" :class="item.veg ? 'bg-green-600' : 'bg-red-600'"></span>
+                    </span>
+                    <span x-show="item.bestseller" class="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-bold">BESTSELLER</span>
+                    <span x-show="item.spicy" class="text-[10px]">🌶️</span>
+                  </div>
+                  <h3 class="font-bold text-sm mt-1" x-text="item.name"></h3>
+                  <p class="text-sm font-bold mt-0.5" x-text="'Nu. ' + item.price"></p>
+                  <p class="text-xs text-gray-500 mt-1 line-clamp-2" x-text="item.description"></p>
+                </div>
+                <div class="relative shrink-0">
+                  <img :src="item.image" class="w-[120px] h-[100px] rounded-lg object-cover">
+                  <div class="absolute -bottom-3 left-1/2 -translate-x-1/2">
+                    <template x-if="!getFoodCartQty(item.id)">
+                      <button @click="addToFoodCart(item)" class="bg-white text-red-500 border border-red-400 rounded-lg px-6 py-1 text-sm font-bold shadow hover:bg-red-50">ADD</button>
+                    </template>
+                    <template x-if="getFoodCartQty(item.id) > 0">
+                      <div class="bg-red-500 text-white rounded-lg flex items-center shadow">
+                        <button @click="updateFoodCartQty(item.id, -1)" class="px-3 py-1 font-bold text-sm hover:bg-red-600 rounded-l-lg">−</button>
+                        <span class="px-3 py-1 text-sm font-bold" x-text="getFoodCartQty(item.id)"></span>
+                        <button @click="updateFoodCartQty(item.id, 1)" class="px-3 py-1 font-bold text-sm hover:bg-red-600 rounded-r-lg">+</button>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- FOOD CART PAGE -->
+  <div x-show="page === 'food-cart'" class="max-w-[700px] mx-auto px-4 py-4">
+    <button @click="page=selectedRestaurant?'restaurant':'food'" class="text-amz-link text-sm hover:underline mb-3 inline-flex items-center gap-1">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Back to menu
+    </button>
+    <template x-if="foodCart.length === 0">
+      <div class="bg-white p-10 rounded-xl text-center">
+        <p class="text-6xl mb-4">🛒</p>
+        <h2 class="text-xl font-bold mb-2">Your food cart is empty</h2>
+        <p class="text-gray-500 text-sm mb-4">Add items from a restaurant to get started</p>
+        <a href="#" @click.prevent="page='food'" class="text-red-500 font-bold text-sm hover:underline">Browse restaurants</a>
+      </div>
+    </template>
+    <template x-if="foodCart.length > 0">
+      <div class="space-y-4">
+        <div class="bg-white rounded-xl p-5">
+          <div class="flex items-center gap-3 mb-4 pb-3 border-b">
+            <img :src="foodCartRestaurant?.image" class="w-12 h-12 rounded-lg object-cover">
+            <div>
+              <h2 class="font-bold" x-text="foodCartRestaurant?.name"></h2>
+              <p class="text-xs text-gray-500" x-text="foodCartRestaurant?.location"></p>
+            </div>
+          </div>
+          <template x-for="item in foodCart" :key="item.id">
+            <div class="flex justify-between items-center py-3 border-b last:border-0">
+              <div class="flex items-center gap-3">
+                <span class="w-4 h-4 border rounded-sm flex items-center justify-center" :class="item.veg ? 'border-green-600' : 'border-red-600'">
+                  <span class="w-2 h-2 rounded-full" :class="item.veg ? 'bg-green-600' : 'bg-red-600'"></span>
+                </span>
+                <span class="text-sm" x-text="item.name"></span>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="flex items-center border border-red-400 rounded">
+                  <button @click="updateFoodCartQty(item.id, -1)" class="px-2 py-0.5 text-red-500 font-bold text-sm">−</button>
+                  <span class="px-2 py-0.5 text-sm bg-red-50" x-text="item.qty"></span>
+                  <button @click="updateFoodCartQty(item.id, 1)" class="px-2 py-0.5 text-red-500 font-bold text-sm">+</button>
+                </div>
+                <span class="text-sm font-bold w-20 text-right" x-text="'Nu. ' + (item.price * item.qty)"></span>
+              </div>
+            </div>
+          </template>
+          <!-- Special Instructions -->
+          <div class="mt-4 pt-3 border-t">
+            <textarea x-model="foodNote" placeholder="Add cooking instructions, allergies, etc. (optional)" class="w-full border rounded-lg px-3 py-2 text-sm h-16 amz-input"></textarea>
+          </div>
+        </div>
+
+        <!-- Bill Details -->
+        <div class="bg-white rounded-xl p-5">
+          <h3 class="font-bold text-sm mb-3">Bill Details</h3>
+          <div class="text-sm space-y-2">
+            <div class="flex justify-between"><span>Item Total</span><span x-text="'Nu. ' + foodCartTotal()"></span></div>
+            <div class="flex justify-between"><span>Delivery Fee</span><span :class="foodCartTotal()>=500 ? 'text-green-600 font-bold' : ''" x-text="foodCartTotal()>=500 ? 'FREE' : 'Nu. 50'"></span></div>
+            <div class="flex justify-between"><span>Platform Fee</span><span>Nu. 10</span></div>
+            <div class="flex justify-between"><span>GST & Taxes</span><span x-text="'Nu. ' + Math.round(foodCartTotal()*0.05)"></span></div>
+            <hr>
+            <div class="flex justify-between font-bold text-base"><span>To Pay</span><span x-text="'Nu. ' + foodGrandTotal()"></span></div>
+          </div>
+        </div>
+
+        <!-- Delivery Address -->
+        <div class="bg-white rounded-xl p-5">
+          <h3 class="font-bold text-sm mb-3">Delivery Address</h3>
+          <div class="grid md:grid-cols-2 gap-3">
+            <input type="text" x-model="deliveryAddress.name" placeholder="Full Name" class="border rounded-lg px-3 py-2 text-sm amz-input">
+            <input type="tel" x-model="deliveryAddress.phone" placeholder="Phone (+975)" class="border rounded-lg px-3 py-2 text-sm amz-input">
+            <input type="text" x-model="deliveryAddress.street" placeholder="Full Address, Landmark" class="border rounded-lg px-3 py-2 text-sm amz-input md:col-span-2">
+          </div>
+        </div>
+
+        <!-- Place Order -->
+        <div class="bg-white rounded-xl p-5 flex items-center justify-between">
+          <div>
+            <p class="text-lg font-bold" x-text="'Nu. ' + foodGrandTotal()"></p>
+            <p class="text-xs text-green-600" x-text="'Delivery in ~' + (foodCartRestaurant?.deliveryTime||30) + ' min'"></p>
+          </div>
+          <button @click="placeFoodOrder()" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded-lg font-bold text-sm">Place Order</button>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- FOOD ORDERS PAGE -->
+  <div x-show="page === 'food-orders'" class="max-w-[800px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-4">Food Orders</h1>
+    <template x-if="foodOrders.length === 0">
+      <div class="bg-white p-10 rounded-xl text-center">
+        <p class="text-5xl mb-3">🍽️</p>
+        <p class="text-gray-500">No food orders yet. Order something delicious!</p>
+        <a href="#" @click.prevent="page='food'" class="text-red-500 font-bold text-sm mt-3 inline-block hover:underline">Browse Restaurants</a>
+      </div>
+    </template>
+    <div class="space-y-4">
+      <template x-for="fo in foodOrders" :key="fo.id">
+        <div class="bg-white rounded-xl overflow-hidden">
+          <div class="p-5">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-bold" x-text="fo.restaurant"></h3>
+                <p class="text-xs text-gray-500" x-text="fo.date + ' • Order #' + fo.id"></p>
+              </div>
+              <span class="text-xs font-bold px-2 py-1 rounded-full" :class="fo.status==='delivered'?'bg-green-100 text-green-700':fo.status==='preparing'?'bg-amber-100 text-amber-700':fo.status==='on_the_way'?'bg-blue-100 text-blue-700':'bg-gray-100'" x-text="fo.status==='on_the_way'?'On the Way':fo.status.charAt(0).toUpperCase()+fo.status.slice(1)"></span>
+            </div>
+            <!-- Live Tracking Steps -->
+            <div class="flex items-center gap-0 mb-4">
+              <template x-for="(step,si) in fo.tracking" :key="si">
+                <div class="flex items-center">
+                  <div class="flex flex-col items-center min-w-[70px]">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs" :class="step.done ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'" x-text="step.done ? '✓' : ''"></div>
+                    <p class="text-[10px] mt-1 text-center" :class="step.done ? 'text-green-600 font-bold' : 'text-gray-400'" x-text="step.label"></p>
+                  </div>
+                  <div x-show="si < fo.tracking.length-1" class="w-6 h-0.5 -mt-4" :class="step.done ? 'bg-green-500' : 'bg-gray-200'"></div>
+                </div>
+              </template>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <template x-for="item in fo.items" :key="item.name">
+                <span class="text-xs bg-gray-100 px-2 py-1 rounded" x-text="item.name + ' × ' + item.qty"></span>
+              </template>
+            </div>
+            <div class="flex justify-between items-center mt-3 pt-3 border-t text-sm">
+              <span class="font-bold" x-text="'Total: Nu. ' + fo.total"></span>
+              <div class="flex gap-2">
+                <button @click="page='food'" class="text-red-500 text-xs font-bold hover:underline">Reorder</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -1375,6 +1718,19 @@
     </div>
   </div>
 </footer>
+
+<!-- Floating Food Cart Bar -->
+<div x-show="foodCart.length > 0 && (page==='food' || page==='restaurant')" x-cloak x-transition class="fixed bottom-0 left-0 right-0 bg-green-600 text-white py-3 px-4 z-40 shadow-lg cursor-pointer" @click="page='food-cart'">
+  <div class="max-w-[900px] mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-sm" x-text="foodCart.reduce((s,i)=>s+i.qty,0) + ' item' + (foodCart.reduce((s,i)=>s+i.qty,0)>1?'s':'')"></span>
+      <span class="text-xs opacity-80">|</span>
+      <span class="text-sm font-bold" x-text="'Nu. ' + foodGrandTotal()"></span>
+      <span class="text-xs bg-white/20 px-2 py-0.5 rounded" x-text="foodCartRestaurant?.name"></span>
+    </div>
+    <span class="text-sm font-bold flex items-center gap-1">View Cart <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+  </div>
+</div>
 
 <!-- Floating Compare Bar -->
 <div x-show="compareList.length > 0 && page==='products'" x-cloak x-transition class="fixed bottom-0 left-0 right-0 bg-amz-dark2 text-white py-3 px-4 z-40 shadow-lg">
@@ -1492,7 +1848,95 @@ function marketplace() {
       { id: 12, title: 'Car Dash Camera 1080P - Night Vision', price: 3779, originalPrice: 5879, discount: 36, category: 'Automotive', image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=400&h=400&fit=crop', rating: 4.1, reviews: 203, sold: 1100, stock: 30, freeShipping: true, store: 'AutoParts Thimphu', description: 'Full HD dash camera with night vision, loop recording, and wide-angle lens.', specs: { 'Resolution': '1080P', 'Angle': '170°', 'Storage': 'Up to 128GB' }, reviewList: [], dateAdded: '2024-06-10' },
     ],
 
-    init() { setInterval(() => { this.$nextTick(() => {}); }, 1000); },
+    // Food delivery state
+    foodSearch: '',
+    foodCuisine: '',
+    foodSortBy: 'popular',
+    foodMenuCat: '',
+    foodNote: '',
+    selectedRestaurant: null,
+    foodCart: [],
+    foodCartRestaurant: null,
+    foodOrders: [],
+    filteredRestaurants: [],
+    foodCuisines: [
+      { name: 'Bhutanese', icon: '🥘' },
+      { name: 'Indian', icon: '🍛' },
+      { name: 'Chinese', icon: '🥡' },
+      { name: 'Fast Food', icon: '🍔' },
+      { name: 'Pizza', icon: '🍕' },
+      { name: 'Momos', icon: '🥟' },
+      { name: 'Bakery', icon: '🍰' },
+      { name: 'Beverages', icon: '🧃' },
+      { name: 'Healthy', icon: '🥗' },
+    ],
+    restaurants: [
+      { id: 1, name: 'Ama\'s Kitchen', cuisines: ['Bhutanese', 'Traditional'], location: 'Norzin Lam, Thimphu', address: 'Norzin Lam, Near Clock Tower, Thimphu', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&h=250&fit=crop', rating: 4.5, totalRatings: 342, deliveryTime: 25, priceForTwo: 800, freeDelivery: true, offer: '20% OFF up to Nu. 100', promoted: false, isNew: false, veg: false, hours: '8:00 AM - 10:00 PM',
+        menuCategories: ['Recommended', 'Ema Datshi', 'Rice & Noodles', 'Momos', 'Beverages'],
+        menu: [
+          { id: 101, name: 'Ema Datshi', category: 'Ema Datshi', price: 180, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=150&fit=crop', description: 'Traditional Bhutanese chili cheese stew with local chilies and datshi', veg: true, bestseller: true, spicy: true },
+          { id: 102, name: 'Kewa Datshi', category: 'Ema Datshi', price: 160, image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=200&h=150&fit=crop', description: 'Potato and cheese stew, a Bhutanese comfort classic', veg: true, bestseller: false, spicy: false },
+          { id: 103, name: 'Shakam Paa', category: 'Recommended', price: 280, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=150&fit=crop', description: 'Dried beef stir-fried with chili, dried turnip greens and radish', veg: false, bestseller: true, spicy: true },
+          { id: 104, name: 'Red Rice with Dal', category: 'Rice & Noodles', price: 120, image: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=200&h=150&fit=crop', description: 'Bhutanese red rice served with yellow lentil dal', veg: true, bestseller: false, spicy: false },
+          { id: 105, name: 'Momo (Steamed)', category: 'Momos', price: 100, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=200&h=150&fit=crop', description: 'Traditional steamed dumplings with mixed vegetable filling', veg: true, bestseller: true, spicy: false },
+          { id: 106, name: 'Momo (Fried)', category: 'Momos', price: 120, image: 'https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?w=200&h=150&fit=crop', description: 'Crispy fried dumplings with spicy chutney', veg: false, bestseller: false, spicy: true },
+          { id: 107, name: 'Butter Tea (Suja)', category: 'Beverages', price: 50, image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=200&h=150&fit=crop', description: 'Traditional Bhutanese butter tea', veg: true, bestseller: false, spicy: false },
+          { id: 108, name: 'Jasha Maroo', category: 'Recommended', price: 220, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&h=150&fit=crop', description: 'Spicy Bhutanese chicken stew with tomatoes, onions and chilies', veg: false, bestseller: true, spicy: true },
+        ]
+      },
+      { id: 2, name: 'Thimphu Pizza House', cuisines: ['Pizza', 'Fast Food', 'Italian'], location: 'Chang Lam, Thimphu', address: 'Chang Lam, Near BSB Building, Thimphu', image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&h=250&fit=crop', rating: 4.2, totalRatings: 567, deliveryTime: 30, priceForTwo: 600, freeDelivery: false, offer: 'Buy 1 Get 1 Free', promoted: true, isNew: false, veg: false, hours: '10:00 AM - 11:00 PM',
+        menuCategories: ['Bestsellers', 'Pizzas', 'Burgers', 'Sides', 'Drinks'],
+        menu: [
+          { id: 201, name: 'Margherita Pizza', category: 'Pizzas', price: 350, image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&h=150&fit=crop', description: 'Classic pizza with fresh mozzarella, tomato sauce and basil', veg: true, bestseller: true, spicy: false },
+          { id: 202, name: 'Chicken Tikka Pizza', category: 'Pizzas', price: 450, image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=200&h=150&fit=crop', description: 'Loaded with tandoori chicken tikka, onions, peppers', veg: false, bestseller: true, spicy: true },
+          { id: 203, name: 'Classic Cheeseburger', category: 'Burgers', price: 250, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&h=150&fit=crop', description: 'Juicy beef patty with cheese, lettuce, tomato', veg: false, bestseller: false, spicy: false },
+          { id: 204, name: 'French Fries', category: 'Sides', price: 120, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&h=150&fit=crop', description: 'Crispy golden fries with ketchup', veg: true, bestseller: false, spicy: false },
+          { id: 205, name: 'Coca-Cola', category: 'Drinks', price: 60, image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7?w=200&h=150&fit=crop', description: '330ml can', veg: true, bestseller: false, spicy: false },
+          { id: 206, name: 'BBQ Chicken Wings', category: 'Bestsellers', price: 280, image: 'https://images.unsplash.com/photo-1527477396000-e27163b4bdfc?w=200&h=150&fit=crop', description: '8pcs smoky BBQ glazed chicken wings', veg: false, bestseller: true, spicy: true },
+        ]
+      },
+      { id: 3, name: 'Paro Dragon Café', cuisines: ['Chinese', 'Indian', 'Bhutanese'], location: 'Main Street, Paro', address: 'Near Paro Dzong, Main Street, Paro', image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&h=250&fit=crop', rating: 4.6, totalRatings: 189, deliveryTime: 35, priceForTwo: 1000, freeDelivery: true, offer: null, promoted: false, isNew: true, veg: false, hours: '9:00 AM - 9:30 PM',
+        menuCategories: ['Chef Special', 'Chinese', 'Indian', 'Desserts'],
+        menu: [
+          { id: 301, name: 'Chili Chicken', category: 'Chinese', price: 250, image: 'https://images.unsplash.com/photo-1525755662778-989d0524087e?w=200&h=150&fit=crop', description: 'Crispy chicken tossed in spicy chili sauce', veg: false, bestseller: true, spicy: true },
+          { id: 302, name: 'Veg Fried Rice', category: 'Chinese', price: 180, image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=200&h=150&fit=crop', description: 'Wok-tossed rice with vegetables and soy sauce', veg: true, bestseller: false, spicy: false },
+          { id: 303, name: 'Butter Chicken', category: 'Indian', price: 300, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&h=150&fit=crop', description: 'Creamy tomato-based chicken curry, rich and flavorful', veg: false, bestseller: true, spicy: false },
+          { id: 304, name: 'Paneer Tikka Masala', category: 'Indian', price: 260, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=200&h=150&fit=crop', description: 'Grilled cottage cheese in spiced tomato gravy', veg: true, bestseller: false, spicy: true },
+          { id: 305, name: 'Gulab Jamun', category: 'Desserts', price: 80, image: 'https://images.unsplash.com/photo-1666190064034-7fa59903ebc9?w=200&h=150&fit=crop', description: 'Soft milk dumplings soaked in rose sugar syrup (2pcs)', veg: true, bestseller: true, spicy: false },
+          { id: 306, name: 'Dragon Special Thali', category: 'Chef Special', price: 380, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=150&fit=crop', description: 'Complete meal: rice, 2 curries, dal, salad, papad, dessert', veg: false, bestseller: true, spicy: false },
+        ]
+      },
+      { id: 4, name: 'Green Leaf Veg Kitchen', cuisines: ['Healthy', 'Indian'], location: 'Babesa, Thimphu', address: 'Babesa Road, Near RTC Bus Stop', image: 'https://images.unsplash.com/photo-1494859802809-d069c3b71a8a?w=400&h=250&fit=crop', rating: 4.3, totalRatings: 124, deliveryTime: 20, priceForTwo: 500, freeDelivery: false, offer: 'Flat 30% OFF', promoted: false, isNew: false, veg: true, hours: '7:00 AM - 9:00 PM',
+        menuCategories: ['Salads', 'Bowls', 'Smoothies', 'Wraps'],
+        menu: [
+          { id: 401, name: 'Buddha Bowl', category: 'Bowls', price: 220, image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=150&fit=crop', description: 'Quinoa, avocado, roasted veggies, hummus, tahini dressing', veg: true, bestseller: true, spicy: false },
+          { id: 402, name: 'Green Detox Smoothie', category: 'Smoothies', price: 150, image: 'https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=200&h=150&fit=crop', description: 'Spinach, banana, mango, chia seeds', veg: true, bestseller: false, spicy: false },
+          { id: 403, name: 'Caesar Salad', category: 'Salads', price: 200, image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=200&h=150&fit=crop', description: 'Romaine, croutons, parmesan, caesar dressing', veg: true, bestseller: true, spicy: false },
+          { id: 404, name: 'Falafel Wrap', category: 'Wraps', price: 180, image: 'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=200&h=150&fit=crop', description: 'Crispy falafel with hummus, veggies in warm pita', veg: true, bestseller: false, spicy: false },
+        ]
+      },
+      { id: 5, name: 'Momo Paradise', cuisines: ['Momos', 'Bhutanese'], location: 'Clock Tower, Thimphu', address: 'Below Clock Tower, Main Road, Thimphu', image: 'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=400&h=250&fit=crop', rating: 4.7, totalRatings: 891, deliveryTime: 15, priceForTwo: 400, freeDelivery: true, offer: '50% OFF up to Nu. 200', promoted: true, isNew: false, veg: false, hours: '10:00 AM - 10:00 PM',
+        menuCategories: ['Steamed Momos', 'Fried Momos', 'Soup Momos', 'Extras'],
+        menu: [
+          { id: 501, name: 'Chicken Steamed Momo (8pc)', category: 'Steamed Momos', price: 120, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=200&h=150&fit=crop', description: 'Juicy chicken-filled steamed momos with spicy achar', veg: false, bestseller: true, spicy: false },
+          { id: 502, name: 'Veg Steamed Momo (8pc)', category: 'Steamed Momos', price: 100, image: 'https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?w=200&h=150&fit=crop', description: 'Fresh vegetable momos with cabbage, carrot, onion', veg: true, bestseller: false, spicy: false },
+          { id: 503, name: 'Chicken Fried Momo (8pc)', category: 'Fried Momos', price: 140, image: 'https://images.unsplash.com/photo-1625220194771-7ebdea0b70b9?w=200&h=150&fit=crop', description: 'Crispy golden fried chicken momos', veg: false, bestseller: true, spicy: true },
+          { id: 504, name: 'Jhol Momo (Soup)', category: 'Soup Momos', price: 150, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=200&h=150&fit=crop', description: 'Momos swimming in hot spicy sesame-tomato soup', veg: false, bestseller: true, spicy: true },
+          { id: 505, name: 'Extra Achar', category: 'Extras', price: 30, image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=200&h=150&fit=crop', description: 'Spicy tomato-chili dipping sauce', veg: true, bestseller: false, spicy: true },
+        ]
+      },
+      { id: 6, name: 'Royal Bakery & Café', cuisines: ['Bakery', 'Beverages'], location: 'Olakha, Thimphu', address: 'Olakha, Near Centenary Park', image: 'https://images.unsplash.com/photo-1559305616-3f99cd43e353?w=400&h=250&fit=crop', rating: 4.4, totalRatings: 256, deliveryTime: 20, priceForTwo: 350, freeDelivery: false, offer: null, promoted: false, isNew: true, veg: true, hours: '7:00 AM - 8:00 PM',
+        menuCategories: ['Cakes', 'Pastries', 'Breads', 'Coffee & Tea'],
+        menu: [
+          { id: 601, name: 'Chocolate Truffle Cake (Slice)', category: 'Cakes', price: 180, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=200&h=150&fit=crop', description: 'Rich Belgian chocolate layered cake', veg: true, bestseller: true, spicy: false },
+          { id: 602, name: 'Butter Croissant', category: 'Pastries', price: 80, image: 'https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=200&h=150&fit=crop', description: 'Flaky French-style butter croissant', veg: true, bestseller: true, spicy: false },
+          { id: 603, name: 'Cappuccino', category: 'Coffee & Tea', price: 120, image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&h=150&fit=crop', description: 'Rich espresso with steamed milk foam', veg: true, bestseller: false, spicy: false },
+          { id: 604, name: 'Sourdough Bread', category: 'Breads', price: 150, image: 'https://images.unsplash.com/photo-1585478259715-876acc5be8fc?w=200&h=150&fit=crop', description: 'Freshly baked artisan sourdough loaf', veg: true, bestseller: false, spicy: false },
+        ]
+      },
+    ],
+
+    init() { this.filteredRestaurants = [...this.restaurants]; setInterval(() => { this.$nextTick(() => {}); }, 1000); },
     filterCategory(name) { this.activeCategory = name; this.page = 'products'; },
     searchProducts() { this.activeCategory = ''; this.page = 'products'; },
     filteredProducts() {
@@ -1579,6 +2023,51 @@ function marketplace() {
 
     // Estimated delivery
     getEstDelivery() { const d=new Date(Date.now()+(Math.floor(Math.random()*4)+3)*86400000); return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); },
+
+    // Food delivery methods
+    filterRestaurants() {
+      let list = [...this.restaurants];
+      if (this.foodCuisine) list = list.filter(r => r.cuisines.includes(this.foodCuisine));
+      if (this.foodSearch) { const q = this.foodSearch.toLowerCase(); list = list.filter(r => r.name.toLowerCase().includes(q) || r.cuisines.some(c => c.toLowerCase().includes(q)) || r.menu.some(m => m.name.toLowerCase().includes(q))); }
+      const sorts = { popular: (a,b) => b.totalRatings - a.totalRatings, rating: (a,b) => b.rating - a.rating, delivery: (a,b) => a.deliveryTime - b.deliveryTime, price_low: (a,b) => a.priceForTwo - b.priceForTwo };
+      if (sorts[this.foodSortBy]) list.sort(sorts[this.foodSortBy]);
+      this.filteredRestaurants = list;
+    },
+    openRestaurant(rest) { this.selectedRestaurant = rest; this.foodMenuCat = rest.menuCategories[0] || ''; this.page = 'restaurant'; window.scrollTo({top:0}); },
+    addToFoodCart(item) {
+      if (this.foodCart.length > 0 && this.foodCartRestaurant?.id !== this.selectedRestaurant?.id) {
+        if (!confirm('Adding items from a new restaurant will clear your current cart. Continue?')) return;
+        this.foodCart = [];
+      }
+      this.foodCartRestaurant = this.selectedRestaurant;
+      const existing = this.foodCart.find(i => i.id === item.id);
+      if (existing) { existing.qty++; } else { this.foodCart.push({ ...item, qty: 1 }); }
+      this.showToast(item.name + ' added!');
+    },
+    getFoodCartQty(itemId) { const item = this.foodCart.find(i => i.id === itemId); return item ? item.qty : 0; },
+    updateFoodCartQty(itemId, delta) { const item = this.foodCart.find(i => i.id === itemId); if (item) { item.qty += delta; if (item.qty <= 0) this.foodCart = this.foodCart.filter(i => i.id !== itemId); } },
+    foodCartTotal() { return this.foodCart.reduce((s, i) => s + i.price * i.qty, 0); },
+    foodGrandTotal() { const sub = this.foodCartTotal(); const delivery = sub >= 500 ? 0 : 50; const tax = Math.round(sub * 0.05); return sub + delivery + 10 + tax; },
+    placeFoodOrder() {
+      if (!this.user) { this.page = 'login'; return; }
+      if (!this.deliveryAddress.name || !this.deliveryAddress.phone) { this.showToast('Please fill delivery details'); return; }
+      const tracking = [ { label: 'Confirmed', done: true }, { label: 'Preparing', done: true }, { label: 'On the Way', done: false }, { label: 'Delivered', done: false } ];
+      this.foodOrders.unshift({
+        id: 'FO-' + Date.now().toString().slice(-6),
+        restaurant: this.foodCartRestaurant?.name,
+        date: new Date().toLocaleDateString(),
+        items: this.foodCart.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+        total: this.foodGrandTotal(),
+        status: 'preparing',
+        tracking,
+        address: { ...this.deliveryAddress },
+        estimatedTime: this.foodCartRestaurant?.deliveryTime || 30
+      });
+      this.addNotification('Food order placed! ' + this.foodCartRestaurant?.name + ' is preparing your food.');
+      this.foodCart = []; this.foodCartRestaurant = null; this.foodNote = '';
+      this.showToast('Order placed! Your food is being prepared.');
+      this.page = 'food-orders';
+    },
 
     // Dark mode
     toggleDarkMode() { this.darkMode=!this.darkMode; document.documentElement.classList.toggle('dark',this.darkMode); },
