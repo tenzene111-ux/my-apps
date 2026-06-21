@@ -228,6 +228,11 @@
       <a href="#" @click.prevent="page='realestate'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🏠 Property</a>
       <a href="#" @click.prevent="page='travel'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">✈️ Travel</a>
       <span class="text-gray-500 shrink-0">|</span>
+      <!-- Info & More -->
+      <a href="#" @click.prevent="page='weather'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🌤️ Weather</a>
+      <a href="#" @click.prevent="page='news'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">📰 News</a>
+      <a href="#" @click.prevent="page='classifieds'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🏷️ Classifieds</a>
+      <span class="text-gray-500 shrink-0">|</span>
       <!-- Payments & Rewards -->
       <a href="#" @click.prevent="page='bills'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">📱 Bills</a>
       <a href="#" @click.prevent="page='rewards'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">🏆 Rewards</a>
@@ -274,6 +279,12 @@
       <a href="#" @click.prevent="page='jobs'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">💼 Jobs Board</a>
       <a href="#" @click.prevent="page='realestate'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🏠 Real Estate</a>
       <a href="#" @click.prevent="page='travel'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">✈️ Travel & Tourism</a>
+
+      <!-- 📰 INFO & MORE -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">📰 Info & More</div>
+      <a href="#" @click.prevent="page='weather'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🌤️ Weather</a>
+      <a href="#" @click.prevent="page='news'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">📰 DrukNews</a>
+      <a href="#" @click.prevent="page='classifieds'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-orange-600">🏷️ Buy & Sell (Classifieds)</a>
 
       <!-- 🛠️ SERVICES & PAYMENTS -->
       <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">💼 Services & Payments</div>
@@ -493,6 +504,22 @@
         </a>
         <a href="#" @click.prevent="page='travel'" class="bg-gradient-to-br from-sky-500 to-blue-800 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
           <p class="text-2xl mb-1">✈️</p><p class="font-bold text-sm">Travel</p><p class="text-xs opacity-80 mt-1">Bus, hotels, tours</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- 📰 Info & More -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">📰 Info & More</h2>
+      <div class="grid grid-cols-3 md:grid-cols-3 gap-4">
+        <a href="#" @click.prevent="page='weather'" class="bg-gradient-to-br from-sky-400 to-blue-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🌤️</p><p class="font-bold text-sm">Weather</p><p class="text-xs opacity-80 mt-1">All dzongkhags</p>
+        </a>
+        <a href="#" @click.prevent="page='news'" class="bg-gradient-to-br from-red-600 to-rose-800 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">📰</p><p class="font-bold text-sm">News</p><p class="text-xs opacity-80 mt-1">Latest updates</p>
+        </a>
+        <a href="#" @click.prevent="page='classifieds'" class="bg-gradient-to-br from-orange-500 to-amber-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🏷️</p><p class="font-bold text-sm">Classifieds</p><p class="text-xs opacity-80 mt-1">Buy & sell used</p>
         </a>
       </div>
     </div>
@@ -2863,6 +2890,141 @@
     </div>
   </div>
 
+  <!-- WEATHER PAGE -->
+  <div x-show="page === 'weather'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-sky-400 to-blue-600 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🌤️ DrukWeather</h1>
+      <p class="text-sm opacity-90 mt-1">Real-time weather across Bhutan's dzongkhags</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🌦️🏔️</div>
+    </div>
+
+    <div class="flex gap-2 mb-4 overflow-x-auto hide-scrollbar">
+      <template x-for="loc in weatherLocations" :key="loc.city">
+        <button @click="selectedWeatherCity=loc.city" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="selectedWeatherCity===loc.city ? 'bg-blue-600 text-white' : 'bg-white hover:bg-gray-100'" x-text="loc.city"></button>
+      </template>
+    </div>
+
+    <template x-for="w in weatherLocations.filter(l => l.city === selectedWeatherCity)" :key="w.city">
+      <div>
+        <div class="bg-white rounded-xl p-6 mb-4 text-center">
+          <p class="text-5xl mb-2" x-text="w.icon"></p>
+          <p class="text-4xl font-bold" x-text="w.temp + '°C'"></p>
+          <p class="text-gray-500 mt-1" x-text="w.condition"></p>
+          <p class="text-sm text-gray-400 mt-0.5" x-text="w.city + ', Bhutan'"></p>
+          <div class="flex justify-center gap-6 mt-4 text-sm text-gray-600">
+            <span x-text="'💧 ' + w.humidity + '%'"></span>
+            <span x-text="'💨 ' + w.wind + ' km/h'"></span>
+            <span x-text="'🌧️ ' + w.rain + '% rain'"></span>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-4">
+          <h3 class="font-bold text-sm mb-3">5-Day Forecast</h3>
+          <div class="grid grid-cols-5 gap-2 text-center">
+            <template x-for="(d, i) in w.forecast" :key="i">
+              <div class="bg-gray-50 rounded-lg p-3">
+                <p class="text-xs text-gray-500" x-text="d.day"></p>
+                <p class="text-2xl my-1" x-text="d.icon"></p>
+                <p class="text-sm font-bold" x-text="d.high + '°'"></p>
+                <p class="text-xs text-gray-400" x-text="d.low + '°'"></p>
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="bg-amber-50 rounded-lg p-4 mt-4 border border-amber-200" x-show="w.alert">
+          <p class="text-sm font-bold text-amber-700 flex items-center gap-1">⚠️ Weather Alert</p>
+          <p class="text-xs text-amber-600 mt-1" x-text="w.alert"></p>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- NEWS PAGE -->
+  <div x-show="page === 'news'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-red-700 to-rose-800 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">📰 DrukNews</h1>
+      <p class="text-sm opacity-90 mt-1">Stay updated with the latest from Bhutan</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">📡📰</div>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4">
+      <button @click="newsCat=''" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="!newsCat ? 'bg-red-700 text-white' : 'bg-white hover:bg-gray-100'">All</button>
+      <template x-for="nc in ['National', 'Business', 'Sports', 'Culture', 'Technology', 'Environment']" :key="nc">
+        <button @click="newsCat=nc" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="newsCat===nc ? 'bg-red-700 text-white' : 'bg-white hover:bg-gray-100'" x-text="nc"></button>
+      </template>
+    </div>
+
+    <div class="space-y-4">
+      <template x-for="article in filteredNews()" :key="article.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition">
+          <div class="md:flex">
+            <div class="md:w-[250px] h-[180px] bg-gray-100 flex-shrink-0"><img :src="article.image" class="w-full h-full object-cover"></div>
+            <div class="p-5 flex-1">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold" x-text="article.category"></span>
+                <span class="text-xs text-gray-400" x-text="article.time"></span>
+              </div>
+              <h3 class="font-bold text-lg leading-tight" x-text="article.title"></h3>
+              <p class="text-sm text-gray-600 mt-2 line-clamp-2" x-text="article.summary"></p>
+              <div class="flex items-center justify-between mt-3">
+                <span class="text-xs text-gray-400" x-text="'By ' + article.source"></span>
+                <button @click="showToast('Opening full article...')" class="text-xs text-red-600 font-bold hover:underline">Read More →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- CLASSIFIEDS PAGE -->
+  <div x-show="page === 'classifieds'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🏷️ DrukClassifieds</h1>
+      <p class="text-sm opacity-90 mt-1">Buy & sell used items across Bhutan</p>
+      <div class="flex gap-2 mt-3">
+        <span class="bg-white/20 px-3 py-1 rounded-full text-xs">🆓 Free to list</span>
+        <span class="bg-white/20 px-3 py-1 rounded-full text-xs">🤝 Direct contact</span>
+      </div>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🏷️💬</div>
+    </div>
+
+    <div class="flex gap-3 mb-4">
+      <input type="text" x-model="classifiedSearch" placeholder="Search items..." class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input">
+      <select x-model="classifiedCat" class="border rounded-lg px-3 py-2 text-sm">
+        <option value="">All Categories</option>
+        <template x-for="cc in classifiedCategories" :key="cc"><option :value="cc" x-text="cc"></option></template>
+      </select>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <template x-for="item in filteredClassifieds()" :key="item.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition">
+          <div class="h-[180px] bg-gray-100 relative"><img :src="item.image" class="w-full h-full object-cover">
+            <span class="absolute top-2 left-2 text-xs px-2 py-0.5 rounded-full font-bold" :class="item.condition === 'Like New' ? 'bg-green-100 text-green-700' : item.condition === 'Good' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'" x-text="item.condition"></span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-sm line-clamp-2" x-text="item.title"></h3>
+            <p class="text-lg font-bold text-orange-600 mt-1" x-text="'Nu. ' + item.price.toLocaleString()"></p>
+            <div class="flex items-center gap-2 mt-2 text-xs text-gray-500">
+              <span x-text="'📍 ' + item.location"></span>
+              <span x-text="'🕐 ' + item.posted"></span>
+            </div>
+            <div class="flex gap-2 mt-3">
+              <button @click="showToast('Message sent to ' + item.seller + '!')" class="flex-1 amz-btn-cart px-3 py-1.5 text-xs font-bold">Contact</button>
+              <button @click="showToast('Item saved!')" class="border border-gray-300 px-3 py-1.5 rounded-full text-xs hover:bg-gray-50">♡</button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class="bg-orange-50 rounded-lg p-5 mt-6 text-center">
+      <h3 class="font-bold mb-1">Have something to sell?</h3>
+      <p class="text-sm text-gray-600 mb-3">List your used items for free and reach buyers across Bhutan</p>
+      <button @click="showToast('Post ad feature coming soon!')" class="bg-orange-600 text-white px-6 py-2 rounded-lg text-sm font-bold hover:bg-orange-700">Post Free Ad</button>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -3422,6 +3584,59 @@ function marketplace() {
       { name: 'Bumthang Cultural Trail', days: 5, places: 10, rating: 4.6, price: 25000, desc: 'Ancient temples of Bumthang, Jakar Dzong, Jambay Lhakhang, local cheese & honey farms.', image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=400&h=250&fit=crop' },
     ],
 
+    // Weather
+    selectedWeatherCity: 'Thimphu',
+    weatherLocations: [
+      { city: 'Thimphu', temp: 18, condition: 'Partly Cloudy', icon: '⛅', humidity: 65, wind: 12, rain: 20, alert: null, forecast: [
+        { day: 'Mon', icon: '☀️', high: 20, low: 8 }, { day: 'Tue', icon: '⛅', high: 18, low: 7 }, { day: 'Wed', icon: '🌧️', high: 15, low: 9 }, { day: 'Thu', icon: '🌦️', high: 16, low: 8 }, { day: 'Fri', icon: '☀️', high: 21, low: 7 }
+      ]},
+      { city: 'Paro', temp: 16, condition: 'Clear Sky', icon: '☀️', humidity: 55, wind: 8, rain: 10, alert: null, forecast: [
+        { day: 'Mon', icon: '☀️', high: 18, low: 5 }, { day: 'Tue', icon: '☀️', high: 19, low: 6 }, { day: 'Wed', icon: '⛅', high: 17, low: 7 }, { day: 'Thu', icon: '🌧️', high: 14, low: 6 }, { day: 'Fri', icon: '⛅', high: 17, low: 5 }
+      ]},
+      { city: 'Punakha', temp: 24, condition: 'Warm & Sunny', icon: '☀️', humidity: 70, wind: 6, rain: 15, alert: null, forecast: [
+        { day: 'Mon', icon: '☀️', high: 26, low: 14 }, { day: 'Tue', icon: '⛅', high: 25, low: 13 }, { day: 'Wed', icon: '🌦️', high: 22, low: 15 }, { day: 'Thu', icon: '☀️', high: 27, low: 14 }, { day: 'Fri', icon: '☀️', high: 28, low: 15 }
+      ]},
+      { city: 'Phuentsholing', temp: 32, condition: 'Hot & Humid', icon: '🌤️', humidity: 85, wind: 5, rain: 60, alert: 'Heavy rainfall expected tomorrow. Stay cautious near rivers.', forecast: [
+        { day: 'Mon', icon: '🌤️', high: 33, low: 24 }, { day: 'Tue', icon: '🌧️', high: 29, low: 23 }, { day: 'Wed', icon: '⛈️', high: 27, low: 22 }, { day: 'Thu', icon: '🌧️', high: 28, low: 23 }, { day: 'Fri', icon: '🌤️', high: 31, low: 24 }
+      ]},
+      { city: 'Bumthang', temp: 12, condition: 'Cool & Misty', icon: '🌫️', humidity: 75, wind: 10, rain: 30, alert: null, forecast: [
+        { day: 'Mon', icon: '🌫️', high: 14, low: 2 }, { day: 'Tue', icon: '⛅', high: 15, low: 3 }, { day: 'Wed', icon: '☀️', high: 16, low: 1 }, { day: 'Thu', icon: '🌧️', high: 11, low: 4 }, { day: 'Fri', icon: '⛅', high: 13, low: 2 }
+      ]},
+      { city: 'Haa', temp: 10, condition: 'Cold & Clear', icon: '❄️', humidity: 50, wind: 15, rain: 5, alert: 'Frost warning tonight. Protect crops and pipes.', forecast: [
+        { day: 'Mon', icon: '☀️', high: 12, low: -1 }, { day: 'Tue', icon: '❄️', high: 8, low: -3 }, { day: 'Wed', icon: '⛅', high: 11, low: 0 }, { day: 'Thu', icon: '☀️', high: 13, low: 1 }, { day: 'Fri', icon: '⛅', high: 10, low: -2 }
+      ]},
+    ],
+
+    // News
+    newsCat: '',
+    newsArticles: [
+      { id: 'n1', title: 'Bhutan Achieves Carbon Negative Status for 10th Consecutive Year', category: 'Environment', summary: 'The Kingdom of Bhutan continues to lead global climate efforts, absorbing more CO2 than it produces through its vast forest cover spanning 71% of the nation.', source: 'Kuensel', time: '2 hours ago', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop' },
+      { id: 'n2', title: 'New IT Park in Thimphu to Create 2,000 Jobs', category: 'Business', summary: 'The government announces a major tech park development in Babesa, Thimphu, aimed at boosting the digital economy and creating employment for Bhutanese youth.', source: 'BBS', time: '5 hours ago', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=250&fit=crop' },
+      { id: 'n3', title: 'Bhutan National Football Team Qualifies for SAFF Championship', category: 'Sports', summary: 'The Druk XI secured their spot in the upcoming SAFF Championship after a decisive 3-1 victory in the qualifying rounds.', source: 'Kuensel', time: '8 hours ago', image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop' },
+      { id: 'n4', title: 'His Majesty Inaugurates New Dzong Restoration Project', category: 'National', summary: 'His Majesty the King inaugurated the restoration of historic dzongs across eastern Bhutan, preserving centuries-old Bhutanese architecture.', source: 'BBS', time: '1 day ago', image: 'https://images.unsplash.com/photo-1553856622-d1b352e9a211?w=400&h=250&fit=crop' },
+      { id: 'n5', title: 'Punakha Tshechu Draws Record Visitors This Year', category: 'Culture', summary: 'The annual Punakha Tshechu attracted over 15,000 visitors including international tourists, featuring the unfurling of the sacred Guru Thongdrol.', source: 'The Bhutanese', time: '1 day ago', image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400&h=250&fit=crop' },
+      { id: 'n6', title: 'DrukREN Expands 5G Coverage to Paro and Punakha', category: 'Technology', summary: 'Bhutan Telecom and DrukREN announce expansion of 5G network coverage to Paro and Punakha valleys, improving digital connectivity.', source: 'Kuensel', time: '2 days ago', image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=250&fit=crop' },
+      { id: 'n7', title: 'National Assembly Passes New Startup Investment Bill', category: 'Business', summary: 'Parliament approves a new bill providing tax incentives and seed funding for Bhutanese startups, supporting innovation and entrepreneurship.', source: 'BBS', time: '2 days ago', image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=250&fit=crop' },
+      { id: 'n8', title: 'Organic Farming Initiative Reaches 5,000 Farmers', category: 'Environment', summary: 'Bhutan\'s mission to become the first 100% organic nation sees a milestone as 5,000 farmers adopt fully organic practices across 15 dzongkhags.', source: 'The Bhutanese', time: '3 days ago', image: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=400&h=250&fit=crop' },
+    ],
+
+    // Classifieds
+    classifiedSearch: '',
+    classifiedCat: '',
+    classifiedCategories: ['Electronics', 'Vehicles', 'Furniture', 'Clothing', 'Books', 'Appliances', 'Sports', 'Others'],
+    classifiedItems: [
+      { id: 'cl1', title: 'Samsung Galaxy S23 - 6 months old', price: 35000, condition: 'Like New', category: 'Electronics', location: 'Thimphu', posted: '1 day ago', seller: 'Karma D.', image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=300&fit=crop' },
+      { id: 'cl2', title: 'Maruti Alto 800 - 2019 Model', price: 450000, condition: 'Good', category: 'Vehicles', location: 'Paro', posted: '3 days ago', seller: 'Tshering W.', image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0afa?w=400&h=300&fit=crop' },
+      { id: 'cl3', title: 'Wooden Study Table with Chair', price: 4500, condition: 'Good', category: 'Furniture', location: 'Thimphu', posted: '2 days ago', seller: 'Pema L.', image: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&h=300&fit=crop' },
+      { id: 'cl4', title: 'iPhone 13 Pro - Minor Scratch', price: 42000, condition: 'Fair', category: 'Electronics', location: 'Phuentsholing', posted: '5 days ago', seller: 'Sonam T.', image: 'https://images.unsplash.com/photo-1632633173522-47456de71b76?w=400&h=300&fit=crop' },
+      { id: 'cl5', title: 'Trek Bicycle - Mountain Bike', price: 15000, condition: 'Good', category: 'Sports', location: 'Thimphu', posted: '1 week ago', seller: 'Dorji K.', image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=400&h=300&fit=crop' },
+      { id: 'cl6', title: 'Samsung Washing Machine 7kg', price: 12000, condition: 'Good', category: 'Appliances', location: 'Punakha', posted: '4 days ago', seller: 'Dechen W.', image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400&h=300&fit=crop' },
+      { id: 'cl7', title: 'Traditional Gho (Men\'s) - Large', price: 3000, condition: 'Like New', category: 'Clothing', location: 'Thimphu', posted: '2 days ago', seller: 'Ugyen D.', image: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&h=300&fit=crop' },
+      { id: 'cl8', title: 'NCERT Textbooks Set - Class 10', price: 800, condition: 'Good', category: 'Books', location: 'Paro', posted: '6 days ago', seller: 'Kinley Z.', image: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=300&fit=crop' },
+      { id: 'cl9', title: 'LG 43" Smart TV - 2022', price: 18000, condition: 'Like New', category: 'Electronics', location: 'Thimphu', posted: '3 days ago', seller: 'Namgay T.', image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=400&h=300&fit=crop' },
+      { id: 'cl10', title: 'Sofa Set 3+1+1 - Wooden Frame', price: 25000, condition: 'Fair', category: 'Furniture', location: 'Wangdue', posted: '1 week ago', seller: 'Rinzin P.', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop' },
+    ],
+
     init() {
       this.filteredRestaurants = [...this.restaurants];
       this.filteredHW = [...this.hardwareProducts];
@@ -3789,6 +4004,12 @@ function marketplace() {
         this.showToast('Profile updated!');
       }
     },
+
+    // News methods
+    filteredNews() { if (!this.newsCat) return this.newsArticles; return this.newsArticles.filter(a => a.category === this.newsCat); },
+
+    // Classifieds methods
+    filteredClassifieds() { let list = [...this.classifiedItems]; if (this.classifiedCat) list = list.filter(i => i.category === this.classifiedCat); if (this.classifiedSearch) { const q = this.classifiedSearch.toLowerCase(); list = list.filter(i => i.title.toLowerCase().includes(q)); } return list; },
 
     // Grocery methods
     filteredGrocery() { let list = [...this.groceryItems]; if (this.groceryCat) list = list.filter(i => i.category === this.groceryCat); return list; },
