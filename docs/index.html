@@ -44,6 +44,17 @@
     .amz-input:focus { outline: none; box-shadow: 0 0 0 3px #c8f3fa, 0 1px 2px rgba(0,0,0,0.15); border-color: #007185; }
     .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .star-rating { color: #de7921; }
+    html.dark body { background: #1a1a2e; color: #e0e0e0; }
+    html.dark .bg-white { background: #16213e !important; }
+    html.dark .bg-gray-50, html.dark .bg-gray-100 { background: #1a1a3e !important; }
+    html.dark .text-gray-500, html.dark .text-gray-600, html.dark .text-gray-700 { color: #a0a0b0 !important; }
+    html.dark .text-amz-dark, html.dark .text-gray-800 { color: #e0e0e0 !important; }
+    html.dark .border-gray-200, html.dark .border-gray-300, html.dark .border-gray-400 { border-color: #2a2a4e !important; }
+    html.dark .border-b { border-color: #2a2a4e !important; }
+    html.dark input, html.dark select, html.dark textarea { background: #1a1a3e; color: #e0e0e0; border-color: #3a3a5e; }
+    html.dark .hover\:bg-gray-50:hover, html.dark .hover\:bg-gray-100:hover { background: #1a1a4e !important; }
+    html.dark .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+    html.dark .bg-\[\#e3e6e6\] { background: #1a1a2e !important; }
   </style>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
@@ -74,11 +85,50 @@
         <option>All</option>
         <template x-for="cat in categories" :key="cat.name"><option x-text="cat.name"></option></template>
       </select>
-      <input type="text" x-model="searchQuery" placeholder="Search MyMarket.bt" class="flex-1 px-3 text-sm amz-input border-none outline-none">
+      <input type="text" x-model="searchQuery" @input="updateSuggestions()" @focus="updateSuggestions()" @click.away="showSearchSuggestions=false" placeholder="Search MyMarket.bt" class="flex-1 px-3 text-sm amz-input border-none outline-none">
       <button type="submit" class="bg-amz-orange hover:bg-amz-orange2 px-4">
         <svg class="w-5 h-5" fill="none" stroke="#111" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </button>
+      <!-- Search Suggestions Dropdown -->
+      <div x-show="showSearchSuggestions" x-cloak class="absolute top-full left-0 right-0 bg-white shadow-lg rounded-b-md z-50 border max-h-[300px] overflow-y-auto" style="margin-top:-1px">
+        <template x-for="s in searchSuggestions" :key="s.id">
+          <a href="#" @click.prevent="viewProduct(s); showSearchSuggestions=false; searchQuery=''" class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 text-sm text-gray-800">
+            <img :src="s.image" class="w-10 h-10 object-contain rounded">
+            <div class="flex-1 min-w-0">
+              <p class="truncate" x-text="s.title"></p>
+              <p class="text-xs text-gray-500" x-text="'Nu. '+s.price.toLocaleString()"></p>
+            </div>
+          </a>
+        </template>
+      </div>
     </form>
+
+    <!-- Dark Mode Toggle -->
+    <button @click="toggleDarkMode()" class="hidden lg:flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white text-sm shrink-0" :title="darkMode?'Light Mode':'Dark Mode'">
+      <template x-if="!darkMode"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></template>
+      <template x-if="darkMode"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></template>
+    </button>
+
+    <!-- Notifications -->
+    <div class="relative" x-show="user" x-cloak>
+      <button @click="showNotifications=!showNotifications" class="flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white shrink-0 relative">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span x-show="unreadCount()>0" class="absolute -top-1 -right-0.5 bg-amz-red text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center" x-text="unreadCount()"></span>
+      </button>
+      <div x-show="showNotifications" @click.away="showNotifications=false" x-cloak class="absolute right-0 mt-1 w-80 bg-white rounded shadow-lg border z-50 max-h-[400px] overflow-y-auto">
+        <div class="flex justify-between items-center p-3 border-b">
+          <span class="font-bold text-sm">Notifications</span>
+          <button @click="markAllRead()" class="text-amz-link text-xs hover:underline">Mark all read</button>
+        </div>
+        <template x-for="n in notifications" :key="n.id">
+          <div class="px-3 py-2.5 border-b text-sm hover:bg-gray-50" :class="!n.read ? 'bg-blue-50' : ''">
+            <p x-text="n.msg"></p>
+            <p class="text-xs text-gray-400 mt-0.5" x-text="n.time"></p>
+          </div>
+        </template>
+        <p x-show="notifications.length===0" class="p-4 text-gray-500 text-center text-sm">No notifications</p>
+      </div>
+    </div>
 
     <!-- Language -->
     <a href="#" class="hidden lg:flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white text-sm shrink-0">
@@ -100,7 +150,9 @@
         </template>
         <template x-if="user">
           <div class="space-y-1 text-sm">
+            <a href="#" @click.prevent="page='profile'; initProfile(); accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Your Account</a>
             <a href="#" @click.prevent="page='orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Your Orders</a>
+            <a href="#" @click.prevent="page='wishlist'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Wishlist (<span x-text="wishlist.length"></span>)</a>
             <a href="#" @click.prevent="page='sell'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amz-orange2">Sell Your Stuff</a>
             <a href="#" @click.prevent="page='messages'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Messages</a>
             <template x-if="user.role==='seller'||user.role==='admin'"><a href="#" @click.prevent="page='dashboard'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Seller Dashboard</a></template>
@@ -204,7 +256,13 @@
     <div class="max-w-[1500px] mx-auto px-4 mt-6">
       <div class="bg-white p-5">
         <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold">Today's Deals</h2>
+          <div class="flex items-center gap-3">
+            <h2 class="text-xl font-bold">Today's Deals</h2>
+            <div class="bg-amz-dark text-white text-sm px-3 py-1 rounded flex items-center gap-2">
+              <svg class="w-4 h-4 text-amz-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/></svg>
+              <span class="font-mono font-bold text-amz-orange" x-text="flashTimeLeft()"></span>
+            </div>
+          </div>
           <a href="#" @click.prevent="page='products'; sortBy='popular'" class="text-amz-link text-sm hover:text-amz-red hover:underline">See all deals</a>
         </div>
         <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
@@ -261,6 +319,22 @@
               <p class="text-xs mt-2 line-clamp-2 group-hover:text-amz-red" x-text="product.title"></p>
               <div class="star-rating text-xs mt-0.5" x-text="'★'.repeat(Math.round(product.rating)) + ' ' + product.reviews"></div>
               <p class="text-sm mt-0.5"><span class="text-xs align-top">Nu.</span><span class="font-bold" x-text="product.price.toLocaleString()"></span></p>
+            </a>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recently Viewed -->
+    <div x-show="recentlyViewed.length > 0" class="max-w-[1500px] mx-auto px-4 mt-6">
+      <div class="bg-white p-5">
+        <h2 class="text-xl font-bold mb-4">Your Browsing History</h2>
+        <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+          <template x-for="rv in recentlyViewed.slice(0,8)" :key="rv.id">
+            <a href="#" @click.prevent="viewProduct(rv)" class="shrink-0 w-[150px] group">
+              <div class="h-[150px] bg-gray-50 flex items-center justify-center p-2 rounded"><img :src="rv.image" class="max-h-full max-w-full object-contain group-hover:scale-105 transition"></div>
+              <p class="text-xs mt-1 line-clamp-2 group-hover:text-amz-red" x-text="rv.title"></p>
+              <p class="text-sm font-bold" x-text="'Nu. '+rv.price.toLocaleString()"></p>
             </a>
           </template>
         </div>
@@ -341,9 +415,14 @@
           <template x-for="product in filteredProducts()" :key="product.id">
             <div class="bg-white p-4 flex gap-4 product-card rounded">
               <!-- Image -->
-              <a href="#" @click.prevent="viewProduct(product)" class="w-[200px] h-[200px] shrink-0 flex items-center justify-center p-2 bg-gray-50">
-                <img :src="product.image" :alt="product.title" class="max-h-full max-w-full object-contain">
-              </a>
+              <div class="relative w-[200px] h-[200px] shrink-0">
+                <a href="#" @click.prevent="viewProduct(product)" class="w-full h-full flex items-center justify-center p-2 bg-gray-50">
+                  <img :src="product.image" :alt="product.title" class="max-h-full max-w-full object-contain">
+                </a>
+                <button @click="toggleWishlist(product)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100" :title="isInWishlist(product.id)?'Remove from Wishlist':'Add to Wishlist'">
+                  <svg class="w-5 h-5" :class="isInWishlist(product.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </button>
+              </div>
               <!-- Details -->
               <div class="flex-1 min-w-0">
                 <a href="#" @click.prevent="viewProduct(product)" class="text-base text-amz-dark hover:text-amz-red line-clamp-2" x-text="product.title"></a>
@@ -368,7 +447,10 @@
                 <div x-show="!product.freeShipping" class="text-xs mt-1 text-gray-600">Delivery: <span class="font-bold">Nu. 500</span></div>
                 <div class="text-xs mt-1" :class="product.stock > 0 ? 'text-amz-green' : 'text-amz-red'" x-text="product.stock > 0 ? 'In Stock' : 'Out of Stock'"></div>
                 <p class="text-xs text-gray-500 mt-1" x-text="'by ' + product.store"></p>
-                <button @click="addToCart(product)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold mt-2">Add to Cart</button>
+                <div class="flex items-center gap-3 mt-2">
+                  <button @click="addToCart(product)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Add to Cart</button>
+                  <label class="flex items-center gap-1 text-xs text-gray-500 cursor-pointer"><input type="checkbox" :checked="isInCompare(product.id)" @change="toggleCompare(product)" class="accent-amz-dark"> Compare</label>
+                </div>
               </div>
             </div>
           </template>
@@ -464,11 +546,30 @@
                   </select>
                 </label>
               </div>
+              <div class="text-xs text-amz-green mt-2" x-text="'FREE delivery ' + getEstDelivery()"></div>
               <button x-show="selectedProduct.stock>0" @click="addToCart(selectedProduct, quantity)" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3">Add to Cart</button>
               <button x-show="selectedProduct.stock>0" @click="addToCart(selectedProduct, quantity); checkout()" class="amz-btn-buy w-full py-2 text-sm font-bold mt-2">Buy Now</button>
+              <div class="flex gap-2 mt-2">
+                <button @click="toggleWishlist(selectedProduct)" class="flex-1 border border-gray-300 rounded-full py-1.5 text-xs font-bold hover:bg-gray-50 flex items-center justify-center gap-1">
+                  <svg class="w-4 h-4" :class="isInWishlist(selectedProduct.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                  <span x-text="isInWishlist(selectedProduct.id)?'Wishlisted':'Wishlist'"></span>
+                </button>
+                <div class="relative">
+                  <button @click="shareMenu=!shareMenu" class="border border-gray-300 rounded-full py-1.5 px-3 text-xs font-bold hover:bg-gray-50 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg> Share
+                  </button>
+                  <div x-show="shareMenu" @click.away="shareMenu=false" x-cloak class="absolute right-0 mt-1 w-40 bg-white rounded shadow-lg border z-50 py-1">
+                    <button @click="shareProduct('copy')" class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100">Copy Link</button>
+                    <button @click="shareProduct('whatsapp')" class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100">WhatsApp</button>
+                    <button @click="shareProduct('facebook')" class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100">Facebook</button>
+                    <button @click="shareProduct('twitter')" class="w-full text-left px-3 py-1.5 text-xs hover:bg-gray-100">Twitter/X</button>
+                  </div>
+                </div>
+              </div>
               <div class="text-xs text-gray-500 mt-3 space-y-1">
                 <div class="flex justify-between"><span class="text-gray-500">Ships from</span><span>MyMarket.bt</span></div>
                 <div class="flex justify-between"><span class="text-gray-500">Sold by</span><span class="text-amz-link" x-text="selectedProduct.store"></span></div>
+                <div class="flex justify-between"><span class="text-gray-500">Payment</span><span>COD / mBoB / Card</span></div>
               </div>
             </div>
           </div>
@@ -514,6 +615,60 @@
             </div>
           </div>
         </div>
+
+        <!-- Q&A Section -->
+        <hr class="my-6">
+        <h3 class="text-lg font-bold mb-3">Customer Questions & Answers</h3>
+        <div x-show="user" class="flex gap-2 mb-4">
+          <input type="text" x-model="qaQuestion" placeholder="Have a question? Ask here..." class="flex-1 border border-gray-400 rounded px-3 py-2 text-sm amz-input">
+          <button @click="askQuestion(selectedProduct.id)" class="amz-btn-cart px-4 py-2 text-sm font-bold">Ask</button>
+        </div>
+        <div class="space-y-3">
+          <template x-for="qa in (qaList[selectedProduct.id] || [])" :key="qa.id">
+            <div class="bg-gray-50 rounded p-4">
+              <p class="text-sm font-bold"><span class="text-amz-dark">Q:</span> <span x-text="qa.q"></span></p>
+              <p class="text-xs text-gray-500" x-text="'Asked by ' + qa.user + ' on ' + qa.date"></p>
+              <template x-for="ans in qa.answers" :key="ans.text">
+                <div class="mt-2 pl-4 border-l-2 border-amz-orange">
+                  <p class="text-sm"><span class="font-bold text-amz-dark">A:</span> <span x-text="ans.text"></span></p>
+                  <p class="text-xs text-gray-500" x-text="'By ' + ans.by + ' - ' + ans.date"></p>
+                </div>
+              </template>
+            </div>
+          </template>
+          <p x-show="!(qaList[selectedProduct.id]||[]).length" class="text-sm text-gray-500">No questions yet.</p>
+        </div>
+
+        <!-- Customers Also Bought -->
+        <hr class="my-6">
+        <h3 class="text-lg font-bold mb-3">Customers who bought this also bought</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <template x-for="rp in getRecommendations(selectedProduct)" :key="rp.id">
+            <a href="#" @click.prevent="viewProduct(rp)" class="bg-gray-50 p-3 rounded hover:shadow group">
+              <div class="h-[140px] flex items-center justify-center p-2"><img :src="rp.image" class="max-h-full max-w-full object-contain group-hover:scale-105 transition"></div>
+              <p class="text-xs mt-2 line-clamp-2" x-text="rp.title"></p>
+              <div class="star-rating text-xs" x-text="'★'.repeat(Math.round(rp.rating))"></div>
+              <p class="text-sm font-bold mt-0.5" x-text="'Nu. '+rp.price.toLocaleString()"></p>
+            </a>
+          </template>
+        </div>
+
+        <!-- Recently Viewed -->
+        <template x-if="recentlyViewed.length > 1">
+          <div>
+            <hr class="my-6">
+            <h3 class="text-lg font-bold mb-3">Your Recently Viewed Items</h3>
+            <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+              <template x-for="rv in recentlyViewed.filter(p=>p.id!==selectedProduct.id).slice(0,6)" :key="rv.id">
+                <a href="#" @click.prevent="viewProduct(rv)" class="shrink-0 w-[150px]">
+                  <div class="h-[150px] bg-gray-50 flex items-center justify-center p-2 rounded"><img :src="rv.image" class="max-h-full max-w-full object-contain"></div>
+                  <p class="text-xs mt-1 line-clamp-2" x-text="rv.title"></p>
+                  <p class="text-sm font-bold" x-text="'Nu. '+rv.price.toLocaleString()"></p>
+                </a>
+              </template>
+            </div>
+          </div>
+        </template>
       </div>
     </template>
   </div>
@@ -560,10 +715,40 @@
             Subtotal (<span x-text="cart.reduce((s,i)=>s+i.qty,0)"></span> items): <span class="font-bold" x-text="'Nu. ' + cartSubtotal().toLocaleString()"></span>
           </div>
         </div>
-        <div class="w-[300px] bg-white p-5 rounded shrink-0">
-          <p x-show="cartSubtotal()>=4000" class="text-amz-green text-sm mb-2">Your order qualifies for <strong>FREE Delivery</strong></p>
-          <p class="text-lg">Subtotal (<span x-text="cart.reduce((s,i)=>s+i.qty,0)"></span> items): <span class="font-bold" x-text="'Nu. ' + cartSubtotal().toLocaleString()"></span></p>
-          <button @click="checkout()" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3 rounded-full">Proceed to Checkout</button>
+        <div class="w-[300px] shrink-0 space-y-3">
+          <div class="bg-white p-5 rounded">
+            <p x-show="cartSubtotal()>=4000" class="text-amz-green text-sm mb-2">Your order qualifies for <strong>FREE Delivery</strong></p>
+            <p class="text-lg">Subtotal (<span x-text="cart.reduce((s,i)=>s+i.qty,0)"></span> items): <span class="font-bold" x-text="'Nu. ' + cartSubtotal().toLocaleString()"></span></p>
+            <div x-show="promoApplied" class="text-sm text-amz-green mt-1 flex justify-between items-center">
+              <span x-text="'Coupon: ' + (promoApplied?.code||'')"></span>
+              <button @click="removePromo()" class="text-amz-red text-xs hover:underline">Remove</button>
+            </div>
+            <div x-show="promoApplied" class="text-sm font-bold mt-1" x-text="'You save: Nu. ' + promoDiscount().toLocaleString()"></div>
+            <button @click="checkout()" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3 rounded-full">Proceed to Checkout</button>
+          </div>
+          <!-- Coupon/Promo -->
+          <div class="bg-white p-4 rounded">
+            <h4 class="text-sm font-bold mb-2">Have a coupon?</h4>
+            <div class="flex gap-2">
+              <input type="text" x-model="promoCode" placeholder="Enter code" class="flex-1 border border-gray-400 rounded px-3 py-1.5 text-sm amz-input uppercase">
+              <button @click="applyPromo()" class="border border-gray-400 rounded px-3 py-1.5 text-sm hover:bg-gray-100 font-bold">Apply</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">Try: WELCOME10, SAVE500, BHUTAN20, FREESHIP</p>
+          </div>
+          <!-- Save for Later -->
+          <div x-show="wishlist.length>0" class="bg-white p-4 rounded">
+            <h4 class="text-sm font-bold mb-2">Saved for Later (<span x-text="wishlist.length"></span>)</h4>
+            <template x-for="w in wishlist.slice(0,3)" :key="w.id">
+              <div class="flex items-center gap-2 py-2 border-b last:border-0">
+                <img :src="w.image" class="w-12 h-12 object-contain">
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs truncate" x-text="w.title"></p>
+                  <p class="text-xs font-bold" x-text="'Nu. '+w.price.toLocaleString()"></p>
+                </div>
+                <button @click="addToCart(w); toggleWishlist(w)" class="text-amz-link text-xs hover:underline whitespace-nowrap">Move to Cart</button>
+              </div>
+            </template>
+          </div>
         </div>
       </div>
     </template>
@@ -632,18 +817,39 @@
             <div class="ml-auto"><span class="text-gray-500 uppercase">Order #</span><br><span class="text-amz-link" x-text="order.id"></span></div>
           </div>
           <div class="p-5">
-            <div class="text-base font-bold mb-3"
+            <div class="text-base font-bold mb-1"
               :class="{'text-amz-green': order.status==='delivered', 'text-amz-blue': order.status==='shipped'}"
               x-text="order.status === 'delivered' ? 'Delivered' : order.status === 'shipped' ? 'Shipped' : order.status === 'processing' ? 'Processing' : 'Order Placed'"></div>
+            <p x-show="order.estimatedDelivery" class="text-xs text-gray-500 mb-3" x-text="'Estimated delivery: ' + order.estimatedDelivery"></p>
+            <!-- Order Tracking -->
+            <div x-show="order.tracking" class="mb-4 flex items-center gap-0 overflow-x-auto">
+              <template x-for="(step,si) in (order.tracking||[])" :key="si">
+                <div class="flex items-center">
+                  <div class="flex flex-col items-center text-center min-w-[80px]">
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" :class="step.done ? 'bg-amz-green text-white' : 'bg-gray-200 text-gray-400'" x-text="step.done ? '✓' : si+1"></div>
+                    <p class="text-[10px] mt-1 font-bold" :class="step.done ? 'text-amz-green' : 'text-gray-400'" x-text="step.status"></p>
+                    <p x-show="step.date" class="text-[9px] text-gray-400" x-text="step.date"></p>
+                  </div>
+                  <div x-show="si < (order.tracking||[]).length - 1" class="w-8 h-0.5 -mt-4" :class="step.done ? 'bg-amz-green' : 'bg-gray-200'"></div>
+                </div>
+              </template>
+            </div>
             <template x-for="item in order.items" :key="item.title">
               <div class="flex gap-3 mb-2">
-                <div class="w-20 h-20 bg-gray-100 rounded flex items-center justify-center text-gray-400 text-xs">Item</div>
+                <div class="w-16 h-16 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+                  <img x-show="item.image" :src="item.image" class="max-h-full max-w-full object-contain">
+                  <span x-show="!item.image" class="text-gray-400 text-xs">Item</span>
+                </div>
                 <div>
                   <p class="text-sm" x-text="item.title"></p>
                   <p class="text-xs text-gray-500" x-text="'Qty: ' + item.qty + ' | Nu. ' + (item.price * item.qty).toLocaleString()"></p>
                 </div>
               </div>
             </template>
+            <div x-show="order.address" class="mt-3 pt-3 border-t flex gap-6 text-xs text-gray-600">
+              <div><span class="font-bold text-gray-800">Deliver to:</span> <span x-text="(order.address?.name||'')+', '+(order.address?.city||'')"></span></div>
+              <div><span class="font-bold text-gray-800">Payment:</span> <span x-text="order.payment==='cod'?'Cash on Delivery':order.payment==='mbob'?'mBoB':order.payment==='bnb'?'BNB mPay':'Card'"></span></div>
+            </div>
           </div>
         </div>
       </template>
@@ -825,6 +1031,289 @@
     </div>
   </div>
 
+  <!-- CHECKOUT PAGE (Multi-step) -->
+  <div x-show="page === 'checkout'" class="max-w-[900px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-4">Checkout</h1>
+    <!-- Progress Steps -->
+    <div class="flex items-center justify-center mb-6 gap-0">
+      <template x-for="(step, idx) in ['Address', 'Payment', 'Review']" :key="step">
+        <div class="flex items-center">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" :class="checkoutStep > idx ? 'bg-amz-green text-white' : checkoutStep === idx+1 ? 'bg-amz-yellow text-amz-dark' : 'bg-gray-200 text-gray-500'" x-text="checkoutStep > idx ? '✓' : idx+1"></div>
+            <span class="text-sm font-bold" :class="checkoutStep >= idx+1 ? 'text-amz-dark' : 'text-gray-400'" x-text="step"></span>
+          </div>
+          <div x-show="idx < 2" class="w-16 h-0.5 mx-2" :class="checkoutStep > idx+1 ? 'bg-amz-green' : 'bg-gray-200'"></div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Step 1: Delivery Address -->
+    <div x-show="checkoutStep===1" class="bg-white p-6 rounded">
+      <h2 class="text-lg font-bold mb-4">Delivery Address</h2>
+      <!-- Saved Addresses -->
+      <div x-show="savedAddresses.length > 0" class="mb-4">
+        <h4 class="text-sm font-bold mb-2">Saved Addresses</h4>
+        <div class="grid md:grid-cols-2 gap-3 mb-3">
+          <template x-for="(addr, i) in savedAddresses" :key="i">
+            <button @click="deliveryAddress={...addr}" class="text-left border rounded p-3 text-sm hover:border-amz-blue" :class="deliveryAddress.street===addr.street ? 'border-amz-blue bg-blue-50' : 'border-gray-300'">
+              <p class="font-bold" x-text="addr.name"></p>
+              <p x-text="addr.street + ', ' + addr.city"></p>
+              <p x-text="addr.district + ' - ' + addr.zip"></p>
+              <p x-text="addr.phone"></p>
+            </button>
+          </template>
+        </div>
+        <p class="text-sm font-bold">Or enter a new address:</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-3">
+        <div><label class="text-xs font-bold block mb-1">Full Name *</label><input type="text" x-model="deliveryAddress.name" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Phone Number *</label><input type="tel" x-model="deliveryAddress.phone" placeholder="+975" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Street Address *</label><input type="text" x-model="deliveryAddress.street" placeholder="House/Flat No., Street, Landmark" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">City/Town</label>
+          <select x-model="deliveryAddress.city" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
+            <option>Thimphu</option><option>Paro</option><option>Punakha</option><option>Wangdue Phodrang</option><option>Bumthang</option><option>Trongsa</option><option>Mongar</option><option>Trashigang</option><option>Samdrup Jongkhar</option><option>Phuentsholing</option><option>Gelephu</option><option>Haa</option>
+          </select>
+        </div>
+        <div><label class="text-xs font-bold block mb-1">Dzongkhag (District)</label>
+          <select x-model="deliveryAddress.district" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
+            <option>Thimphu</option><option>Paro</option><option>Punakha</option><option>Wangdue Phodrang</option><option>Bumthang</option><option>Trongsa</option><option>Mongar</option><option>Trashigang</option><option>Samdrup Jongkhar</option><option>Chhukha</option><option>Sarpang</option><option>Haa</option><option>Dagana</option><option>Tsirang</option><option>Zhemgang</option><option>Pemagatshel</option><option>Lhuentse</option><option>Trashi Yangtse</option><option>Gasa</option><option>Samtse</option>
+          </select>
+        </div>
+        <div><label class="text-xs font-bold block mb-1">ZIP Code</label><input type="text" x-model="deliveryAddress.zip" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+      </div>
+      <button @click="nextCheckoutStep()" class="amz-btn-cart px-8 py-2 text-sm font-bold mt-5">Continue to Payment</button>
+    </div>
+
+    <!-- Step 2: Payment -->
+    <div x-show="checkoutStep===2" class="bg-white p-6 rounded">
+      <h2 class="text-lg font-bold mb-4">Payment Method</h2>
+      <div class="space-y-3">
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='cod' ? 'border-amz-blue bg-blue-50' : ''">
+          <input type="radio" value="cod" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+          <div>
+            <p class="font-bold text-sm">Cash on Delivery (COD)</p>
+            <p class="text-xs text-gray-500">Pay when your order is delivered to your doorstep</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='mbob' ? 'border-amz-blue bg-blue-50' : ''">
+          <input type="radio" value="mbob" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+          <div>
+            <p class="font-bold text-sm">mBoB (Mobile Banking of Bhutan)</p>
+            <p class="text-xs text-gray-500">Pay using your Bank of Bhutan mobile banking app</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='bnb' ? 'border-amz-blue bg-blue-50' : ''">
+          <input type="radio" value="bnb" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+          <div>
+            <p class="font-bold text-sm">BNB mPay</p>
+            <p class="text-xs text-gray-500">Bhutan National Bank mobile payment</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='card' ? 'border-amz-blue bg-blue-50' : ''">
+          <input type="radio" value="card" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+          <div>
+            <p class="font-bold text-sm">Credit/Debit Card</p>
+            <p class="text-xs text-gray-500">Visa, MasterCard, RuPay</p>
+            <div x-show="paymentMethod==='card'" class="mt-3 grid grid-cols-2 gap-2" @click.stop>
+              <input type="text" placeholder="Card Number" maxlength="19" class="col-span-2 border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
+              <input type="text" placeholder="MM/YY" maxlength="5" class="border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
+              <input type="text" placeholder="CVV" maxlength="4" class="border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
+              <input type="text" placeholder="Name on Card" class="col-span-2 border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
+            </div>
+          </div>
+        </label>
+      </div>
+      <div class="flex gap-3 mt-5">
+        <button @click="checkoutStep=1" class="border border-gray-400 rounded px-6 py-2 text-sm hover:bg-gray-100">Back</button>
+        <button @click="nextCheckoutStep()" class="amz-btn-cart px-8 py-2 text-sm font-bold">Review Order</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Review & Place Order -->
+    <div x-show="checkoutStep===3" class="space-y-4">
+      <div class="bg-white p-5 rounded">
+        <h2 class="text-lg font-bold mb-3">Review Your Order</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="border rounded p-4">
+            <h4 class="text-sm font-bold mb-2 text-amz-dark">Shipping Address</h4>
+            <p class="text-sm" x-text="selectedAddress?.name"></p>
+            <p class="text-sm" x-text="selectedAddress?.street"></p>
+            <p class="text-sm" x-text="(selectedAddress?.city||'') + ', ' + (selectedAddress?.district||'')"></p>
+            <p class="text-sm" x-text="selectedAddress?.phone"></p>
+            <button @click="checkoutStep=1" class="text-amz-link text-xs mt-2 hover:underline">Change</button>
+          </div>
+          <div class="border rounded p-4">
+            <h4 class="text-sm font-bold mb-2 text-amz-dark">Payment Method</h4>
+            <p class="text-sm" x-text="paymentMethod==='cod'?'Cash on Delivery':paymentMethod==='mbob'?'mBoB Mobile Banking':paymentMethod==='bnb'?'BNB mPay':'Credit/Debit Card'"></p>
+            <button @click="checkoutStep=2" class="text-amz-link text-xs mt-2 hover:underline">Change</button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-5 rounded">
+        <h4 class="text-sm font-bold mb-3">Order Items</h4>
+        <template x-for="item in cart" :key="item.product.id">
+          <div class="flex gap-3 py-2 border-b">
+            <img :src="item.product.image" class="w-16 h-16 object-contain">
+            <div class="flex-1">
+              <p class="text-sm" x-text="item.product.title"></p>
+              <p class="text-xs text-gray-500" x-text="'Qty: '+item.qty"></p>
+            </div>
+            <span class="text-sm font-bold" x-text="'Nu. '+(item.product.price*item.qty).toLocaleString()"></span>
+          </div>
+        </template>
+      </div>
+      <div class="bg-white p-5 rounded">
+        <h4 class="text-sm font-bold mb-3">Order Summary</h4>
+        <div class="text-sm space-y-1">
+          <div class="flex justify-between"><span>Items:</span><span x-text="'Nu. '+cartSubtotal().toLocaleString()"></span></div>
+          <div class="flex justify-between"><span>Shipping:</span><span x-text="(promoApplied?.type==='freeship')?'FREE':'Nu. '+cartShipping().toLocaleString()"></span></div>
+          <div class="flex justify-between"><span>Tax (10%):</span><span x-text="'Nu. '+cartTax().toLocaleString()"></span></div>
+          <div x-show="promoApplied && promoApplied.type!=='freeship'" class="flex justify-between text-amz-green"><span x-text="'Coupon ('+promoApplied?.code+')'"></span><span x-text="'-Nu. '+promoDiscount().toLocaleString()"></span></div>
+          <hr class="my-2">
+          <div class="flex justify-between text-lg font-bold text-amz-red"><span>Order Total:</span><span x-text="'Nu. '+cartTotalWithPromo().toLocaleString()"></span></div>
+        </div>
+        <div class="flex gap-3 mt-4">
+          <button @click="checkoutStep=2" class="border border-gray-400 rounded px-6 py-2 text-sm hover:bg-gray-100">Back</button>
+          <button @click="placeOrder()" class="amz-btn-buy px-8 py-2.5 text-sm font-bold">Place Order & Pay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WISHLIST PAGE -->
+  <div x-show="page === 'wishlist'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-4">Your Wishlist (<span x-text="wishlist.length"></span> items)</h1>
+    <template x-if="wishlist.length === 0">
+      <div class="bg-white p-8 rounded text-center">
+        <svg class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <p class="text-gray-600">Your wishlist is empty.</p>
+        <a href="#" @click.prevent="page='products'" class="text-amz-link text-sm hover:underline mt-2 inline-block">Continue shopping</a>
+      </div>
+    </template>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <template x-for="product in wishlist" :key="product.id">
+        <div class="bg-white rounded overflow-hidden product-card">
+          <div class="relative">
+            <a href="#" @click.prevent="viewProduct(product)" class="h-[200px] flex items-center justify-center p-4 bg-gray-50">
+              <img :src="product.image" class="max-h-full max-w-full object-contain">
+            </a>
+            <button @click="toggleWishlist(product)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-red-50">
+              <svg class="w-5 h-5 text-amz-red fill-current" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+          <div class="p-4">
+            <a href="#" @click.prevent="viewProduct(product)" class="text-sm line-clamp-2 hover:text-amz-red" x-text="product.title"></a>
+            <div class="star-rating text-xs mt-1" x-text="'★'.repeat(Math.round(product.rating)) + ' ' + product.reviews"></div>
+            <p class="text-lg font-bold mt-1"><span class="text-xs align-top">Nu.</span><span x-text="product.price.toLocaleString()"></span></p>
+            <div class="text-xs mt-1" :class="product.stock>0?'text-amz-green':'text-amz-red'" x-text="product.stock>0?'In Stock':'Out of Stock'"></div>
+            <button @click="addToCart(product)" class="amz-btn-cart w-full py-1.5 text-xs font-bold mt-3">Add to Cart</button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- COMPARE PAGE -->
+  <div x-show="page === 'compare'" class="max-w-[1500px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-4">Compare Products (<span x-text="compareList.length"></span>)</h1>
+    <template x-if="compareList.length < 2">
+      <div class="bg-white p-8 rounded text-center">
+        <p class="text-gray-600">Add at least 2 products to compare. Browse products and click "Compare" checkbox.</p>
+        <a href="#" @click.prevent="page='products'" class="text-amz-link text-sm hover:underline mt-2 inline-block">Browse products</a>
+      </div>
+    </template>
+    <template x-if="compareList.length >= 2">
+      <div class="bg-white rounded overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b">
+              <th class="p-4 text-left bg-gray-50 w-32">Product</th>
+              <template x-for="p in compareList" :key="p.id">
+                <td class="p-4 text-center min-w-[200px]">
+                  <a href="#" @click.prevent="viewProduct(p)"><img :src="p.image" class="w-24 h-24 object-contain mx-auto mb-2"></a>
+                  <p class="text-xs line-clamp-2 font-medium" x-text="p.title"></p>
+                  <button @click="toggleCompare(p)" class="text-amz-red text-xs mt-1 hover:underline">Remove</button>
+                </td>
+              </template>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Price</td>
+              <template x-for="p in compareList" :key="'price-'+p.id"><td class="p-3 text-center font-bold text-lg" x-text="'Nu. '+p.price.toLocaleString()"></td></template>
+            </tr>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Rating</td>
+              <template x-for="p in compareList" :key="'rate-'+p.id"><td class="p-3 text-center"><span class="star-rating" x-text="'★'.repeat(Math.round(p.rating))"></span> <span x-text="p.rating"></span></td></template>
+            </tr>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Reviews</td>
+              <template x-for="p in compareList" :key="'rev-'+p.id"><td class="p-3 text-center" x-text="p.reviews.toLocaleString()"></td></template>
+            </tr>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Category</td>
+              <template x-for="p in compareList" :key="'cat-'+p.id"><td class="p-3 text-center" x-text="p.category"></td></template>
+            </tr>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Stock</td>
+              <template x-for="p in compareList" :key="'stock-'+p.id"><td class="p-3 text-center" :class="p.stock>0?'text-amz-green':'text-amz-red'" x-text="p.stock>0?p.stock+' available':'Out of Stock'"></td></template>
+            </tr>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Shipping</td>
+              <template x-for="p in compareList" :key="'ship-'+p.id"><td class="p-3 text-center" x-text="p.freeShipping?'FREE':'Nu. 500'"></td></template>
+            </tr>
+            <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Sold</td>
+              <template x-for="p in compareList" :key="'sold-'+p.id"><td class="p-3 text-center" x-text="p.sold.toLocaleString()+'+'"></td></template>
+            </tr>
+            <tr><td class="p-3 font-bold bg-gray-50">Action</td>
+              <template x-for="p in compareList" :key="'act-'+p.id"><td class="p-3 text-center"><button @click="addToCart(p)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Add to Cart</button></td></template>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </template>
+  </div>
+
+  <!-- PROFILE/ACCOUNT PAGE -->
+  <div x-show="page === 'profile'" class="max-w-[900px] mx-auto px-4 py-4">
+    <h1 class="text-2xl font-bold mb-4">Your Account</h1>
+    <div class="flex gap-4 mb-6">
+      <template x-for="tab in ['info','addresses','security']" :key="tab">
+        <button @click="profileTab=tab" class="px-4 py-2 rounded-lg text-sm font-bold" :class="profileTab===tab ? 'bg-amz-dark2 text-white' : 'bg-gray-100 hover:bg-gray-200'" x-text="tab==='info'?'Personal Info':tab==='addresses'?'Addresses':'Security'"></button>
+      </template>
+    </div>
+    <!-- Personal Info -->
+    <div x-show="profileTab==='info'" class="bg-white p-6 rounded">
+      <h2 class="text-lg font-bold mb-4">Personal Information</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div><label class="text-xs font-bold block mb-1">Full Name</label><input type="text" x-model="editProfile.name" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Email</label><input type="email" x-model="editProfile.email" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Phone</label><input type="tel" x-model="editProfile.phone" placeholder="+975" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Role</label><input type="text" :value="user?.role" disabled class="w-full border border-gray-200 rounded px-3 py-2 text-sm bg-gray-50"></div>
+      </div>
+      <button @click="saveProfile()" class="amz-btn-cart px-6 py-2 text-sm font-bold mt-4">Save Changes</button>
+    </div>
+    <!-- Addresses -->
+    <div x-show="profileTab==='addresses'" class="bg-white p-6 rounded">
+      <h2 class="text-lg font-bold mb-4">Saved Addresses</h2>
+      <template x-if="savedAddresses.length===0"><p class="text-gray-500 text-sm">No saved addresses. Add one during checkout.</p></template>
+      <div class="grid md:grid-cols-2 gap-4">
+        <template x-for="(addr, i) in savedAddresses" :key="i">
+          <div class="border rounded p-4">
+            <p class="font-bold text-sm" x-text="addr.name"></p>
+            <p class="text-sm" x-text="addr.street"></p>
+            <p class="text-sm" x-text="addr.city + ', ' + addr.district + ' ' + addr.zip"></p>
+            <p class="text-sm" x-text="addr.phone"></p>
+            <button @click="savedAddresses.splice(i,1); showToast('Address removed')" class="text-amz-red text-xs mt-2 hover:underline">Remove</button>
+          </div>
+        </template>
+      </div>
+    </div>
+    <!-- Security -->
+    <div x-show="profileTab==='security'" class="bg-white p-6 rounded">
+      <h2 class="text-lg font-bold mb-4">Login & Security</h2>
+      <div class="space-y-4">
+        <div class="flex justify-between items-center border-b pb-3"><div><p class="text-sm font-bold">Password</p><p class="text-xs text-gray-500">Last changed: Never</p></div><button class="border border-gray-400 rounded px-4 py-1.5 text-sm hover:bg-gray-100">Change</button></div>
+        <div class="flex justify-between items-center border-b pb-3"><div><p class="text-sm font-bold">Two-Step Verification</p><p class="text-xs text-gray-500">Add an extra layer of security</p></div><button class="border border-gray-400 rounded px-4 py-1.5 text-sm hover:bg-gray-100">Enable</button></div>
+        <div class="flex justify-between items-center"><div><p class="text-sm font-bold text-amz-red">Delete Account</p><p class="text-xs text-gray-500">Permanently delete your account and data</p></div><button class="border border-red-300 text-amz-red rounded px-4 py-1.5 text-sm hover:bg-red-50">Delete</button></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -862,7 +1351,9 @@
     <div>
       <h4 class="font-bold mb-3">Let Us Help You</h4>
       <div class="space-y-2 text-gray-300">
+        <a href="#" @click.prevent="page='profile'; initProfile()" class="block hover:underline">Your Account</a>
         <a href="#" @click.prevent="page='orders'" class="block hover:underline">Your Orders</a>
+        <a href="#" @click.prevent="page='wishlist'" class="block hover:underline">Your Wishlist</a>
         <a href="#" class="block hover:underline">Returns & Refunds</a>
         <a href="#" class="block hover:underline">Help</a>
       </div>
@@ -884,6 +1375,27 @@
     </div>
   </div>
 </footer>
+
+<!-- Floating Compare Bar -->
+<div x-show="compareList.length > 0 && page==='products'" x-cloak x-transition class="fixed bottom-0 left-0 right-0 bg-amz-dark2 text-white py-3 px-4 z-40 shadow-lg">
+  <div class="max-w-[1500px] mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-bold" x-text="compareList.length + ' items selected'"></span>
+      <div class="flex gap-2">
+        <template x-for="cp in compareList" :key="cp.id">
+          <div class="relative">
+            <img :src="cp.image" class="w-10 h-10 object-contain bg-white rounded p-0.5">
+            <button @click="toggleCompare(cp)" class="absolute -top-1 -right-1 w-4 h-4 bg-amz-red text-white rounded-full text-[10px] flex items-center justify-center">×</button>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button @click="page='compare'" class="amz-btn-cart px-5 py-1.5 text-sm font-bold text-amz-dark">Compare Now</button>
+      <button @click="compareList=[]" class="text-gray-400 hover:text-white text-sm">Clear All</button>
+    </div>
+  </div>
+</div>
 
 <!-- Toast -->
 <div x-show="toast" x-transition x-cloak class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-amz-dark text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 text-sm">
@@ -915,6 +1427,29 @@ function marketplace() {
     registerRole: 'buyer',
     loginEmail: '', loginPassword: '',
     regName: '', regEmail: '', regPassword: '', regConfirm: '',
+    wishlist: [],
+    compareList: [],
+    showCompare: false,
+    recentlyViewed: [],
+    notifications: [],
+    showNotifications: false,
+    darkMode: false,
+    promoCode: '',
+    promoApplied: null,
+    promoCodes: { 'WELCOME10': { discount: 10, type: 'percent', desc: '10% off' }, 'SAVE500': { discount: 500, type: 'flat', desc: 'Nu. 500 off' }, 'BHUTAN20': { discount: 20, type: 'percent', desc: '20% off' }, 'FREESHIP': { discount: 0, type: 'freeship', desc: 'Free shipping' } },
+    checkoutStep: 0,
+    deliveryAddress: { name: '', phone: '', street: '', city: 'Thimphu', district: 'Thimphu', zip: '' },
+    savedAddresses: [],
+    selectedAddress: null,
+    paymentMethod: 'cod',
+    flashSaleEnd: Date.now() + 4*60*60*1000,
+    qaQuestion: '',
+    qaList: {},
+    shareMenu: false,
+    profileTab: 'info',
+    editProfile: { name: '', email: '', phone: '' },
+    searchSuggestions: [],
+    showSearchSuggestions: false,
     reviewRating: 5, reviewTitle: '', reviewComment: '',
     conversations: [
       { id: 1, name: 'TechStore Thimphu', lastMessage: 'Your order has been shipped!', messages: [
@@ -957,6 +1492,7 @@ function marketplace() {
       { id: 12, title: 'Car Dash Camera 1080P - Night Vision', price: 3779, originalPrice: 5879, discount: 36, category: 'Automotive', image: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=400&h=400&fit=crop', rating: 4.1, reviews: 203, sold: 1100, stock: 30, freeShipping: true, store: 'AutoParts Thimphu', description: 'Full HD dash camera with night vision, loop recording, and wide-angle lens.', specs: { 'Resolution': '1080P', 'Angle': '170°', 'Storage': 'Up to 128GB' }, reviewList: [], dateAdded: '2024-06-10' },
     ],
 
+    init() { setInterval(() => { this.$nextTick(() => {}); }, 1000); },
     filterCategory(name) { this.activeCategory = name; this.page = 'products'; },
     searchProducts() { this.activeCategory = ''; this.page = 'products'; },
     filteredProducts() {
@@ -973,7 +1509,7 @@ function marketplace() {
     },
     getPopularProducts() { return [...this.allProducts].sort((a,b) => b.sold-a.sold).slice(0,8); },
     getNewestProducts() { return [...this.allProducts].sort((a,b) => new Date(b.dateAdded)-new Date(a.dateAdded)).slice(0,8); },
-    viewProduct(product) { this.selectedProduct = product; this.selectedImage = 0; this.quantity = 1; this.page = 'product-detail'; window.scrollTo({top:0}); },
+    viewProduct(product) { this.selectedProduct = product; this.selectedImage = 0; this.quantity = 1; this.page = 'product-detail'; this.trackView(product); this.shareMenu=false; window.scrollTo({top:0}); },
     addToCart(product, qty=1) { const e = this.cart.find(i => i.product.id===product.id); if(e) e.qty+=qty; else this.cart.push({product,qty}); this.showToast('Added to Cart'); },
     updateCartQty(index, delta) { this.cart[index].qty += delta; if(this.cart[index].qty<=0) this.cart.splice(index,1); },
     removeFromCart(index) { this.cart.splice(index,1); },
@@ -981,11 +1517,7 @@ function marketplace() {
     cartShipping() { return this.cartSubtotal()>4000 ? 0 : 500; },
     cartTax() { return this.cartSubtotal()*0.1; },
     cartTotal() { return this.cartSubtotal()+this.cartShipping()+this.cartTax(); },
-    checkout() {
-      if(!this.user){this.page='login'; return;}
-      this.orders.unshift({ id:'ORD-'+Date.now().toString().slice(-6), date:new Date().toLocaleDateString(), items:this.cart.map(i=>({title:i.product.title,qty:i.qty,price:i.product.price})), total:this.cartTotal(), status:'pending' });
-      this.cart=[]; this.showToast('Order placed successfully!'); this.page='orders';
-    },
+    checkout() { this.startCheckout(); },
     loginUser() { this.authError=''; if(!this.loginEmail||!this.loginPassword){this.authError='Please fill all fields';return;} this.user={name:this.loginEmail.split('@')[0],email:this.loginEmail,role:'buyer'}; this.loginEmail='';this.loginPassword=''; this.showToast('Welcome back!'); this.page='home'; },
     registerUser() { this.authError=''; if(!this.regName||!this.regEmail||!this.regPassword){this.authError='Please fill all fields';return;} if(this.regPassword!==this.regConfirm){this.authError='Passwords do not match';return;} if(this.regPassword.length<6){this.authError='Password must be at least 6 characters';return;} this.user={name:this.regName,email:this.regEmail,role:this.registerRole}; this.regName='';this.regEmail='';this.regPassword='';this.regConfirm=''; this.showToast('Account created!'); this.page='home'; },
     logout() { this.user=null; this.page='home'; this.showToast('Signed out'); },
@@ -993,6 +1525,68 @@ function marketplace() {
     openConversation(conv) { this.activeConv=conv; },
     sendMessage() { if(!this.newMessage.trim()||!this.activeConv)return; this.activeConv.messages.push({id:Date.now(),text:this.newMessage,sent:true,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}); this.newMessage=''; },
     addProduct() { if(!this.newProduct.title||!this.newProduct.price)return; const cond=this.newProduct.condition; const condLabels={'new':'New','like_new':'Like New','good':'Good','fair':'Fair','poor':'Poor'}; const p={id:Date.now(),title:this.newProduct.title,description:this.newProduct.description||'New product',price:Number(this.newProduct.price),originalPrice:null,discount:0,category:this.newProduct.category,image:this.newProduct.image||'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',rating:0,reviews:0,sold:0,stock:Number(this.newProduct.stock)||1,freeShipping:false,store:this.user?.name||'My Store',specs:{},reviewList:[],dateAdded:new Date().toISOString().split('T')[0],condition:cond,conditionLabel:condLabels[cond]||'New'}; if(cond!=='new'){p.conditionNote=this.newProduct.conditionNote;p.usageDuration=this.newProduct.usageDuration;p.defects=this.newProduct.defects;p.accessories=this.newProduct.accessories;p.reason=this.newProduct.reason;} this.allProducts.unshift(p); this.newProduct={title:'',description:'',price:'',category:'Electronics',stock:'',image:'',condition:'new',conditionNote:'',usageDuration:'',defects:'',accessories:'',reason:''}; this.showProductForm=false; this.showToast('Product listed!'); },
+
+    // Wishlist
+    toggleWishlist(product) { const i=this.wishlist.findIndex(p=>p.id===product.id); if(i>=0){this.wishlist.splice(i,1);this.showToast('Removed from Wishlist');}else{this.wishlist.push(product);this.showToast('Added to Wishlist');this.addNotification('Added "'+product.title.slice(0,30)+'..." to your Wishlist');} },
+    isInWishlist(id) { return this.wishlist.some(p=>p.id===id); },
+
+    // Compare
+    toggleCompare(product) { const i=this.compareList.findIndex(p=>p.id===product.id); if(i>=0){this.compareList.splice(i,1);}else{if(this.compareList.length>=4){this.showToast('Max 4 items to compare');return;}this.compareList.push(product);} },
+    isInCompare(id) { return this.compareList.some(p=>p.id===id); },
+
+    // Recently Viewed
+    trackView(product) { this.recentlyViewed=this.recentlyViewed.filter(p=>p.id!==product.id); this.recentlyViewed.unshift(product); if(this.recentlyViewed.length>10) this.recentlyViewed.pop(); },
+
+    // Notifications
+    addNotification(msg) { this.notifications.unshift({id:Date.now(),msg,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),read:false}); },
+    unreadCount() { return this.notifications.filter(n=>!n.read).length; },
+    markAllRead() { this.notifications.forEach(n=>n.read=true); },
+
+    // Promo/Coupon
+    applyPromo() { const code=this.promoCode.toUpperCase().trim(); if(this.promoCodes[code]){this.promoApplied={code,...this.promoCodes[code]};this.showToast('Coupon applied: '+this.promoCodes[code].desc);this.addNotification('Coupon "'+code+'" applied!');}else{this.showToast('Invalid coupon code');this.promoApplied=null;} },
+    removePromo() { this.promoApplied=null; this.promoCode=''; },
+    promoDiscount() { if(!this.promoApplied)return 0; if(this.promoApplied.type==='percent')return Math.round(this.cartSubtotal()*this.promoApplied.discount/100); if(this.promoApplied.type==='flat')return this.promoApplied.discount; return 0; },
+    cartTotalWithPromo() { let t=this.cartSubtotal()-this.promoDiscount()+this.cartTax(); const ship=(this.promoApplied?.type==='freeship')?0:this.cartShipping(); return t+ship; },
+
+    // Multi-step checkout
+    startCheckout() { if(!this.user){this.page='login';return;} this.checkoutStep=1; this.page='checkout'; },
+    nextCheckoutStep() { if(this.checkoutStep===1){if(!this.deliveryAddress.name||!this.deliveryAddress.phone||!this.deliveryAddress.street){this.showToast('Please fill delivery address');return;}this.selectedAddress={...this.deliveryAddress};if(!this.savedAddresses.find(a=>a.street===this.deliveryAddress.street)){this.savedAddresses.push({...this.deliveryAddress});}} this.checkoutStep++; },
+    placeOrder() {
+      const ship=(this.promoApplied?.type==='freeship')?0:this.cartShipping();
+      const trackingSteps=[{status:'Order Placed',date:new Date().toLocaleDateString(),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),done:true},{status:'Payment Confirmed',date:'',time:'',done:false},{status:'Processing',date:'',time:'',done:false},{status:'Shipped',date:'',time:'',done:false},{status:'Out for Delivery',date:'',time:'',done:false},{status:'Delivered',date:'',time:'',done:false}];
+      const estDays=Math.floor(Math.random()*4)+3;
+      const estDate=new Date(Date.now()+estDays*86400000).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+      this.orders.unshift({id:'ORD-'+Date.now().toString().slice(-6),date:new Date().toLocaleDateString(),items:this.cart.map(i=>({title:i.product.title,qty:i.qty,price:i.product.price,image:i.product.image})),total:this.cartTotalWithPromo(),status:'pending',address:{...this.selectedAddress},payment:this.paymentMethod,tracking:trackingSteps,estimatedDelivery:estDate,promo:this.promoApplied?{...this.promoApplied}:null});
+      this.cart=[]; this.promoApplied=null; this.promoCode=''; this.checkoutStep=0;
+      this.addNotification('Order placed! Estimated delivery: '+estDate);
+      this.showToast('Order placed successfully!'); this.page='orders';
+    },
+
+    // Flash Sale Timer
+    flashTimeLeft() { const d=this.flashSaleEnd-Date.now(); if(d<=0)return'00:00:00'; const h=Math.floor(d/3600000); const m=Math.floor((d%3600000)/60000); const s=Math.floor((d%60000)/1000); return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0'); },
+
+    // Q&A
+    askQuestion(productId) { if(!this.qaQuestion.trim())return; if(!this.qaList[productId])this.qaList[productId]=[]; this.qaList[productId].unshift({id:Date.now(),q:this.qaQuestion,user:this.user?.name||'Guest',date:new Date().toLocaleDateString(),answers:[{text:'Thank you for your question! The seller will respond shortly.',by:'MyMarket Bot',date:new Date().toLocaleDateString()}]}); this.qaQuestion=''; this.showToast('Question submitted!'); },
+
+    // Search suggestions
+    updateSuggestions() { const q=this.searchQuery.toLowerCase().trim(); if(!q){this.searchSuggestions=[];this.showSearchSuggestions=false;return;} this.searchSuggestions=this.allProducts.filter(p=>p.title.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)).slice(0,5); this.showSearchSuggestions=this.searchSuggestions.length>0; },
+
+    // Share
+    shareProduct(method) { const url=window.location.href; const title=this.selectedProduct?.title||''; if(method==='copy'){navigator.clipboard?.writeText(url+'?product='+this.selectedProduct?.id);this.showToast('Link copied!');}else if(method==='whatsapp'){window.open('https://wa.me/?text='+encodeURIComponent(title+' - '+url));}else if(method==='facebook'){window.open('https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url));}else if(method==='twitter'){window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(title)+'&url='+encodeURIComponent(url));} this.shareMenu=false; },
+
+    // Recommendations
+    getRecommendations(product) { return this.allProducts.filter(p=>p.id!==product.id&&p.category===product.category).slice(0,4); },
+
+    // Estimated delivery
+    getEstDelivery() { const d=new Date(Date.now()+(Math.floor(Math.random()*4)+3)*86400000); return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}); },
+
+    // Dark mode
+    toggleDarkMode() { this.darkMode=!this.darkMode; document.documentElement.classList.toggle('dark',this.darkMode); },
+
+    // Profile
+    initProfile() { if(this.user){this.editProfile={name:this.user.name,email:this.user.email,phone:this.user.phone||''};} },
+    saveProfile() { if(this.user){this.user.name=this.editProfile.name;this.user.email=this.editProfile.email;this.user.phone=this.editProfile.phone;this.showToast('Profile updated!');} },
+
     showToast(msg) { this.toast=msg; setTimeout(()=>this.toast='',3000); }
   };
 }
