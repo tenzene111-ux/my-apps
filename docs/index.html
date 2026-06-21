@@ -194,6 +194,9 @@
       <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
         <span class="text-amz-orange font-bold">🍔 Food Delivery</span>
       </a>
+      <a href="#" @click.prevent="page='hardware'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
+        <span class="text-green-400 font-bold">🖥️ Hardware Store</span>
+      </a>
       <template x-for="cat in categories.slice(0,4)" :key="cat.name">
         <a href="#" @click.prevent="filterCategory(cat.name)" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="cat.name"></a>
       </template>
@@ -1657,6 +1660,295 @@
     </div>
   </div>
 
+  <!-- HARDWARE STORE - Main Page -->
+  <div x-show="page === 'hardware'" class="max-w-[1500px] mx-auto px-4 py-4">
+    <!-- Hardware Hero -->
+    <div class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 rounded-xl p-8 mb-6 text-white relative overflow-hidden">
+      <div class="relative z-10">
+        <div class="flex items-center gap-3 mb-2"><span class="text-3xl">🖥️</span><h1 class="text-3xl font-bold">DrukHub Hardware</h1></div>
+        <p class="text-gray-300 mb-4">Build, upgrade & power your dream setup — components, peripherals & networking</p>
+        <div class="flex gap-3">
+          <button @click="page='pc-builder'" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+            PC Builder Tool
+          </button>
+          <div class="flex items-center bg-white/10 rounded-lg px-4 flex-1 max-w-md">
+            <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" x-model="hwSearch" @input="filterHardware()" placeholder="Search processors, GPUs, RAM, motherboards..." class="bg-transparent w-full py-2.5 text-sm text-white placeholder-gray-400 outline-none">
+          </div>
+        </div>
+      </div>
+      <div class="absolute right-8 top-4 text-8xl opacity-5">⚙️</div>
+    </div>
+
+    <!-- Hardware Category Chips -->
+    <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-6 pb-1">
+      <button @click="hwCategory=''; filterHardware()" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition" :class="!hwCategory ? 'bg-gray-900 text-white' : 'bg-white hover:bg-gray-100'">All Hardware</button>
+      <template x-for="cat in hwCategories" :key="cat.name">
+        <button @click="hwCategory=cat.name; filterHardware()" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold transition flex items-center gap-1.5" :class="hwCategory===cat.name ? 'bg-gray-900 text-white' : 'bg-white hover:bg-gray-100'">
+          <span x-text="cat.icon"></span> <span x-text="cat.name"></span>
+        </button>
+      </template>
+    </div>
+
+    <!-- Quick Deals -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Processors'; filterHardware()">
+        <p class="text-2xl mb-1">🔥</p><p class="font-bold text-sm">Processor Deals</p><p class="text-xs opacity-80">Up to 25% off</p>
+      </div>
+      <div class="bg-gradient-to-br from-green-600 to-green-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Graphics Cards'; filterHardware()">
+        <p class="text-2xl mb-1">🎮</p><p class="font-bold text-sm">GPU Sale</p><p class="text-xs opacity-80">RTX & RX Series</p>
+      </div>
+      <div class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='RAM'; filterHardware()">
+        <p class="text-2xl mb-1">⚡</p><p class="font-bold text-sm">Memory Upgrade</p><p class="text-xs opacity-80">DDR5 available</p>
+      </div>
+      <div class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="page='pc-builder'">
+        <p class="text-2xl mb-1">🛠️</p><p class="font-bold text-sm">Build Your PC</p><p class="text-xs opacity-80">Custom PC Builder</p>
+      </div>
+    </div>
+
+    <!-- Sort & Filter Bar -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-bold" x-text="hwCategory || 'All Hardware'"></h2>
+      <div class="flex gap-2">
+        <select x-model="hwSort" @change="filterHardware()" class="border rounded-lg px-3 py-1.5 text-sm">
+          <option value="popular">Most Popular</option>
+          <option value="price_low">Price: Low to High</option>
+          <option value="price_high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">Newest</option>
+        </select>
+        <select x-model="hwBrand" @change="filterHardware()" class="border rounded-lg px-3 py-1.5 text-sm">
+          <option value="">All Brands</option>
+          <template x-for="b in [...new Set(hardwareProducts.map(p=>p.brand))]" :key="b"><option :value="b" x-text="b"></option></template>
+        </select>
+      </div>
+    </div>
+
+    <!-- Hardware Products Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <template x-for="hw in filteredHW" :key="hw.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-lg transition product-card">
+          <div class="relative">
+            <a href="#" @click.prevent="viewHardware(hw)" class="h-[200px] flex items-center justify-center p-4 bg-gray-50">
+              <img :src="hw.image" :alt="hw.name" class="max-h-full max-w-full object-contain hover:scale-105 transition">
+            </a>
+            <span x-show="hw.discount" class="absolute top-2 left-2 bg-amz-red text-white text-xs font-bold px-2 py-0.5 rounded" x-text="'-'+hw.discount+'%'"></span>
+            <button @click="toggleWishlist(hw)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100">
+              <svg class="w-4 h-4" :class="isInWishlist(hw.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+          </div>
+          <div class="p-4">
+            <p class="text-xs text-gray-500 font-bold" x-text="hw.brand"></p>
+            <a href="#" @click.prevent="viewHardware(hw)" class="text-sm line-clamp-2 hover:text-amz-red font-medium mt-0.5" x-text="hw.name"></a>
+            <div class="flex items-center gap-1 mt-1">
+              <span class="text-xs font-bold px-1.5 py-0.5 rounded" :class="hw.rating>=4.5?'bg-green-600 text-white':hw.rating>=4?'bg-green-500 text-white':'bg-yellow-500 text-white'" x-text="hw.rating + ' ★'"></span>
+              <span class="text-xs text-gray-500" x-text="'(' + hw.reviews + ')'"></span>
+            </div>
+            <div class="mt-2">
+              <span class="text-lg font-bold" x-text="'Nu. ' + hw.price.toLocaleString()"></span>
+              <span x-show="hw.originalPrice" class="text-xs text-gray-500 line-through ml-1" x-text="'Nu. ' + (hw.originalPrice||0).toLocaleString()"></span>
+            </div>
+            <!-- Key Specs -->
+            <div class="mt-2 flex flex-wrap gap-1">
+              <template x-for="spec in Object.entries(hw.keySpecs||{}).slice(0,3)" :key="spec[0]">
+                <span class="text-[10px] bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded" x-text="spec[0] + ': ' + spec[1]"></span>
+              </template>
+            </div>
+            <div class="flex items-center gap-2 mt-2 text-xs">
+              <span x-show="hw.inStock" class="text-amz-green font-bold">In Stock</span>
+              <span x-show="!hw.inStock" class="text-amz-red font-bold">Out of Stock</span>
+              <span x-show="hw.freeShipping" class="text-gray-500">FREE Delivery</span>
+            </div>
+            <button x-show="hw.inStock" @click="addToCart(hw)" class="amz-btn-cart w-full py-1.5 text-xs font-bold mt-3">Add to Cart</button>
+          </div>
+        </div>
+      </template>
+    </div>
+    <p x-show="filteredHW.length===0" class="text-center text-gray-500 py-10">No hardware found. Try a different search or category.</p>
+  </div>
+
+  <!-- HARDWARE DETAIL PAGE -->
+  <div x-show="page === 'hw-detail'" class="max-w-[1200px] mx-auto px-4 py-4">
+    <template x-if="selectedHW">
+      <div>
+        <button @click="page='hardware'" class="text-amz-link text-sm hover:underline mb-3 inline-flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Back to Hardware
+        </button>
+        <div class="bg-white rounded-lg p-6">
+          <div class="grid md:grid-cols-12 gap-6">
+            <!-- Image -->
+            <div class="md:col-span-4">
+              <div class="h-[350px] flex items-center justify-center p-6 bg-gray-50 rounded-lg border">
+                <img :src="selectedHW.image" :alt="selectedHW.name" class="max-h-full max-w-full object-contain">
+              </div>
+            </div>
+            <!-- Info -->
+            <div class="md:col-span-5">
+              <p class="text-sm text-gray-500 font-bold" x-text="selectedHW.brand"></p>
+              <h1 class="text-xl font-bold mt-1" x-text="selectedHW.name"></h1>
+              <div class="flex items-center gap-2 mt-2">
+                <span class="text-sm font-bold px-2 py-0.5 rounded text-white" :class="selectedHW.rating>=4.5?'bg-green-600':'bg-green-500'" x-text="selectedHW.rating + ' ★'"></span>
+                <span class="text-sm text-gray-500" x-text="selectedHW.reviews + ' ratings'"></span>
+              </div>
+              <hr class="my-3">
+              <div>
+                <span x-show="selectedHW.discount" class="text-amz-red text-2xl font-light" x-text="'-'+selectedHW.discount+'%'"></span>
+                <span class="text-[28px] ml-2"><span class="text-[13px] align-top">Nu.</span><span x-text="selectedHW.price.toLocaleString()"></span></span>
+              </div>
+              <div x-show="selectedHW.originalPrice" class="text-sm text-gray-500 mt-1">M.R.P.: <span class="line-through" x-text="'Nu. '+(selectedHW.originalPrice||0).toLocaleString()"></span></div>
+              <p class="text-xs text-gray-500 mt-1">Inclusive of all taxes</p>
+              <hr class="my-3">
+              <p class="text-sm text-gray-700" x-text="selectedHW.description"></p>
+
+              <!-- Full Specifications -->
+              <div class="mt-4">
+                <h3 class="font-bold text-sm mb-2">Technical Specifications</h3>
+                <table class="w-full text-sm">
+                  <template x-for="(val, key) in selectedHW.specs" :key="key">
+                    <tr class="border-b border-gray-100">
+                      <td class="py-1.5 pr-4 text-gray-500 font-medium w-1/3" x-text="key"></td>
+                      <td class="py-1.5" x-text="val"></td>
+                    </tr>
+                  </template>
+                </table>
+              </div>
+
+              <!-- Compatibility -->
+              <div x-show="selectedHW.compatibility" class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 class="font-bold text-sm mb-2 flex items-center gap-1"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Compatibility</h4>
+                <div class="text-sm space-y-1 text-gray-700">
+                  <template x-for="(val, key) in (selectedHW.compatibility||{})" :key="key">
+                    <p><span class="font-bold" x-text="key + ': '"></span><span x-text="val"></span></p>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <!-- Buy Box -->
+            <div class="md:col-span-3">
+              <div class="border rounded-lg p-4">
+                <div class="text-[28px] mb-1"><span class="text-[13px] align-top">Nu.</span><span x-text="selectedHW.price.toLocaleString()"></span></div>
+                <div class="text-xs text-gray-600" x-text="selectedHW.freeShipping ? 'FREE delivery within Bhutan' : 'Delivery: Nu. 500'"></div>
+                <div class="text-xs text-amz-green mt-1" x-text="'Estimated: ' + getEstDelivery()"></div>
+                <div class="text-sm mt-3" :class="selectedHW.inStock ? 'text-amz-green text-lg font-bold' : 'text-amz-red'" x-text="selectedHW.inStock ? 'In Stock' : 'Out of Stock'"></div>
+                <div x-show="selectedHW.warranty" class="text-xs text-gray-600 mt-1 flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                  <span x-text="selectedHW.warranty"></span>
+                </div>
+                <button x-show="selectedHW.inStock" @click="addToCart(selectedHW)" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3">Add to Cart</button>
+                <button x-show="selectedHW.inStock" @click="addToCart(selectedHW); checkout()" class="amz-btn-buy w-full py-2 text-sm font-bold mt-2">Buy Now</button>
+                <button @click="toggleWishlist(selectedHW)" class="border border-gray-300 rounded-full w-full py-1.5 text-xs font-bold mt-2 hover:bg-gray-50 flex items-center justify-center gap-1">
+                  <svg class="w-4 h-4" :class="isInWishlist(selectedHW.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                  <span x-text="isInWishlist(selectedHW.id)?'Wishlisted':'Add to Wishlist'"></span>
+                </button>
+                <div class="text-xs text-gray-500 mt-3 space-y-1">
+                  <div class="flex justify-between"><span>Ships from</span><span>DrukHub.bt</span></div>
+                  <div class="flex justify-between"><span>Sold by</span><span class="text-amz-link" x-text="selectedHW.seller"></span></div>
+                  <div x-show="selectedHW.warranty" class="flex justify-between"><span>Warranty</span><span x-text="selectedHW.warranty"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <!-- PC BUILDER PAGE -->
+  <div x-show="page === 'pc-builder'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-bold flex items-center gap-2">🛠️ PC Builder</h1>
+        <p class="text-sm text-gray-500 mt-1">Select components to build your custom PC — we'll check compatibility for you</p>
+      </div>
+      <button @click="page='hardware'" class="text-amz-link text-sm hover:underline">Browse Hardware</button>
+    </div>
+
+    <!-- Builder Components -->
+    <div class="space-y-3">
+      <template x-for="slot in pcSlots" :key="slot.key">
+        <div class="bg-white rounded-lg p-4 flex items-center gap-4">
+          <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl shrink-0" x-text="slot.icon"></div>
+          <div class="flex-1">
+            <h3 class="font-bold text-sm" x-text="slot.label"></h3>
+            <template x-if="!pcBuild[slot.key]">
+              <div>
+                <select @change="selectPCPart(slot.key, $event.target.value); $event.target.value=''" class="w-full border border-gray-300 rounded px-3 py-2 text-sm mt-1">
+                  <option value="">Choose a <span x-text="slot.label"></span>...</option>
+                  <template x-for="hw in hardwareProducts.filter(p => p.hwCategory === slot.key)" :key="hw.id">
+                    <option :value="hw.id" x-text="hw.brand + ' ' + hw.name + ' — Nu. ' + hw.price.toLocaleString()"></option>
+                  </template>
+                </select>
+              </div>
+            </template>
+            <template x-if="pcBuild[slot.key]">
+              <div class="flex items-center justify-between mt-1">
+                <div class="flex items-center gap-3">
+                  <img :src="pcBuild[slot.key].image" class="w-12 h-12 object-contain">
+                  <div>
+                    <p class="text-sm" x-text="pcBuild[slot.key].brand + ' ' + pcBuild[slot.key].name"></p>
+                    <p class="text-xs text-gray-500" x-text="Object.entries(pcBuild[slot.key].keySpecs||{}).map(e=>e[0]+': '+e[1]).join(' | ')"></p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3">
+                  <span class="font-bold text-sm" x-text="'Nu. ' + pcBuild[slot.key].price.toLocaleString()"></span>
+                  <button @click="removePCPart(slot.key)" class="text-amz-red text-xs hover:underline">Remove</button>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <!-- Build Summary -->
+    <div class="bg-gray-900 text-white rounded-lg p-6 mt-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-lg">Build Summary</h3>
+        <div class="text-right">
+          <p class="text-sm text-gray-400">Estimated Total</p>
+          <p class="text-2xl font-bold text-green-400" x-text="'Nu. ' + pcBuildTotal().toLocaleString()"></p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 mb-4">
+        <template x-if="pcBuildParts() >= 3">
+          <span class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Compatible Build
+          </span>
+        </template>
+        <span class="text-xs text-gray-400" x-text="pcBuildParts() + ' of ' + pcSlots.length + ' components selected'"></span>
+      </div>
+      <div class="flex gap-3">
+        <button @click="addPCBuildToCart()" :disabled="pcBuildParts()===0" class="bg-green-500 hover:bg-green-600 disabled:bg-gray-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm">Add All to Cart</button>
+        <button @click="pcBuild={}" class="border border-gray-500 text-gray-300 hover:text-white px-6 py-2.5 rounded-lg text-sm">Clear Build</button>
+        <button @click="sharePCBuild()" x-show="pcBuildParts()>0" class="border border-gray-500 text-gray-300 hover:text-white px-4 py-2.5 rounded-lg text-sm flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg> Share Build
+        </button>
+      </div>
+    </div>
+
+    <!-- Pre-built Configs -->
+    <h3 class="text-lg font-bold mt-8 mb-4">Popular Pre-built Configurations</h3>
+    <div class="grid md:grid-cols-3 gap-4">
+      <template x-for="preset in pcPresets" :key="preset.name">
+        <div class="bg-white rounded-lg p-5 hover:shadow-lg transition border-2" :class="preset.tier==='budget'?'border-blue-200':preset.tier==='gaming'?'border-green-200':'border-purple-200'">
+          <span class="text-xs font-bold px-2 py-0.5 rounded-full" :class="preset.tier==='budget'?'bg-blue-100 text-blue-700':preset.tier==='gaming'?'bg-green-100 text-green-700':'bg-purple-100 text-purple-700'" x-text="preset.tier.toUpperCase()"></span>
+          <h4 class="font-bold mt-2" x-text="preset.name"></h4>
+          <p class="text-xs text-gray-500 mt-1" x-text="preset.desc"></p>
+          <ul class="mt-3 space-y-1">
+            <template x-for="(part, key) in preset.parts" :key="key">
+              <li class="text-xs text-gray-600 flex items-center gap-1"><span class="text-green-500">✓</span> <span x-text="part"></span></li>
+            </template>
+          </ul>
+          <div class="flex justify-between items-center mt-4 pt-3 border-t">
+            <span class="text-lg font-bold" x-text="'Nu. ' + preset.price.toLocaleString()"></span>
+            <button @click="loadPreset(preset)" class="bg-gray-900 text-white px-4 py-1.5 rounded text-xs font-bold hover:bg-gray-700">Load Build</button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -1936,7 +2228,55 @@ function marketplace() {
       },
     ],
 
-    init() { this.filteredRestaurants = [...this.restaurants]; setInterval(() => { this.$nextTick(() => {}); }, 1000); },
+    // Hardware Store Data
+    hwSearch: '',
+    hwCategory: '',
+    hwSort: 'popular',
+    hwBrand: '',
+    filteredHW: [],
+    selectedHW: null,
+    hwCategories: [
+      { name: 'Processors', icon: '⚡' }, { name: 'Graphics Cards', icon: '🎮' }, { name: 'RAM', icon: '💾' },
+      { name: 'Motherboards', icon: '🔧' }, { name: 'Storage', icon: '💿' }, { name: 'Power Supplies', icon: '🔌' },
+      { name: 'Cases', icon: '🖥️' }, { name: 'Cooling', icon: '❄️' }, { name: 'Monitors', icon: '🖥️' },
+      { name: 'Peripherals', icon: '⌨️' }, { name: 'Networking', icon: '📡' }
+    ],
+    hardwareProducts: [
+      { id: 'hw1', name: 'AMD Ryzen 7 5800X Processor', brand: 'AMD', hwCategory: 'Processors', price: 28500, originalPrice: 35000, discount: 19, image: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=400&fit=crop', rating: 4.8, reviews: 234, description: '8-Core 16-Thread unlocked desktop processor with Zen 3 architecture', specs: { Cores: '8', Threads: '16', 'Base Clock': '3.8 GHz', 'Boost Clock': '4.7 GHz', 'Cache': '32MB L3', 'TDP': '105W', 'Socket': 'AM4' }, keySpecs: ['8 Cores / 16 Threads', '4.7 GHz Boost', 'AM4 Socket'], compatibility: ['AM4 Motherboards'], warranty: '3 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: true, sold: 89, stock: 15, category: 'Hardware' },
+      { id: 'hw2', name: 'NVIDIA GeForce RTX 4060 Ti 8GB', brand: 'NVIDIA', hwCategory: 'Graphics Cards', price: 42000, originalPrice: 48000, discount: 13, image: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=400&h=400&fit=crop', rating: 4.7, reviews: 178, description: 'Ada Lovelace GPU with DLSS 3, ray tracing', specs: { 'CUDA Cores': '4352', 'Memory': '8GB GDDR6', 'Boost Clock': '2535 MHz', 'TDP': '160W', 'Interface': 'PCIe 4.0 x16' }, keySpecs: ['8GB GDDR6', '4352 CUDA Cores', 'DLSS 3'], compatibility: ['PCIe 4.0/3.0 x16'], warranty: '3 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 56, stock: 8, category: 'Hardware' },
+      { id: 'hw3', name: 'Corsair Vengeance DDR5 32GB (2x16GB) 5600MHz', brand: 'Corsair', hwCategory: 'RAM', price: 12500, originalPrice: 15000, discount: 17, image: 'https://images.unsplash.com/photo-1562976540-1502c2145186?w=400&h=400&fit=crop', rating: 4.6, reviews: 312, description: 'High-performance DDR5 memory with Intel XMP 3.0 support', specs: { 'Capacity': '32GB (2x16GB)', 'Speed': 'DDR5-5600', 'Latency': 'CL36', 'Voltage': '1.25V' }, keySpecs: ['32GB Kit', 'DDR5-5600', 'CL36'], compatibility: ['DDR5 Motherboards'], warranty: 'Lifetime', seller: 'ByteShop Thimphu', inStock: true, freeShipping: false, sold: 145, stock: 22, category: 'Hardware' },
+      { id: 'hw4', name: 'ASUS ROG Strix B650E-F Gaming WiFi', brand: 'ASUS', hwCategory: 'Motherboards', price: 24500, originalPrice: 28000, discount: 13, image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=400&fit=crop', rating: 4.5, reviews: 98, description: 'AM5 ATX motherboard with DDR5 support, WiFi 6E, PCIe 5.0', specs: { 'Socket': 'AM5', 'Chipset': 'B650E', 'RAM Slots': '4x DDR5', 'M.2 Slots': '3', 'WiFi': '6E' }, keySpecs: ['AM5 Socket', 'DDR5', 'WiFi 6E'], compatibility: ['AM5 Processors', 'DDR5 RAM'], warranty: '3 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: true, sold: 67, stock: 11, category: 'Hardware' },
+      { id: 'hw5', name: 'Samsung 980 PRO 1TB NVMe SSD', brand: 'Samsung', hwCategory: 'Storage', price: 9800, originalPrice: 13000, discount: 25, image: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=400&fit=crop', rating: 4.9, reviews: 456, description: 'PCIe Gen 4 NVMe M.2 SSD with up to 7,000 MB/s read speed', specs: { 'Capacity': '1TB', 'Interface': 'PCIe 4.0 NVMe', 'Read Speed': '7,000 MB/s', 'Write Speed': '5,100 MB/s', 'Form Factor': 'M.2 2280' }, keySpecs: ['1TB', '7,000 MB/s Read', 'PCIe 4.0'], compatibility: ['M.2 NVMe Slots'], warranty: '5 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: false, sold: 203, stock: 30, category: 'Hardware' },
+      { id: 'hw6', name: 'Corsair RM850x 850W 80+ Gold PSU', brand: 'Corsair', hwCategory: 'Power Supplies', price: 11500, originalPrice: 14000, discount: 18, image: 'https://images.unsplash.com/photo-1600348712270-3c9a3d1e6f89?w=400&h=400&fit=crop', rating: 4.7, reviews: 189, description: 'Fully modular ATX power supply with 80 Plus Gold efficiency', specs: { 'Wattage': '850W', 'Efficiency': '80+ Gold', 'Modular': 'Fully', 'Fan': '135mm Rifle Bearing' }, keySpecs: ['850W', '80+ Gold', 'Fully Modular'], compatibility: ['ATX Cases'], warranty: '10 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: true, sold: 134, stock: 18, category: 'Hardware' },
+      { id: 'hw7', name: 'NZXT H510 Flow Mid-Tower Case', brand: 'NZXT', hwCategory: 'Cases', price: 7800, originalPrice: 9500, discount: 18, image: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=400&h=400&fit=crop', rating: 4.4, reviews: 267, description: 'Compact ATX mid-tower with perforated front panel for airflow', specs: { 'Type': 'Mid-Tower ATX', 'Material': 'Steel/Tempered Glass', 'Drive Bays': '2x 3.5" + 2x 2.5"', 'Fan Support': 'Up to 4x 120mm' }, keySpecs: ['Mid-Tower ATX', 'Tempered Glass', 'Mesh Front'], compatibility: ['ATX/mATX/ITX'], warranty: '2 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 78, stock: 14, category: 'Hardware' },
+      { id: 'hw8', name: 'Noctua NH-D15 CPU Cooler', brand: 'Noctua', hwCategory: 'Cooling', price: 8900, originalPrice: 10500, discount: 15, image: 'https://images.unsplash.com/photo-1555680206-9bc5064689db?w=400&h=400&fit=crop', rating: 4.9, reviews: 543, description: 'Premium dual-tower CPU cooler with 2x NF-A15 fans', specs: { 'Type': 'Air Cooler', 'Fans': '2x 150mm NF-A15', 'Height': '165mm', 'TDP Rating': '250W+', 'Noise': '24.6 dB(A)' }, keySpecs: ['Dual Tower', '250W+ TDP', 'Ultra Quiet'], compatibility: ['AM4', 'AM5', 'LGA 1700', 'LGA 1200'], warranty: '6 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 91, stock: 7, category: 'Hardware' },
+      { id: 'hw9', name: 'LG 27GP850-B 27" QHD 165Hz Gaming Monitor', brand: 'LG', hwCategory: 'Monitors', price: 32000, originalPrice: 38000, discount: 16, image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=400&fit=crop', rating: 4.6, reviews: 156, description: '27-inch Nano IPS QHD display with 165Hz refresh rate and 1ms response', specs: { 'Size': '27 inch', 'Resolution': '2560x1440 QHD', 'Refresh Rate': '165Hz', 'Panel': 'Nano IPS', 'Response': '1ms GtG', 'HDR': 'HDR400' }, keySpecs: ['27" QHD', '165Hz', '1ms IPS'], compatibility: ['HDMI 2.0', 'DisplayPort 1.4'], warranty: '3 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: true, sold: 45, stock: 6, category: 'Hardware' },
+      { id: 'hw10', name: 'Logitech G Pro X Superlight Mouse', brand: 'Logitech', hwCategory: 'Peripherals', price: 8500, originalPrice: 11000, discount: 23, image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop', rating: 4.8, reviews: 389, description: 'Ultra-lightweight wireless gaming mouse with HERO 25K sensor', specs: { 'Sensor': 'HERO 25K', 'Weight': '63g', 'Battery': '70 hours', 'DPI': '100-25,600', 'Connection': 'LIGHTSPEED Wireless' }, keySpecs: ['63g Ultralight', '25K DPI', '70hr Battery'], compatibility: ['USB-A Wireless Receiver'], warranty: '2 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 167, stock: 25, category: 'Hardware' },
+      { id: 'hw11', name: 'Intel Core i5-13600K Processor', brand: 'Intel', hwCategory: 'Processors', price: 26000, originalPrice: 30000, discount: 13, image: 'https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=400&h=400&fit=crop', rating: 4.7, reviews: 198, description: '14-core (6P+8E) unlocked desktop processor for gaming & productivity', specs: { 'P-Cores': '6', 'E-Cores': '8', 'Threads': '20', 'Boost Clock': '5.1 GHz', 'TDP': '125W', 'Socket': 'LGA 1700' }, keySpecs: ['14 Cores / 20 Threads', '5.1 GHz Boost', 'LGA 1700'], compatibility: ['LGA 1700 Motherboards'], warranty: '3 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 72, stock: 10, category: 'Hardware' },
+      { id: 'hw12', name: 'AMD Radeon RX 7600 8GB', brand: 'AMD', hwCategory: 'Graphics Cards', price: 28000, originalPrice: 32000, discount: 13, image: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=400&h=400&fit=crop', rating: 4.5, reviews: 134, description: 'RDNA 3 GPU for 1080p gaming with hardware ray tracing', specs: { 'Stream Processors': '2048', 'Memory': '8GB GDDR6', 'Game Clock': '2250 MHz', 'TDP': '165W' }, keySpecs: ['8GB GDDR6', 'RDNA 3', '1080p Gaming'], compatibility: ['PCIe 4.0 x16'], warranty: '3 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: false, sold: 43, stock: 12, category: 'Hardware' },
+      { id: 'hw13', name: 'TP-Link Archer AX73 WiFi 6 Router', brand: 'TP-Link', hwCategory: 'Networking', price: 7200, originalPrice: 8500, discount: 15, image: 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=400&h=400&fit=crop', rating: 4.4, reviews: 267, description: 'AX5400 Dual-Band WiFi 6 router with HomeShield security', specs: { 'Speed': 'AX5400', 'Bands': 'Dual-Band', 'Ports': '1x Gigabit WAN + 4x Gigabit LAN', 'WiFi': '6 (802.11ax)' }, keySpecs: ['WiFi 6', 'AX5400', 'Gigabit'], compatibility: ['All Devices'], warranty: '2 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 98, stock: 20, category: 'Hardware' },
+      { id: 'hw14', name: 'Corsair K70 RGB Pro Mechanical Keyboard', brand: 'Corsair', hwCategory: 'Peripherals', price: 12800, originalPrice: 15000, discount: 15, image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=400&fit=crop', rating: 4.6, reviews: 213, description: 'Full-size mechanical keyboard with Cherry MX Red switches and per-key RGB', specs: { 'Switches': 'Cherry MX Red', 'Layout': 'Full-Size', 'Backlight': 'Per-Key RGB', 'Connection': 'USB-C', 'Polling': '8000Hz' }, keySpecs: ['Cherry MX Red', 'Per-Key RGB', '8000Hz'], compatibility: ['USB-C'], warranty: '2 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 56, stock: 15, category: 'Hardware' },
+      { id: 'hw15', name: 'WD Black SN850X 2TB NVMe SSD', brand: 'Western Digital', hwCategory: 'Storage', price: 16500, originalPrice: 20000, discount: 18, image: 'https://images.unsplash.com/photo-1628557044797-f21a177c37ec?w=400&h=400&fit=crop', rating: 4.8, reviews: 178, description: 'PCIe Gen 4 NVMe SSD with up to 7,300 MB/s for gaming', specs: { 'Capacity': '2TB', 'Read': '7,300 MB/s', 'Write': '6,600 MB/s', 'Interface': 'PCIe Gen 4 NVMe' }, keySpecs: ['2TB', '7,300 MB/s', 'PCIe Gen 4'], compatibility: ['M.2 NVMe Slots'], warranty: '5 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: true, sold: 67, stock: 9, category: 'Hardware' },
+      { id: 'hw16', name: 'ASUS ROG Strix 750W 80+ Gold PSU', brand: 'ASUS', hwCategory: 'Power Supplies', price: 9800, originalPrice: 12000, discount: 18, image: 'https://images.unsplash.com/photo-1600348712270-3c9a3d1e6f89?w=400&h=400&fit=crop', rating: 4.5, reviews: 89, description: 'Fully modular PSU with Axial-tech fan and 0dB mode', specs: { 'Wattage': '750W', 'Efficiency': '80+ Gold', 'Modular': 'Fully', 'Fan': '135mm Axial-tech' }, keySpecs: ['750W', '80+ Gold', 'ROG Design'], compatibility: ['ATX Cases'], warranty: '10 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 34, stock: 16, category: 'Hardware' },
+    ],
+    pcSlots: [
+      { key: 'Processors', label: 'CPU / Processor', icon: '⚡', required: true },
+      { key: 'Graphics Cards', label: 'Graphics Card', icon: '🎮', required: true },
+      { key: 'RAM', label: 'Memory (RAM)', icon: '💾', required: true },
+      { key: 'Motherboards', label: 'Motherboard', icon: '🔧', required: true },
+      { key: 'Storage', label: 'Storage (SSD/HDD)', icon: '💿', required: true },
+      { key: 'Power Supplies', label: 'Power Supply', icon: '🔌', required: true },
+      { key: 'Cases', label: 'Case', icon: '🖥️', required: true },
+      { key: 'Cooling', label: 'CPU Cooler', icon: '❄️', required: false },
+    ],
+    pcBuild: {},
+    pcPresets: [
+      { name: 'Budget Office', icon: '💼', price: 45000, desc: 'Basic productivity PC', parts: { 'Processors': 'hw11', 'RAM': 'hw3', 'Storage': 'hw5', 'Power Supplies': 'hw16', 'Cases': 'hw7' } },
+      { name: 'Mid-Range Gaming', icon: '🎮', price: 95000, desc: 'Solid 1080p gaming build', parts: { 'Processors': 'hw1', 'Graphics Cards': 'hw12', 'RAM': 'hw3', 'Motherboards': 'hw4', 'Storage': 'hw5', 'Power Supplies': 'hw6', 'Cases': 'hw7', 'Cooling': 'hw8' } },
+      { name: 'High-End Gaming', icon: '🏆', price: 135000, desc: 'Ultimate 1440p gaming rig', parts: { 'Processors': 'hw1', 'Graphics Cards': 'hw2', 'RAM': 'hw3', 'Motherboards': 'hw4', 'Storage': 'hw15', 'Power Supplies': 'hw6', 'Cases': 'hw7', 'Cooling': 'hw8' } },
+    ],
+
+    init() { this.filteredRestaurants = [...this.restaurants]; this.filteredHW = [...this.hardwareProducts]; setInterval(() => { this.$nextTick(() => {}); }, 1000); },
     filterCategory(name) { this.activeCategory = name; this.page = 'products'; },
     searchProducts() { this.activeCategory = ''; this.page = 'products'; },
     filteredProducts() {
@@ -2068,6 +2408,25 @@ function marketplace() {
       this.showToast('Order placed! Your food is being prepared.');
       this.page = 'food-orders';
     },
+
+    // Hardware methods
+    filterHardware() {
+      let list = [...this.hardwareProducts];
+      if (this.hwCategory) list = list.filter(p => p.hwCategory === this.hwCategory);
+      if (this.hwBrand) list = list.filter(p => p.brand === this.hwBrand);
+      if (this.hwSearch) { const q = this.hwSearch.toLowerCase(); list = list.filter(p => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.hwCategory.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)); }
+      const sorts = { popular: (a,b) => b.sold - a.sold, price_low: (a,b) => a.price - b.price, price_high: (a,b) => b.price - a.price, rating: (a,b) => b.rating - a.rating, newest: (a,b) => b.reviews - a.reviews };
+      if (sorts[this.hwSort]) list.sort(sorts[this.hwSort]);
+      this.filteredHW = list;
+    },
+    viewHardware(hw) { this.selectedHW = hw; this.page = 'hw-detail'; window.scrollTo({top:0}); },
+    selectPCPart(slotKey, hwId) { if (hwId) this.pcBuild[slotKey] = hwId; },
+    removePCPart(slotKey) { delete this.pcBuild[slotKey]; this.pcBuild = {...this.pcBuild}; },
+    pcBuildTotal() { return Object.values(this.pcBuild).reduce((sum, id) => { const hw = this.hardwareProducts.find(p => p.id === id); return sum + (hw ? hw.price : 0); }, 0); },
+    pcBuildParts() { return Object.keys(this.pcBuild).length; },
+    addPCBuildToCart() { Object.values(this.pcBuild).forEach(id => { const hw = this.hardwareProducts.find(p => p.id === id); if (hw) { const existing = this.cart.find(c => c.product.id === hw.id); if (existing) { existing.qty++; } else { this.cart.push({ product: { id: hw.id, title: hw.name, price: hw.price, image: hw.image, category: 'Hardware' }, qty: 1 }); } } }); this.showToast('PC Build added to cart!'); this.page = 'cart'; },
+    sharePCBuild() { const parts = Object.entries(this.pcBuild).map(([slot, id]) => { const hw = this.hardwareProducts.find(p => p.id === id); return slot + ': ' + (hw ? hw.name : ''); }).join('\n'); navigator.clipboard?.writeText('🖥️ My DrukHub PC Build:\n' + parts + '\nTotal: Nu. ' + this.pcBuildTotal().toLocaleString()); this.showToast('Build copied to clipboard!'); },
+    loadPreset(preset) { this.pcBuild = {...preset.parts}; this.showToast(preset.name + ' preset loaded!'); },
 
     // Dark mode
     toggleDarkMode() { this.darkMode=!this.darkMode; document.documentElement.classList.toggle('dark',this.darkMode); },
