@@ -195,7 +195,7 @@
         <span class="text-amz-orange font-bold">🍔 Food Delivery</span>
       </a>
       <a href="#" @click.prevent="page='hardware'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 flex items-center gap-1">
-        <span class="text-green-400 font-bold">🖥️ Hardware Store</span>
+        <span class="text-green-400 font-bold">🔨 Hardware Store</span>
       </a>
       <template x-for="cat in categories.slice(0,4)" :key="cat.name">
         <a href="#" @click.prevent="filterCategory(cat.name)" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0" x-text="cat.name"></a>
@@ -1670,11 +1670,11 @@
         <div class="flex gap-3">
           <button @click="page='pc-builder'" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-            PC Builder Tool
+            Project Builder
           </button>
           <div class="flex items-center bg-white/10 rounded-lg px-4 flex-1 max-w-md">
             <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" x-model="hwSearch" @input="filterHardware()" placeholder="Search processors, GPUs, RAM, motherboards..." class="bg-transparent w-full py-2.5 text-sm text-white placeholder-gray-400 outline-none">
+            <input type="text" x-model="hwSearch" @input="filterHardware()" placeholder="Search tools, cement, steel, paint, plumbing..." class="bg-transparent w-full py-2.5 text-sm text-white placeholder-gray-400 outline-none">
           </div>
         </div>
       </div>
@@ -1693,17 +1693,17 @@
 
     <!-- Quick Deals -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-      <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Processors'; filterHardware()">
-        <p class="text-2xl mb-1">🔥</p><p class="font-bold text-sm">Processor Deals</p><p class="text-xs opacity-80">Up to 25% off</p>
+      <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Power Tools'; filterHardware()">
+        <p class="text-2xl mb-1">🔌</p><p class="font-bold text-sm">Power Tools Sale</p><p class="text-xs opacity-80">Up to 25% off</p>
       </div>
-      <div class="bg-gradient-to-br from-green-600 to-green-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Graphics Cards'; filterHardware()">
-        <p class="text-2xl mb-1">🎮</p><p class="font-bold text-sm">GPU Sale</p><p class="text-xs opacity-80">RTX & RX Series</p>
+      <div class="bg-gradient-to-br from-green-600 to-green-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Cement & Concrete'; filterHardware()">
+        <p class="text-2xl mb-1">🏗️</p><p class="font-bold text-sm">Cement & Concrete</p><p class="text-xs opacity-80">Bulk discounts</p>
       </div>
-      <div class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='RAM'; filterHardware()">
-        <p class="text-2xl mb-1">⚡</p><p class="font-bold text-sm">Memory Upgrade</p><p class="text-xs opacity-80">DDR5 available</p>
+      <div class="bg-gradient-to-br from-purple-600 to-purple-800 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="hwCategory='Building Materials'; filterHardware()">
+        <p class="text-2xl mb-1">🧱</p><p class="font-bold text-sm">Steel & Rebar</p><p class="text-xs opacity-80">TMT Fe-500D</p>
       </div>
       <div class="bg-gradient-to-br from-orange-500 to-red-600 text-white rounded-lg p-4 cursor-pointer hover:shadow-lg" @click="page='pc-builder'">
-        <p class="text-2xl mb-1">🛠️</p><p class="font-bold text-sm">Build Your PC</p><p class="text-xs opacity-80">Custom PC Builder</p>
+        <p class="text-2xl mb-1">🔨</p><p class="font-bold text-sm">Project Builder</p><p class="text-xs opacity-80">Estimate materials</p>
       </div>
     </div>
 
@@ -1858,8 +1858,8 @@
   <div x-show="page === 'pc-builder'" class="max-w-[1100px] mx-auto px-4 py-4">
     <div class="flex items-center justify-between mb-4">
       <div>
-        <h1 class="text-2xl font-bold flex items-center gap-2">🛠️ PC Builder</h1>
-        <p class="text-sm text-gray-500 mt-1">Select components to build your custom PC — we'll check compatibility for you</p>
+        <h1 class="text-2xl font-bold flex items-center gap-2">🏗️ Project Builder</h1>
+        <p class="text-sm text-gray-500 mt-1">Select materials for your construction project — estimate costs instantly</p>
       </div>
       <button @click="page='hardware'" class="text-amz-link text-sm hover:underline">Browse Hardware</button>
     </div>
@@ -1884,14 +1884,14 @@
             <template x-if="pcBuild[slot.key]">
               <div class="flex items-center justify-between mt-1">
                 <div class="flex items-center gap-3">
-                  <img :src="pcBuild[slot.key].image" class="w-12 h-12 object-contain">
+                  <img :src="hardwareProducts.find(p=>p.id===pcBuild[slot.key])?.image" class="w-12 h-12 object-contain">
                   <div>
-                    <p class="text-sm" x-text="pcBuild[slot.key].brand + ' ' + pcBuild[slot.key].name"></p>
-                    <p class="text-xs text-gray-500" x-text="Object.entries(pcBuild[slot.key].keySpecs||{}).map(e=>e[0]+': '+e[1]).join(' | ')"></p>
+                    <p class="text-sm" x-text="(hardwareProducts.find(p=>p.id===pcBuild[slot.key])?.brand||'') + ' ' + (hardwareProducts.find(p=>p.id===pcBuild[slot.key])?.name||'')"></p>
+                    <p class="text-xs text-gray-500" x-text="(hardwareProducts.find(p=>p.id===pcBuild[slot.key])?.keySpecs||[]).join(' | ')"></p>
                   </div>
                 </div>
                 <div class="flex items-center gap-3">
-                  <span class="font-bold text-sm" x-text="'Nu. ' + pcBuild[slot.key].price.toLocaleString()"></span>
+                  <span class="font-bold text-sm" x-text="'Nu. ' + (hardwareProducts.find(p=>p.id===pcBuild[slot.key])?.price||0).toLocaleString()"></span>
                   <button @click="removePCPart(slot.key)" class="text-amz-red text-xs hover:underline">Remove</button>
                 </div>
               </div>
@@ -1913,31 +1913,31 @@
       <div class="flex items-center gap-2 mb-4">
         <template x-if="pcBuildParts() >= 3">
           <span class="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded flex items-center gap-1">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Compatible Build
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Ready to Order
           </span>
         </template>
-        <span class="text-xs text-gray-400" x-text="pcBuildParts() + ' of ' + pcSlots.length + ' components selected'"></span>
+        <span class="text-xs text-gray-400" x-text="pcBuildParts() + ' of ' + pcSlots.length + ' materials selected'"></span>
       </div>
       <div class="flex gap-3">
         <button @click="addPCBuildToCart()" :disabled="pcBuildParts()===0" class="bg-green-500 hover:bg-green-600 disabled:bg-gray-600 text-white px-6 py-2.5 rounded-lg font-bold text-sm">Add All to Cart</button>
         <button @click="pcBuild={}" class="border border-gray-500 text-gray-300 hover:text-white px-6 py-2.5 rounded-lg text-sm">Clear Build</button>
         <button @click="sharePCBuild()" x-show="pcBuildParts()>0" class="border border-gray-500 text-gray-300 hover:text-white px-4 py-2.5 rounded-lg text-sm flex items-center gap-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg> Share Build
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg> Share List
         </button>
       </div>
     </div>
 
     <!-- Pre-built Configs -->
-    <h3 class="text-lg font-bold mt-8 mb-4">Popular Pre-built Configurations</h3>
+    <h3 class="text-lg font-bold mt-8 mb-4">Popular Project Kits</h3>
     <div class="grid md:grid-cols-3 gap-4">
       <template x-for="preset in pcPresets" :key="preset.name">
-        <div class="bg-white rounded-lg p-5 hover:shadow-lg transition border-2" :class="preset.tier==='budget'?'border-blue-200':preset.tier==='gaming'?'border-green-200':'border-purple-200'">
-          <span class="text-xs font-bold px-2 py-0.5 rounded-full" :class="preset.tier==='budget'?'bg-blue-100 text-blue-700':preset.tier==='gaming'?'bg-green-100 text-green-700':'bg-purple-100 text-purple-700'" x-text="preset.tier.toUpperCase()"></span>
+        <div class="bg-white rounded-lg p-5 hover:shadow-lg transition border-2 border-gray-200">
+          <span class="text-3xl" x-text="preset.icon"></span>
           <h4 class="font-bold mt-2" x-text="preset.name"></h4>
           <p class="text-xs text-gray-500 mt-1" x-text="preset.desc"></p>
           <ul class="mt-3 space-y-1">
-            <template x-for="(part, key) in preset.parts" :key="key">
-              <li class="text-xs text-gray-600 flex items-center gap-1"><span class="text-green-500">✓</span> <span x-text="part"></span></li>
+            <template x-for="key in Object.keys(preset.parts)" :key="key">
+              <li class="text-xs text-gray-600 flex items-center gap-1"><span class="text-green-500">✓</span> <span x-text="key"></span></li>
             </template>
           </ul>
           <div class="flex justify-between items-center mt-4 pt-3 border-t">
@@ -2236,44 +2236,44 @@ function marketplace() {
     filteredHW: [],
     selectedHW: null,
     hwCategories: [
-      { name: 'Processors', icon: '⚡' }, { name: 'Graphics Cards', icon: '🎮' }, { name: 'RAM', icon: '💾' },
-      { name: 'Motherboards', icon: '🔧' }, { name: 'Storage', icon: '💿' }, { name: 'Power Supplies', icon: '🔌' },
-      { name: 'Cases', icon: '🖥️' }, { name: 'Cooling', icon: '❄️' }, { name: 'Monitors', icon: '🖥️' },
-      { name: 'Peripherals', icon: '⌨️' }, { name: 'Networking', icon: '📡' }
+      { name: 'Power Tools', icon: '🔌' }, { name: 'Hand Tools', icon: '🔨' }, { name: 'Building Materials', icon: '🧱' },
+      { name: 'Plumbing', icon: '🚿' }, { name: 'Electrical', icon: '⚡' }, { name: 'Paint & Finishing', icon: '🎨' },
+      { name: 'Safety Equipment', icon: '🦺' }, { name: 'Fasteners & Fittings', icon: '🔩' }, { name: 'Lumber & Wood', icon: '🪵' },
+      { name: 'Cement & Concrete', icon: '🏗️' }, { name: 'Roofing', icon: '🏠' }
     ],
     hardwareProducts: [
-      { id: 'hw1', name: 'AMD Ryzen 7 5800X Processor', brand: 'AMD', hwCategory: 'Processors', price: 28500, originalPrice: 35000, discount: 19, image: 'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=400&h=400&fit=crop', rating: 4.8, reviews: 234, description: '8-Core 16-Thread unlocked desktop processor with Zen 3 architecture', specs: { Cores: '8', Threads: '16', 'Base Clock': '3.8 GHz', 'Boost Clock': '4.7 GHz', 'Cache': '32MB L3', 'TDP': '105W', 'Socket': 'AM4' }, keySpecs: ['8 Cores / 16 Threads', '4.7 GHz Boost', 'AM4 Socket'], compatibility: ['AM4 Motherboards'], warranty: '3 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: true, sold: 89, stock: 15, category: 'Hardware' },
-      { id: 'hw2', name: 'NVIDIA GeForce RTX 4060 Ti 8GB', brand: 'NVIDIA', hwCategory: 'Graphics Cards', price: 42000, originalPrice: 48000, discount: 13, image: 'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=400&h=400&fit=crop', rating: 4.7, reviews: 178, description: 'Ada Lovelace GPU with DLSS 3, ray tracing', specs: { 'CUDA Cores': '4352', 'Memory': '8GB GDDR6', 'Boost Clock': '2535 MHz', 'TDP': '160W', 'Interface': 'PCIe 4.0 x16' }, keySpecs: ['8GB GDDR6', '4352 CUDA Cores', 'DLSS 3'], compatibility: ['PCIe 4.0/3.0 x16'], warranty: '3 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 56, stock: 8, category: 'Hardware' },
-      { id: 'hw3', name: 'Corsair Vengeance DDR5 32GB (2x16GB) 5600MHz', brand: 'Corsair', hwCategory: 'RAM', price: 12500, originalPrice: 15000, discount: 17, image: 'https://images.unsplash.com/photo-1562976540-1502c2145186?w=400&h=400&fit=crop', rating: 4.6, reviews: 312, description: 'High-performance DDR5 memory with Intel XMP 3.0 support', specs: { 'Capacity': '32GB (2x16GB)', 'Speed': 'DDR5-5600', 'Latency': 'CL36', 'Voltage': '1.25V' }, keySpecs: ['32GB Kit', 'DDR5-5600', 'CL36'], compatibility: ['DDR5 Motherboards'], warranty: 'Lifetime', seller: 'ByteShop Thimphu', inStock: true, freeShipping: false, sold: 145, stock: 22, category: 'Hardware' },
-      { id: 'hw4', name: 'ASUS ROG Strix B650E-F Gaming WiFi', brand: 'ASUS', hwCategory: 'Motherboards', price: 24500, originalPrice: 28000, discount: 13, image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=400&fit=crop', rating: 4.5, reviews: 98, description: 'AM5 ATX motherboard with DDR5 support, WiFi 6E, PCIe 5.0', specs: { 'Socket': 'AM5', 'Chipset': 'B650E', 'RAM Slots': '4x DDR5', 'M.2 Slots': '3', 'WiFi': '6E' }, keySpecs: ['AM5 Socket', 'DDR5', 'WiFi 6E'], compatibility: ['AM5 Processors', 'DDR5 RAM'], warranty: '3 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: true, sold: 67, stock: 11, category: 'Hardware' },
-      { id: 'hw5', name: 'Samsung 980 PRO 1TB NVMe SSD', brand: 'Samsung', hwCategory: 'Storage', price: 9800, originalPrice: 13000, discount: 25, image: 'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=400&h=400&fit=crop', rating: 4.9, reviews: 456, description: 'PCIe Gen 4 NVMe M.2 SSD with up to 7,000 MB/s read speed', specs: { 'Capacity': '1TB', 'Interface': 'PCIe 4.0 NVMe', 'Read Speed': '7,000 MB/s', 'Write Speed': '5,100 MB/s', 'Form Factor': 'M.2 2280' }, keySpecs: ['1TB', '7,000 MB/s Read', 'PCIe 4.0'], compatibility: ['M.2 NVMe Slots'], warranty: '5 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: false, sold: 203, stock: 30, category: 'Hardware' },
-      { id: 'hw6', name: 'Corsair RM850x 850W 80+ Gold PSU', brand: 'Corsair', hwCategory: 'Power Supplies', price: 11500, originalPrice: 14000, discount: 18, image: 'https://images.unsplash.com/photo-1600348712270-3c9a3d1e6f89?w=400&h=400&fit=crop', rating: 4.7, reviews: 189, description: 'Fully modular ATX power supply with 80 Plus Gold efficiency', specs: { 'Wattage': '850W', 'Efficiency': '80+ Gold', 'Modular': 'Fully', 'Fan': '135mm Rifle Bearing' }, keySpecs: ['850W', '80+ Gold', 'Fully Modular'], compatibility: ['ATX Cases'], warranty: '10 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: true, sold: 134, stock: 18, category: 'Hardware' },
-      { id: 'hw7', name: 'NZXT H510 Flow Mid-Tower Case', brand: 'NZXT', hwCategory: 'Cases', price: 7800, originalPrice: 9500, discount: 18, image: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?w=400&h=400&fit=crop', rating: 4.4, reviews: 267, description: 'Compact ATX mid-tower with perforated front panel for airflow', specs: { 'Type': 'Mid-Tower ATX', 'Material': 'Steel/Tempered Glass', 'Drive Bays': '2x 3.5" + 2x 2.5"', 'Fan Support': 'Up to 4x 120mm' }, keySpecs: ['Mid-Tower ATX', 'Tempered Glass', 'Mesh Front'], compatibility: ['ATX/mATX/ITX'], warranty: '2 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 78, stock: 14, category: 'Hardware' },
-      { id: 'hw8', name: 'Noctua NH-D15 CPU Cooler', brand: 'Noctua', hwCategory: 'Cooling', price: 8900, originalPrice: 10500, discount: 15, image: 'https://images.unsplash.com/photo-1555680206-9bc5064689db?w=400&h=400&fit=crop', rating: 4.9, reviews: 543, description: 'Premium dual-tower CPU cooler with 2x NF-A15 fans', specs: { 'Type': 'Air Cooler', 'Fans': '2x 150mm NF-A15', 'Height': '165mm', 'TDP Rating': '250W+', 'Noise': '24.6 dB(A)' }, keySpecs: ['Dual Tower', '250W+ TDP', 'Ultra Quiet'], compatibility: ['AM4', 'AM5', 'LGA 1700', 'LGA 1200'], warranty: '6 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 91, stock: 7, category: 'Hardware' },
-      { id: 'hw9', name: 'LG 27GP850-B 27" QHD 165Hz Gaming Monitor', brand: 'LG', hwCategory: 'Monitors', price: 32000, originalPrice: 38000, discount: 16, image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400&h=400&fit=crop', rating: 4.6, reviews: 156, description: '27-inch Nano IPS QHD display with 165Hz refresh rate and 1ms response', specs: { 'Size': '27 inch', 'Resolution': '2560x1440 QHD', 'Refresh Rate': '165Hz', 'Panel': 'Nano IPS', 'Response': '1ms GtG', 'HDR': 'HDR400' }, keySpecs: ['27" QHD', '165Hz', '1ms IPS'], compatibility: ['HDMI 2.0', 'DisplayPort 1.4'], warranty: '3 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: true, sold: 45, stock: 6, category: 'Hardware' },
-      { id: 'hw10', name: 'Logitech G Pro X Superlight Mouse', brand: 'Logitech', hwCategory: 'Peripherals', price: 8500, originalPrice: 11000, discount: 23, image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=400&h=400&fit=crop', rating: 4.8, reviews: 389, description: 'Ultra-lightweight wireless gaming mouse with HERO 25K sensor', specs: { 'Sensor': 'HERO 25K', 'Weight': '63g', 'Battery': '70 hours', 'DPI': '100-25,600', 'Connection': 'LIGHTSPEED Wireless' }, keySpecs: ['63g Ultralight', '25K DPI', '70hr Battery'], compatibility: ['USB-A Wireless Receiver'], warranty: '2 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 167, stock: 25, category: 'Hardware' },
-      { id: 'hw11', name: 'Intel Core i5-13600K Processor', brand: 'Intel', hwCategory: 'Processors', price: 26000, originalPrice: 30000, discount: 13, image: 'https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=400&h=400&fit=crop', rating: 4.7, reviews: 198, description: '14-core (6P+8E) unlocked desktop processor for gaming & productivity', specs: { 'P-Cores': '6', 'E-Cores': '8', 'Threads': '20', 'Boost Clock': '5.1 GHz', 'TDP': '125W', 'Socket': 'LGA 1700' }, keySpecs: ['14 Cores / 20 Threads', '5.1 GHz Boost', 'LGA 1700'], compatibility: ['LGA 1700 Motherboards'], warranty: '3 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 72, stock: 10, category: 'Hardware' },
-      { id: 'hw12', name: 'AMD Radeon RX 7600 8GB', brand: 'AMD', hwCategory: 'Graphics Cards', price: 28000, originalPrice: 32000, discount: 13, image: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=400&h=400&fit=crop', rating: 4.5, reviews: 134, description: 'RDNA 3 GPU for 1080p gaming with hardware ray tracing', specs: { 'Stream Processors': '2048', 'Memory': '8GB GDDR6', 'Game Clock': '2250 MHz', 'TDP': '165W' }, keySpecs: ['8GB GDDR6', 'RDNA 3', '1080p Gaming'], compatibility: ['PCIe 4.0 x16'], warranty: '3 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: false, sold: 43, stock: 12, category: 'Hardware' },
-      { id: 'hw13', name: 'TP-Link Archer AX73 WiFi 6 Router', brand: 'TP-Link', hwCategory: 'Networking', price: 7200, originalPrice: 8500, discount: 15, image: 'https://images.unsplash.com/photo-1606904825846-647eb07f5be2?w=400&h=400&fit=crop', rating: 4.4, reviews: 267, description: 'AX5400 Dual-Band WiFi 6 router with HomeShield security', specs: { 'Speed': 'AX5400', 'Bands': 'Dual-Band', 'Ports': '1x Gigabit WAN + 4x Gigabit LAN', 'WiFi': '6 (802.11ax)' }, keySpecs: ['WiFi 6', 'AX5400', 'Gigabit'], compatibility: ['All Devices'], warranty: '2 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 98, stock: 20, category: 'Hardware' },
-      { id: 'hw14', name: 'Corsair K70 RGB Pro Mechanical Keyboard', brand: 'Corsair', hwCategory: 'Peripherals', price: 12800, originalPrice: 15000, discount: 15, image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=400&fit=crop', rating: 4.6, reviews: 213, description: 'Full-size mechanical keyboard with Cherry MX Red switches and per-key RGB', specs: { 'Switches': 'Cherry MX Red', 'Layout': 'Full-Size', 'Backlight': 'Per-Key RGB', 'Connection': 'USB-C', 'Polling': '8000Hz' }, keySpecs: ['Cherry MX Red', 'Per-Key RGB', '8000Hz'], compatibility: ['USB-C'], warranty: '2 Years', seller: 'Dragon PC Paro', inStock: true, freeShipping: true, sold: 56, stock: 15, category: 'Hardware' },
-      { id: 'hw15', name: 'WD Black SN850X 2TB NVMe SSD', brand: 'Western Digital', hwCategory: 'Storage', price: 16500, originalPrice: 20000, discount: 18, image: 'https://images.unsplash.com/photo-1628557044797-f21a177c37ec?w=400&h=400&fit=crop', rating: 4.8, reviews: 178, description: 'PCIe Gen 4 NVMe SSD with up to 7,300 MB/s for gaming', specs: { 'Capacity': '2TB', 'Read': '7,300 MB/s', 'Write': '6,600 MB/s', 'Interface': 'PCIe Gen 4 NVMe' }, keySpecs: ['2TB', '7,300 MB/s', 'PCIe Gen 4'], compatibility: ['M.2 NVMe Slots'], warranty: '5 Years', seller: 'ByteShop Thimphu', inStock: true, freeShipping: true, sold: 67, stock: 9, category: 'Hardware' },
-      { id: 'hw16', name: 'ASUS ROG Strix 750W 80+ Gold PSU', brand: 'ASUS', hwCategory: 'Power Supplies', price: 9800, originalPrice: 12000, discount: 18, image: 'https://images.unsplash.com/photo-1600348712270-3c9a3d1e6f89?w=400&h=400&fit=crop', rating: 4.5, reviews: 89, description: 'Fully modular PSU with Axial-tech fan and 0dB mode', specs: { 'Wattage': '750W', 'Efficiency': '80+ Gold', 'Modular': 'Fully', 'Fan': '135mm Axial-tech' }, keySpecs: ['750W', '80+ Gold', 'ROG Design'], compatibility: ['ATX Cases'], warranty: '10 Years', seller: 'TechZone Thimphu', inStock: true, freeShipping: false, sold: 34, stock: 16, category: 'Hardware' },
+      { id: 'hw1', name: 'Bosch GSB 500W Impact Drill', brand: 'Bosch', hwCategory: 'Power Tools', price: 4500, originalPrice: 5800, discount: 22, image: 'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400&h=400&fit=crop', rating: 4.7, reviews: 342, description: 'Professional impact drill for masonry, wood and steel drilling', specs: { 'Power': '500W', 'Speed': '0-2800 RPM', 'Chuck': '13mm Keyed', 'Impact Rate': '44,800 bpm', 'Weight': '1.5 kg' }, keySpecs: ['500W Motor', '13mm Chuck', 'Variable Speed'], compatibility: ['Standard Drill Bits'], warranty: '1 Year', seller: 'Druk Hardware Thimphu', inStock: true, freeShipping: true, sold: 189, stock: 25, category: 'Hardware' },
+      { id: 'hw2', name: 'DeWalt 7¼" Circular Saw 1400W', brand: 'DeWalt', hwCategory: 'Power Tools', price: 8900, originalPrice: 11000, discount: 19, image: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400&h=400&fit=crop', rating: 4.8, reviews: 198, description: 'Heavy-duty circular saw for construction-grade cutting in wood and plywood', specs: { 'Power': '1400W', 'Blade': '7¼ inch (185mm)', 'No-Load Speed': '5200 RPM', 'Cutting Depth': '65mm at 90°', 'Weight': '3.6 kg' }, keySpecs: ['1400W', '185mm Blade', '65mm Depth'], compatibility: ['185mm Saw Blades'], warranty: '2 Years', seller: 'Construction Hub Paro', inStock: true, freeShipping: true, sold: 134, stock: 12, category: 'Hardware' },
+      { id: 'hw3', name: 'Stanley 16oz Claw Hammer', brand: 'Stanley', hwCategory: 'Hand Tools', price: 850, originalPrice: 1100, discount: 23, image: 'https://images.unsplash.com/photo-1586864387789-628af9feed72?w=400&h=400&fit=crop', rating: 4.6, reviews: 567, description: 'Fiberglass handle claw hammer for general construction and carpentry', specs: { 'Head Weight': '16 oz (450g)', 'Handle': 'Fiberglass', 'Length': '13 inch', 'Type': 'Curved Claw' }, keySpecs: ['16oz Head', 'Fiberglass Handle', 'Anti-Vibration'], compatibility: ['General Purpose'], warranty: 'Lifetime', seller: 'Druk Hardware Thimphu', inStock: true, freeShipping: false, sold: 456, stock: 50, category: 'Hardware' },
+      { id: 'hw4', name: 'Taparia 8-Piece Screwdriver Set', brand: 'Taparia', hwCategory: 'Hand Tools', price: 650, originalPrice: 800, discount: 19, image: 'https://images.unsplash.com/photo-1426927308491-6380b6a9936f?w=400&h=400&fit=crop', rating: 4.4, reviews: 423, description: 'Professional screwdriver set with Phillips and flat head tips', specs: { 'Pieces': '8', 'Types': 'Phillips + Flat', 'Handle': 'Cushion Grip', 'Material': 'Chrome Vanadium Steel' }, keySpecs: ['8 Pieces', 'Chrome Vanadium', 'Cushion Grip'], compatibility: ['Standard Screws'], warranty: '1 Year', seller: 'BuildMart Punakha', inStock: true, freeShipping: false, sold: 678, stock: 40, category: 'Hardware' },
+      { id: 'hw5', name: 'OPC Cement 50kg Bag (Bhutan Cement)', brand: 'Bhutan Cement', hwCategory: 'Cement & Concrete', price: 520, originalPrice: 580, discount: 10, image: 'https://images.unsplash.com/photo-1590168018521-fde65a49e050?w=400&h=400&fit=crop', rating: 4.5, reviews: 890, description: 'Ordinary Portland Cement Grade 43 for general construction', specs: { 'Grade': 'OPC 43', 'Weight': '50 kg', 'Setting Time': '30 min initial', 'Compressive Strength': '43 MPa at 28 days', 'Standard': 'BIS 8112' }, keySpecs: ['50kg Bag', 'OPC Grade 43', 'BIS Certified'], compatibility: ['All Construction'], warranty: 'N/A', seller: 'Lhaki Cement Depot', inStock: true, freeShipping: false, sold: 2340, stock: 500, category: 'Hardware' },
+      { id: 'hw6', name: 'TMT Steel Rebar 12mm (Bundle of 5)', brand: 'Tata Tiscon', hwCategory: 'Building Materials', price: 3200, originalPrice: 3800, discount: 16, image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=400&fit=crop', rating: 4.7, reviews: 345, description: 'Fe-500D grade TMT steel reinforcement bars for RCC construction', specs: { 'Diameter': '12mm', 'Grade': 'Fe-500D', 'Length': '12 meters each', 'Quantity': '5 bars/bundle', 'Standard': 'IS 1786' }, keySpecs: ['12mm Diameter', 'Fe-500D', '5 Bars'], compatibility: ['RCC Construction'], warranty: 'N/A', seller: 'Druk Steel Thimphu', inStock: true, freeShipping: true, sold: 890, stock: 200, category: 'Hardware' },
+      { id: 'hw7', name: 'Asian Paints Ace Exterior Emulsion 20L', brand: 'Asian Paints', hwCategory: 'Paint & Finishing', price: 4200, originalPrice: 4800, discount: 13, image: 'https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=400&h=400&fit=crop', rating: 4.5, reviews: 267, description: 'Weather-resistant exterior wall paint suitable for Bhutan climate', specs: { 'Volume': '20 Liters', 'Coverage': '120-140 sq ft/L', 'Finish': 'Matt', 'Drying Time': '4 hours', 'Recoat': '6-8 hours' }, keySpecs: ['20L Bucket', 'Exterior Grade', 'Weather Proof'], compatibility: ['Cement/Concrete Walls'], warranty: '5 Year Performance', seller: 'Paint House Thimphu', inStock: true, freeShipping: true, sold: 234, stock: 35, category: 'Hardware' },
+      { id: 'hw8', name: 'CPVC Pipe 1 inch x 3m (Pack of 10)', brand: 'Ashirvad', hwCategory: 'Plumbing', price: 2800, originalPrice: 3500, discount: 20, image: 'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=400&h=400&fit=crop', rating: 4.3, reviews: 178, description: 'Hot & cold water CPVC pipes for residential plumbing systems', specs: { 'Size': '1 inch (25mm)', 'Length': '3 meters each', 'Quantity': '10 pipes', 'Pressure Rating': '10 kg/cm²', 'Temp Rating': 'Up to 93°C' }, keySpecs: ['1 inch', '10 Pipes', 'Hot & Cold Water'], compatibility: ['CPVC Fittings'], warranty: '25 Years', seller: 'Plumbing World Paro', inStock: true, freeShipping: false, sold: 456, stock: 60, category: 'Hardware' },
+      { id: 'hw9', name: 'Havells 2.5 sq mm Wire 90m Coil', brand: 'Havells', hwCategory: 'Electrical', price: 3600, originalPrice: 4200, discount: 14, image: 'https://images.unsplash.com/photo-1555664424-778a1e5e1b48?w=400&h=400&fit=crop', rating: 4.6, reviews: 312, description: 'FR-LSH PVC insulated copper wire for house wiring', specs: { 'Size': '2.5 sq mm', 'Length': '90 meters', 'Core': 'Single Core Copper', 'Insulation': 'FR-LSH PVC', 'Voltage Rating': '1100V' }, keySpecs: ['2.5 sq mm', '90m Coil', 'FR Rated'], compatibility: ['Standard Conduits'], warranty: '10 Years', seller: 'Bhutan Electricals', inStock: true, freeShipping: false, sold: 567, stock: 45, category: 'Hardware' },
+      { id: 'hw10', name: 'Safety Helmet with Ratchet (ISI)', brand: 'Karam', hwCategory: 'Safety Equipment', price: 450, originalPrice: 600, discount: 25, image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=400&h=400&fit=crop', rating: 4.5, reviews: 234, description: 'ISI certified construction safety helmet with adjustable ratchet', specs: { 'Material': 'HDPE Shell', 'Suspension': '6-Point Textile', 'Adjustment': 'Ratchet Type', 'Weight': '350g', 'Standard': 'IS 2925' }, keySpecs: ['ISI Certified', 'Ratchet Adjust', 'HDPE Shell'], compatibility: ['All Head Sizes'], warranty: '2 Years', seller: 'Safety First Thimphu', inStock: true, freeShipping: false, sold: 890, stock: 100, category: 'Hardware' },
+      { id: 'hw11', name: 'GI Roofing Sheet 0.5mm (10ft)', brand: 'Tata BlueScope', hwCategory: 'Roofing', price: 1200, originalPrice: 1500, discount: 20, image: 'https://images.unsplash.com/photo-1632168844478-20b24ef63cda?w=400&h=400&fit=crop', rating: 4.4, reviews: 198, description: 'Galvanized corrugated iron roofing sheet for residential and commercial use', specs: { 'Thickness': '0.5mm', 'Length': '10 feet (3m)', 'Width': '3.5 feet', 'Material': 'Galvanized Iron', 'Profile': 'Corrugated' }, keySpecs: ['0.5mm GI', '10ft Length', 'Corrugated'], compatibility: ['Timber/Steel Purlins'], warranty: '10 Years', seller: 'Roofing Solutions Paro', inStock: true, freeShipping: true, sold: 678, stock: 150, category: 'Hardware' },
+      { id: 'hw12', name: 'Makita Angle Grinder 4" 720W', brand: 'Makita', hwCategory: 'Power Tools', price: 3800, originalPrice: 4500, discount: 16, image: 'https://images.unsplash.com/photo-1616401784845-180882c76580?w=400&h=400&fit=crop', rating: 4.7, reviews: 289, description: 'Compact angle grinder for cutting and grinding metal, stone, concrete', specs: { 'Power': '720W', 'Disc Size': '4 inch (100mm)', 'Speed': '11,000 RPM', 'Spindle': 'M10', 'Weight': '1.8 kg' }, keySpecs: ['720W', '4 inch Disc', '11K RPM'], compatibility: ['100mm Grinding/Cutting Discs'], warranty: '1 Year', seller: 'Druk Hardware Thimphu', inStock: true, freeShipping: false, sold: 345, stock: 18, category: 'Hardware' },
+      { id: 'hw13', name: 'Sal Wood Plank 6ft x 12" x 2"', brand: 'Bhutan Timber', hwCategory: 'Lumber & Wood', price: 1800, originalPrice: 2200, discount: 18, image: 'https://images.unsplash.com/photo-1520333789090-1afc82db536a?w=400&h=400&fit=crop', rating: 4.3, reviews: 145, description: 'Seasoned Sal hardwood plank for construction framing and furniture', specs: { 'Length': '6 feet', 'Width': '12 inches', 'Thickness': '2 inches', 'Wood Type': 'Sal (Shorea robusta)', 'Treatment': 'Seasoned & Treated' }, keySpecs: ['6ft Plank', 'Sal Hardwood', 'Treated'], compatibility: ['General Construction'], warranty: 'N/A', seller: 'Timber Yard Bumthang', inStock: true, freeShipping: false, sold: 234, stock: 80, category: 'Hardware' },
+      { id: 'hw14', name: 'GI Nuts & Bolts Assortment Box (200pc)', brand: 'AIMS', hwCategory: 'Fasteners & Fittings', price: 1100, originalPrice: 1400, discount: 21, image: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=400&h=400&fit=crop', rating: 4.4, reviews: 367, description: 'Galvanized iron nuts, bolts and washers assortment for construction', specs: { 'Pieces': '200', 'Sizes': 'M6 to M12', 'Material': 'GI (Galvanized Iron)', 'Includes': 'Hex Bolts, Nuts, Washers', 'Box': 'Compartment Organizer' }, keySpecs: ['200 Pieces', 'M6-M12', 'GI Coated'], compatibility: ['Standard Metric'], warranty: 'N/A', seller: 'BuildMart Punakha', inStock: true, freeShipping: false, sold: 567, stock: 35, category: 'Hardware' },
+      { id: 'hw15', name: 'Concrete Mixer Machine 1 Bag', brand: 'Safari', hwCategory: 'Cement & Concrete', price: 65000, originalPrice: 78000, discount: 17, image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=400&fit=crop', rating: 4.6, reviews: 56, description: 'Portable concrete mixer with 1 bag capacity for construction sites', specs: { 'Capacity': '1 Bag (225L)', 'Motor': '2HP Electric', 'Drum': 'Steel', 'Mixing Speed': '20 RPM', 'Weight': '180 kg' }, keySpecs: ['1 Bag Capacity', '2HP Motor', 'Portable'], compatibility: ['Standard Cement Bags'], warranty: '1 Year', seller: 'Construction Hub Paro', inStock: true, freeShipping: true, sold: 23, stock: 5, category: 'Hardware' },
+      { id: 'hw16', name: 'Safety Vest Reflective (Pack of 5)', brand: 'Karam', hwCategory: 'Safety Equipment', price: 750, originalPrice: 950, discount: 21, image: 'https://images.unsplash.com/photo-1578255321055-1cfade804cfc?w=400&h=400&fit=crop', rating: 4.3, reviews: 189, description: 'High visibility reflective safety vests for construction workers', specs: { 'Quantity': '5 Vests', 'Material': 'Polyester Mesh', 'Reflective Strips': '2 inch Silver', 'Visibility': 'Class 2', 'Size': 'Free Size' }, keySpecs: ['Pack of 5', 'Class 2 Visibility', 'Reflective'], compatibility: ['All Workers'], warranty: '6 Months', seller: 'Safety First Thimphu', inStock: true, freeShipping: false, sold: 345, stock: 60, category: 'Hardware' },
     ],
     pcSlots: [
-      { key: 'Processors', label: 'CPU / Processor', icon: '⚡', required: true },
-      { key: 'Graphics Cards', label: 'Graphics Card', icon: '🎮', required: true },
-      { key: 'RAM', label: 'Memory (RAM)', icon: '💾', required: true },
-      { key: 'Motherboards', label: 'Motherboard', icon: '🔧', required: true },
-      { key: 'Storage', label: 'Storage (SSD/HDD)', icon: '💿', required: true },
-      { key: 'Power Supplies', label: 'Power Supply', icon: '🔌', required: true },
-      { key: 'Cases', label: 'Case', icon: '🖥️', required: true },
-      { key: 'Cooling', label: 'CPU Cooler', icon: '❄️', required: false },
+      { key: 'Cement & Concrete', label: 'Cement / Concrete', icon: '🏗️', required: true },
+      { key: 'Building Materials', label: 'Steel / Rebar', icon: '🧱', required: true },
+      { key: 'Lumber & Wood', label: 'Lumber & Wood', icon: '🪵', required: true },
+      { key: 'Roofing', label: 'Roofing Sheets', icon: '🏠', required: true },
+      { key: 'Plumbing', label: 'Plumbing Pipes', icon: '🚿', required: true },
+      { key: 'Electrical', label: 'Electrical Wiring', icon: '⚡', required: true },
+      { key: 'Paint & Finishing', label: 'Paint & Finishing', icon: '🎨', required: false },
+      { key: 'Safety Equipment', label: 'Safety Gear', icon: '🦺', required: false },
     ],
     pcBuild: {},
     pcPresets: [
-      { name: 'Budget Office', icon: '💼', price: 45000, desc: 'Basic productivity PC', parts: { 'Processors': 'hw11', 'RAM': 'hw3', 'Storage': 'hw5', 'Power Supplies': 'hw16', 'Cases': 'hw7' } },
-      { name: 'Mid-Range Gaming', icon: '🎮', price: 95000, desc: 'Solid 1080p gaming build', parts: { 'Processors': 'hw1', 'Graphics Cards': 'hw12', 'RAM': 'hw3', 'Motherboards': 'hw4', 'Storage': 'hw5', 'Power Supplies': 'hw6', 'Cases': 'hw7', 'Cooling': 'hw8' } },
-      { name: 'High-End Gaming', icon: '🏆', price: 135000, desc: 'Ultimate 1440p gaming rig', parts: { 'Processors': 'hw1', 'Graphics Cards': 'hw2', 'RAM': 'hw3', 'Motherboards': 'hw4', 'Storage': 'hw15', 'Power Supplies': 'hw6', 'Cases': 'hw7', 'Cooling': 'hw8' } },
+      { name: 'Small Room Extension', icon: '🏠', price: 35000, desc: 'Basic materials for a room extension', parts: { 'Cement & Concrete': 'hw5', 'Building Materials': 'hw6', 'Lumber & Wood': 'hw13', 'Roofing': 'hw11', 'Safety Equipment': 'hw10' } },
+      { name: 'Full House Foundation', icon: '🏗️', price: 120000, desc: 'Foundation and structure materials', parts: { 'Cement & Concrete': 'hw5', 'Building Materials': 'hw6', 'Lumber & Wood': 'hw13', 'Roofing': 'hw11', 'Plumbing': 'hw8', 'Electrical': 'hw9', 'Paint & Finishing': 'hw7', 'Safety Equipment': 'hw10' } },
+      { name: 'Renovation Kit', icon: '🔨', price: 55000, desc: 'Interior renovation essentials', parts: { 'Lumber & Wood': 'hw13', 'Paint & Finishing': 'hw7', 'Electrical': 'hw9', 'Plumbing': 'hw8', 'Fasteners & Fittings': 'hw14' } },
     ],
 
     init() { this.filteredRestaurants = [...this.restaurants]; this.filteredHW = [...this.hardwareProducts]; setInterval(() => { this.$nextTick(() => {}); }, 1000); },
@@ -2425,7 +2425,7 @@ function marketplace() {
     pcBuildTotal() { return Object.values(this.pcBuild).reduce((sum, id) => { const hw = this.hardwareProducts.find(p => p.id === id); return sum + (hw ? hw.price : 0); }, 0); },
     pcBuildParts() { return Object.keys(this.pcBuild).length; },
     addPCBuildToCart() { Object.values(this.pcBuild).forEach(id => { const hw = this.hardwareProducts.find(p => p.id === id); if (hw) { const existing = this.cart.find(c => c.product.id === hw.id); if (existing) { existing.qty++; } else { this.cart.push({ product: { id: hw.id, title: hw.name, price: hw.price, image: hw.image, category: 'Hardware' }, qty: 1 }); } } }); this.showToast('PC Build added to cart!'); this.page = 'cart'; },
-    sharePCBuild() { const parts = Object.entries(this.pcBuild).map(([slot, id]) => { const hw = this.hardwareProducts.find(p => p.id === id); return slot + ': ' + (hw ? hw.name : ''); }).join('\n'); navigator.clipboard?.writeText('🖥️ My DrukHub PC Build:\n' + parts + '\nTotal: Nu. ' + this.pcBuildTotal().toLocaleString()); this.showToast('Build copied to clipboard!'); },
+    sharePCBuild() { const parts = Object.entries(this.pcBuild).map(([slot, id]) => { const hw = this.hardwareProducts.find(p => p.id === id); return slot + ': ' + (hw ? hw.name : ''); }).join('\n'); navigator.clipboard?.writeText('🏗️ My DrukHub Project Materials:\n' + parts + '\nTotal: Nu. ' + this.pcBuildTotal().toLocaleString()); this.showToast('Material list copied to clipboard!'); },
     loadPreset(preset) { this.pcBuild = {...preset.parts}; this.showToast(preset.name + ' preset loaded!'); },
 
     // Dark mode
