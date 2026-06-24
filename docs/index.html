@@ -3,58 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DrukHub.bt - Online Shopping in Bhutan</title>
+  <title>DrukHub.bt - Bhutan's Super App</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            'amz-dark': '#131921',
-            'amz-dark2': '#232f3e',
-            'amz-dark3': '#37475a',
-            'amz-blue': '#007185',
-            'amz-blue-hover': '#c7f5ff',
-            'amz-orange': '#febd69',
-            'amz-orange2': '#f3a847',
-            'amz-yellow': '#ffd814',
-            'amz-yellow-hover': '#f7ca00',
-            'amz-link': '#007185',
-            'amz-star': '#de7921',
-            'amz-red': '#cc0c39',
-            'amz-green': '#007600',
+            'druk-dark': '#2D1B14',
+            'druk-dark2': '#5B1A18',
+            'druk-dark3': '#7A3B2E',
+            'druk-blue': '#1B6B5A',
+            'druk-blue-hover': '#d4efe8',
+            'druk-orange': '#D4A017',
+            'druk-orange2': '#C4901A',
+            'druk-yellow': '#E8B830',
+            'druk-yellow-hover': '#D4A017',
+            'druk-link': '#1B6B5A',
+            'druk-star': '#D4A017',
+            'druk-red': '#8B1A1A',
+            'druk-green': '#1B6B5A',
           }
         }
       }
     }
   </script>
   <style>
-    * { font-family: 'Arial', 'Helvetica', sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { font-family: 'Inter', 'Segoe UI', sans-serif; }
     .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     [x-cloak] { display: none !important; }
-    .amz-btn { background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; border-radius: 3px; cursor: pointer; }
-    .amz-btn:hover { background: linear-gradient(to bottom, #f5d78e, #eeb933); }
-    .amz-btn-cart { background: #ffd814; border: 1px solid #fcd200; border-radius: 20px; }
-    .amz-btn-cart:hover { background: #f7ca00; }
-    .amz-btn-buy { background: #ffa41c; border: 1px solid #ff8f00; border-radius: 20px; }
-    .amz-btn-buy:hover { background: #fa8900; }
-    .amz-input:focus { outline: none; box-shadow: 0 0 0 3px #c8f3fa, 0 1px 2px rgba(0,0,0,0.15); border-color: #007185; }
+    .druk-btn { background: linear-gradient(to bottom, #E8B830, #D4A017); border: 1px solid #B8860B; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .druk-btn:hover { background: linear-gradient(to bottom, #D4A017, #C4901A); }
+    .druk-btn-cart { background: #E8B830; border: 1px solid #D4A017; border-radius: 20px; }
+    .druk-btn-cart:hover { background: #D4A017; }
+    .druk-btn-buy { background: #8B1A1A; color: white; border: 1px solid #6B1515; border-radius: 20px; }
+    .druk-btn-buy:hover { background: #6B1515; }
+    .druk-input:focus { outline: none; box-shadow: 0 0 0 3px #d4efe8, 0 1px 2px rgba(0,0,0,0.15); border-color: #1B6B5A; }
     .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-    .star-rating { color: #de7921; }
+    .star-rating { color: #D4A017; }
     html.dark body { background: #1a1a2e; color: #e0e0e0; }
     html.dark .bg-white { background: #16213e !important; }
     html.dark .bg-gray-50, html.dark .bg-gray-100 { background: #1a1a3e !important; }
     html.dark .text-gray-500, html.dark .text-gray-600, html.dark .text-gray-700 { color: #a0a0b0 !important; }
-    html.dark .text-amz-dark, html.dark .text-gray-800 { color: #e0e0e0 !important; }
+    html.dark .text-druk-dark, html.dark .text-gray-800 { color: #e0e0e0 !important; }
     html.dark .border-gray-200, html.dark .border-gray-300, html.dark .border-gray-400 { border-color: #2a2a4e !important; }
     html.dark .border-b { border-color: #2a2a4e !important; }
     html.dark input, html.dark select, html.dark textarea { background: #1a1a3e; color: #e0e0e0; border-color: #3a3a5e; }
     html.dark .hover\:bg-gray-50:hover, html.dark .hover\:bg-gray-100:hover { background: #1a1a4e !important; }
     html.dark .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-    html.dark .bg-\[\#e3e6e6\] { background: #1a1a2e !important; }
+    html.dark .bg-\[\#F5F0E8\] { background: #1a1a2e !important; }
   </style>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <!-- Firebase SDK -->
@@ -77,15 +78,15 @@
     const auth = firebase.auth();
   </script>
 </head>
-<body class="bg-[#e3e6e6] min-h-screen flex flex-col" x-data="marketplace()">
+<body class="bg-[#F5F0E8] min-h-screen flex flex-col" x-data="marketplace()">
 
 <!-- Top Bar -->
-<header class="bg-amz-dark sticky top-0 z-50">
+<header class="bg-druk-dark sticky top-0 z-50">
   <!-- Main Nav -->
   <div class="max-w-[1500px] mx-auto px-2 flex items-center h-[60px] gap-2">
     <!-- Logo -->
     <a href="#" @click.prevent="page='home'" class="flex items-center px-2 py-1 border border-transparent hover:border-white rounded shrink-0">
-      <span class="text-white text-xl font-bold">Druk</span><span class="text-amz-orange text-xl font-bold">Hub</span>
+      <span class="text-white text-xl font-bold">Druk</span><span class="text-druk-orange text-xl font-bold">Hub</span>
       <span class="text-white text-[10px] ml-0.5">.bt</span>
     </a>
 
@@ -104,11 +105,11 @@
         <option>All</option>
         <template x-for="cat in categories" :key="cat.name"><option x-text="cat.name"></option></template>
       </select>
-      <input type="text" x-model="searchQuery" @input="updateSuggestions()" @focus="updateSuggestions()" @click.away="showSearchSuggestions=false" placeholder="Search DrukHub.bt" class="flex-1 px-3 text-sm amz-input border-none outline-none">
+      <input type="text" x-model="searchQuery" @input="updateSuggestions()" @focus="updateSuggestions()" @click.away="showSearchSuggestions=false" placeholder="Search DrukHub.bt" class="flex-1 px-3 text-sm druk-input border-none outline-none">
       <button type="button" @click="voiceSearch()" class="px-2 hover:bg-gray-100" title="Voice Search">
         <svg class="w-5 h-5" :class="isListening ? 'text-red-500 animate-pulse' : 'text-gray-400'" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5zm6 6c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
       </button>
-      <button type="submit" class="bg-amz-orange hover:bg-amz-orange2 px-4">
+      <button type="submit" class="bg-druk-orange hover:bg-druk-orange2 px-4">
         <svg class="w-5 h-5" fill="none" stroke="#111" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </button>
       <!-- Search Suggestions Dropdown -->
@@ -135,12 +136,12 @@
     <div class="relative" x-show="user" x-cloak>
       <button @click="showNotifications=!showNotifications" class="flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white shrink-0 relative">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-        <span x-show="unreadCount()>0" class="absolute -top-1 -right-0.5 bg-amz-red text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center" x-text="unreadCount()"></span>
+        <span x-show="unreadCount()>0" class="absolute -top-1 -right-0.5 bg-druk-red text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center" x-text="unreadCount()"></span>
       </button>
       <div x-show="showNotifications" @click.away="showNotifications=false" x-cloak class="absolute right-0 mt-1 w-80 bg-white rounded shadow-lg border z-50 max-h-[400px] overflow-y-auto">
         <div class="flex justify-between items-center p-3 border-b">
           <span class="font-bold text-sm">Notifications</span>
-          <button @click="markAllRead()" class="text-amz-link text-xs hover:underline">Mark all read</button>
+          <button @click="markAllRead()" class="text-druk-link text-xs hover:underline">Mark all read</button>
         </div>
         <template x-for="n in notifications" :key="n.id">
           <div class="px-3 py-2.5 border-b text-sm hover:bg-gray-50" :class="!n.read ? 'bg-blue-50' : ''">
@@ -166,24 +167,24 @@
       <div x-show="accountMenu" @click.away="accountMenu=false" x-cloak class="absolute right-0 mt-1 w-56 bg-white rounded shadow-lg border z-50 p-4">
         <template x-if="!user">
           <div>
-            <button @click="page='login'; accountMenu=false" class="amz-btn-cart w-full py-2 text-sm font-bold mb-2">Sign in</button>
-            <p class="text-xs">New customer? <a href="#" @click.prevent="page='register'; accountMenu=false" class="text-amz-link hover:text-amz-red hover:underline">Start here.</a></p>
+            <button @click="page='login'; accountMenu=false" class="druk-btn-cart w-full py-2 text-sm font-bold mb-2">Sign in</button>
+            <p class="text-xs">New customer? <a href="#" @click.prevent="page='register'; accountMenu=false" class="text-druk-link hover:text-druk-red hover:underline">Start here.</a></p>
           </div>
         </template>
         <template x-if="user">
           <div class="space-y-1 text-sm">
-            <a href="#" @click.prevent="page='profile'; initProfile(); accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Your Account</a>
-            <a href="#" @click.prevent="page='orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Your Orders</a>
-            <a href="#" @click.prevent="page='wishlist'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Wishlist (<span x-text="wishlist.length"></span>)</a>
-            <a href="#" @click.prevent="page='sell'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amz-orange2">Sell Your Stuff</a>
-            <a href="#" @click.prevent="page='food-orders'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Food Orders</a>
-            <a href="#" @click.prevent="page='rewards'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline font-bold text-amber-600">🏆 Rewards (<span x-text="loyaltyPoints"></span> pts)</a>
-            <a href="#" @click.prevent="page='refer'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">👥 Refer & Earn</a>
-            <a href="#" @click.prevent="page='messages'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Messages</a>
-            <template x-if="user.role==='seller'||user.role==='admin'"><a href="#" @click.prevent="page='dashboard'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Seller Dashboard</a></template>
-            <template x-if="user.role==='admin'"><a href="#" @click.prevent="page='admin'; accountMenu=false" class="block py-1 hover:text-amz-red hover:underline">Admin Panel</a></template>
+            <a href="#" @click.prevent="page='profile'; initProfile(); accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Your Account</a>
+            <a href="#" @click.prevent="page='orders'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Your Orders</a>
+            <a href="#" @click.prevent="page='wishlist'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Wishlist (<span x-text="wishlist.length"></span>)</a>
+            <a href="#" @click.prevent="page='sell'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline font-bold text-druk-orange2">Sell Your Stuff</a>
+            <a href="#" @click.prevent="page='food-orders'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Food Orders</a>
+            <a href="#" @click.prevent="page='rewards'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline font-bold text-amber-600">🏆 Rewards (<span x-text="loyaltyPoints"></span> pts)</a>
+            <a href="#" @click.prevent="page='refer'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">👥 Refer & Earn</a>
+            <a href="#" @click.prevent="page='messages'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Messages</a>
+            <template x-if="user.role==='seller'||user.role==='admin'"><a href="#" @click.prevent="page='dashboard'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Seller Dashboard</a></template>
+            <template x-if="user.role==='admin'"><a href="#" @click.prevent="page='admin'; accountMenu=false" class="block py-1 hover:text-druk-red hover:underline">Admin Panel</a></template>
             <hr class="my-2">
-            <button @click="logout(); accountMenu=false" class="text-amz-link hover:text-amz-red hover:underline">Sign Out</button>
+            <button @click="logout(); accountMenu=false" class="text-druk-link hover:text-druk-red hover:underline">Sign Out</button>
           </div>
         </template>
       </div>
@@ -199,14 +200,14 @@
     <a href="#" @click.prevent="page='cart'" class="flex items-center px-2 py-1 border border-transparent hover:border-white rounded text-white shrink-0">
       <div class="relative">
         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
-        <span class="absolute -top-1 left-4 text-amz-orange font-bold text-base" x-text="cart.reduce((s,i)=>s+i.qty,0)"></span>
+        <span class="absolute -top-1 left-4 text-druk-orange font-bold text-base" x-text="cart.reduce((s,i)=>s+i.qty,0)"></span>
       </div>
       <span class="text-sm font-bold hidden sm:block">Cart</span>
     </a>
   </div>
 
   <!-- Sub Nav -->
-  <div class="bg-amz-dark2">
+  <div class="bg-druk-dark2">
     <div class="max-w-[1500px] mx-auto px-2 flex items-center h-[39px] gap-1 overflow-x-auto hide-scrollbar">
       <button @click="sideMenu=true" class="flex items-center text-white text-sm font-bold px-2 py-1 border border-transparent hover:border-white rounded shrink-0">
         <svg class="w-5 h-5 mr-1" fill="white" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg> All
@@ -217,7 +218,7 @@
       <a href="#" @click.prevent="page='register'; registerRole='seller'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0">Sell</a>
       <span class="text-gray-500 shrink-0">|</span>
       <!-- Services -->
-      <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-amz-orange">🍔 Food</a>
+      <a href="#" @click.prevent="page='food'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-druk-orange">🍔 Food</a>
       <a href="#" @click.prevent="page='taxi'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-yellow-400">🚖 Ride</a>
       <a href="#" @click.prevent="page='services'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-cyan-400">🛠️ Services</a>
       <a href="#" @click.prevent="page='grocery'" class="text-white text-sm px-2 py-1 border border-transparent hover:border-white rounded whitespace-nowrap shrink-0 font-bold text-green-400">🧺 Grocery</a>
@@ -249,7 +250,7 @@
 <div x-show="sideMenu" x-cloak class="fixed inset-0 z-[60]" @click="sideMenu=false">
   <div class="absolute inset-0 bg-black/50"></div>
   <div class="absolute left-0 top-0 bottom-0 w-[365px] bg-white overflow-y-auto" @click.stop>
-    <div class="bg-amz-dark2 text-white px-6 py-3 text-lg font-bold flex items-center gap-2">
+    <div class="bg-druk-dark2 text-white px-6 py-3 text-lg font-bold flex items-center gap-2">
       <svg class="w-6 h-6" fill="white" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
       <span x-text="user ? 'Hello, ' + user.name : 'Hello, sign in'"></span>
     </div>
@@ -264,7 +265,7 @@
         </a>
       </template>
       <a href="#" @click.prevent="page='hardware'; sideMenu=false" class="flex justify-between items-center px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-green-600">🔨 Hardware Store</a>
-      <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex items-center px-6 py-2.5 hover:bg-gray-100 text-sm text-amz-orange2 font-bold">📦 Sell on DrukHub</a>
+      <a href="#" @click.prevent="page='register'; registerRole='seller'; sideMenu=false" class="flex items-center px-6 py-2.5 hover:bg-gray-100 text-sm text-druk-orange2 font-bold">📦 Sell on DrukHub</a>
 
       <!-- 🍔 FOOD & TRANSPORT -->
       <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">🚀 Food & Transport</div>
@@ -319,15 +320,17 @@
   <!-- HOME PAGE -->
   <div x-show="page === 'home'">
     <!-- Hero Banner -->
-    <div class="relative bg-gradient-to-b from-[#aed6e8] to-[#e3e6e6]">
+    <div class="relative bg-gradient-to-b from-[#F5E6D0] to-[#F5F0E8]">
       <div class="max-w-[1500px] mx-auto relative">
-        <div class="h-[300px] md:h-[400px] bg-gradient-to-b from-[#7ec8e3] to-[#e3e6e6] flex items-center justify-center relative overflow-hidden">
+        <div class="h-[300px] md:h-[400px] bg-gradient-to-br from-[#8B1A1A] via-[#5B1A18] to-[#2D1B14] flex items-center justify-center relative overflow-hidden">
+          <div class="absolute inset-0 opacity-10" style="background-image: url('https://images.unsplash.com/photo-1553856622-d1b352e9a211?w=1500&h=400&fit=crop'); background-size: cover; background-position: center;"></div>
           <div class="text-center z-10 px-4">
-            <h1 class="text-3xl md:text-5xl font-bold text-amz-dark mb-3">Welcome to DrukHub.bt</h1>
-            <p class="text-lg text-amz-dark3 mb-6">Shop the best products in Bhutan</p>
-            <a href="#" @click.prevent="page='products'" class="amz-btn-cart px-8 py-3 text-sm font-bold rounded-full inline-block">Shop Now</a>
+            <p class="text-druk-orange text-sm font-bold mb-2 tracking-widest uppercase">Land of the Thunder Dragon</p>
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-3">Welcome to DrukHub.bt</h1>
+            <p class="text-lg text-gray-200 mb-6">Bhutan's Everything App — Shop, Eat, Ride, Pay & More</p>
+            <a href="#" @click.prevent="page='products'" class="druk-btn-cart px-8 py-3 text-sm font-bold rounded-full inline-block">Explore Now</a>
           </div>
-          <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#e3e6e6] to-transparent"></div>
+          <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#F5F0E8] to-transparent"></div>
         </div>
       </div>
     </div>
@@ -339,7 +342,7 @@
           <a href="#" @click.prevent="filterCategory(cat.name)" class="bg-white p-5 hover:shadow-md">
             <h3 class="font-bold text-base mb-2" x-text="cat.name"></h3>
             <div class="h-[180px] bg-gray-100 rounded overflow-hidden"><img :src="cat.img" :alt="cat.name" class="w-full h-full object-cover"></div>
-            <p class="text-amz-link text-xs mt-3 hover:text-amz-red hover:underline">See more</p>
+            <p class="text-druk-link text-xs mt-3 hover:text-druk-red hover:underline">See more</p>
           </a>
         </template>
       </div>
@@ -351,12 +354,12 @@
         <div class="flex justify-between items-center mb-4">
           <div class="flex items-center gap-3">
             <h2 class="text-xl font-bold">Today's Deals</h2>
-            <div class="bg-amz-dark text-white text-sm px-3 py-1 rounded flex items-center gap-2">
-              <svg class="w-4 h-4 text-amz-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/></svg>
-              <span class="font-mono font-bold text-amz-orange" x-text="flashTimeLeft()"></span>
+            <div class="bg-druk-dark text-white text-sm px-3 py-1 rounded flex items-center gap-2">
+              <svg class="w-4 h-4 text-druk-red" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"/></svg>
+              <span class="font-mono font-bold text-druk-orange" x-text="flashTimeLeft()"></span>
             </div>
           </div>
-          <a href="#" @click.prevent="page='products'; sortBy='popular'" class="text-amz-link text-sm hover:text-amz-red hover:underline">See all deals</a>
+          <a href="#" @click.prevent="page='products'; sortBy='popular'" class="text-druk-link text-sm hover:text-druk-red hover:underline">See all deals</a>
         </div>
         <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
           <template x-for="product in allProducts.filter(p=>p.discount>0).slice(0,6)" :key="product.id">
@@ -365,8 +368,8 @@
                 <img :src="product.image" :alt="product.title" class="max-h-full max-w-full object-contain">
               </div>
               <div class="mt-2">
-                <span class="bg-amz-red text-white text-xs font-bold px-2 py-0.5 rounded-sm" x-text="product.discount + '% off'"></span>
-                <span class="text-xs text-amz-red font-bold ml-1">Deal</span>
+                <span class="bg-druk-red text-white text-xs font-bold px-2 py-0.5 rounded-sm" x-text="product.discount + '% off'"></span>
+                <span class="text-xs text-druk-red font-bold ml-1">Deal</span>
               </div>
               <p class="text-xs text-gray-600 mt-1 line-clamp-2" x-text="product.title"></p>
               <p class="text-sm mt-1"><span class="text-xs align-top">Nu.</span><span class="font-bold" x-text="product.price.toLocaleString()"></span></p>
@@ -382,7 +385,7 @@
       <div class="bg-white p-5">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold">Best Sellers</h2>
-          <a href="#" @click.prevent="page='products'; sortBy='popular'" class="text-amz-link text-sm hover:text-amz-red hover:underline">See more</a>
+          <a href="#" @click.prevent="page='products'; sortBy='popular'" class="text-druk-link text-sm hover:text-druk-red hover:underline">See more</a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <template x-for="product in getPopularProducts().slice(0,6)" :key="product.id">
@@ -401,7 +404,7 @@
       <div class="bg-white p-5">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-bold">New Arrivals</h2>
-          <a href="#" @click.prevent="page='products'; sortBy='newest'" class="text-amz-link text-sm hover:text-amz-red hover:underline">See more</a>
+          <a href="#" @click.prevent="page='products'; sortBy='newest'" class="text-druk-link text-sm hover:text-druk-red hover:underline">See more</a>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           <template x-for="product in getNewestProducts().slice(0,6)" :key="product.id">
@@ -409,7 +412,7 @@
               <div class="h-[180px] bg-gray-50 flex items-center justify-center p-3 rounded">
                 <img :src="product.image" :alt="product.title" class="max-h-full max-w-full object-contain group-hover:scale-105 transition">
               </div>
-              <p class="text-xs mt-2 line-clamp-2 group-hover:text-amz-red" x-text="product.title"></p>
+              <p class="text-xs mt-2 line-clamp-2 group-hover:text-druk-red" x-text="product.title"></p>
               <div class="star-rating text-xs mt-0.5" x-text="'★'.repeat(Math.round(product.rating)) + ' ' + product.reviews"></div>
               <p class="text-sm mt-0.5"><span class="text-xs align-top">Nu.</span><span class="font-bold" x-text="product.price.toLocaleString()"></span></p>
             </a>
@@ -426,7 +429,7 @@
           <template x-for="rv in recentlyViewed.slice(0,8)" :key="rv.id">
             <a href="#" @click.prevent="viewProduct(rv)" class="shrink-0 w-[150px] group">
               <div class="h-[150px] bg-gray-50 flex items-center justify-center p-2 rounded"><img :src="rv.image" class="max-h-full max-w-full object-contain group-hover:scale-105 transition"></div>
-              <p class="text-xs mt-1 line-clamp-2 group-hover:text-amz-red" x-text="rv.title"></p>
+              <p class="text-xs mt-1 line-clamp-2 group-hover:text-druk-red" x-text="rv.title"></p>
               <p class="text-sm font-bold" x-text="'Nu. '+rv.price.toLocaleString()"></p>
             </a>
           </template>
@@ -573,7 +576,7 @@
       <div class="bg-white p-5 text-center rounded-lg border">
         <h2 class="text-xl font-bold mb-1">Sell on DrukHub.bt</h2>
         <p class="text-sm text-gray-600 mb-4">Reach millions of buyers across Bhutan</p>
-        <a href="#" @click.prevent="page='register'; registerRole='seller'" class="amz-btn px-6 py-2 text-sm font-bold">Register as a Seller</a>
+        <a href="#" @click.prevent="page='register'; registerRole='seller'" class="druk-btn px-6 py-2 text-sm font-bold">Register as a Seller</a>
       </div>
     </div>
   </div>
@@ -585,22 +588,22 @@
       <div class="w-[220px] shrink-0 hidden lg:block">
         <div class="text-sm">
           <h4 class="font-bold text-sm mb-2">Category</h4>
-          <a href="#" @click.prevent="activeCategory=''" class="block py-0.5 text-sm" :class="!activeCategory ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">All</a>
+          <a href="#" @click.prevent="activeCategory=''" class="block py-0.5 text-sm" :class="!activeCategory ? 'font-bold' : 'text-druk-link hover:text-druk-red hover:underline'">All</a>
           <template x-for="cat in categories" :key="cat.name">
             <a href="#" @click.prevent="activeCategory=cat.name" class="block py-0.5 text-sm"
-              :class="activeCategory===cat.name ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'" x-text="cat.name"></a>
+              :class="activeCategory===cat.name ? 'font-bold' : 'text-druk-link hover:text-druk-red hover:underline'" x-text="cat.name"></a>
           </template>
           <hr class="my-3">
           <h4 class="font-bold text-sm mb-2">Price</h4>
-          <a href="#" @click.prevent="priceMin=''; priceMax='2000'" class="block py-0.5 text-amz-link text-sm hover:text-amz-red hover:underline">Under Nu. 2,000</a>
-          <a href="#" @click.prevent="priceMin='2000'; priceMax='5000'" class="block py-0.5 text-amz-link text-sm hover:text-amz-red hover:underline">Nu. 2,000 - Nu. 5,000</a>
-          <a href="#" @click.prevent="priceMin='5000'; priceMax='10000'" class="block py-0.5 text-amz-link text-sm hover:text-amz-red hover:underline">Nu. 5,000 - Nu. 10,000</a>
-          <a href="#" @click.prevent="priceMin='10000'; priceMax='25000'" class="block py-0.5 text-amz-link text-sm hover:text-amz-red hover:underline">Nu. 10,000 - Nu. 25,000</a>
-          <a href="#" @click.prevent="priceMin='25000'; priceMax=''" class="block py-0.5 text-amz-link text-sm hover:text-amz-red hover:underline">Nu. 25,000 & Above</a>
+          <a href="#" @click.prevent="priceMin=''; priceMax='2000'" class="block py-0.5 text-druk-link text-sm hover:text-druk-red hover:underline">Under Nu. 2,000</a>
+          <a href="#" @click.prevent="priceMin='2000'; priceMax='5000'" class="block py-0.5 text-druk-link text-sm hover:text-druk-red hover:underline">Nu. 2,000 - Nu. 5,000</a>
+          <a href="#" @click.prevent="priceMin='5000'; priceMax='10000'" class="block py-0.5 text-druk-link text-sm hover:text-druk-red hover:underline">Nu. 5,000 - Nu. 10,000</a>
+          <a href="#" @click.prevent="priceMin='10000'; priceMax='25000'" class="block py-0.5 text-druk-link text-sm hover:text-druk-red hover:underline">Nu. 10,000 - Nu. 25,000</a>
+          <a href="#" @click.prevent="priceMin='25000'; priceMax=''" class="block py-0.5 text-druk-link text-sm hover:text-druk-red hover:underline">Nu. 25,000 & Above</a>
           <div class="flex items-center gap-1 mt-2">
-            <input type="number" placeholder="Min" x-model="priceMin" class="w-16 border border-gray-400 rounded-sm px-1 py-0.5 text-xs amz-input">
+            <input type="number" placeholder="Min" x-model="priceMin" class="w-16 border border-gray-400 rounded-sm px-1 py-0.5 text-xs druk-input">
             <span class="text-gray-500">-</span>
-            <input type="number" placeholder="Max" x-model="priceMax" class="w-16 border border-gray-400 rounded-sm px-1 py-0.5 text-xs amz-input">
+            <input type="number" placeholder="Max" x-model="priceMax" class="w-16 border border-gray-400 rounded-sm px-1 py-0.5 text-xs druk-input">
             <button @click="" class="border border-gray-400 rounded-sm px-2 py-0.5 text-xs hover:bg-gray-100">Go</button>
           </div>
           <hr class="my-3">
@@ -613,9 +616,9 @@
           </template>
           <hr class="my-3">
           <h4 class="font-bold text-sm mb-2">Condition</h4>
-          <a href="#" @click.prevent="conditionFilter=''" class="block py-0.5 text-sm" :class="!conditionFilter ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">All</a>
-          <a href="#" @click.prevent="conditionFilter='new'" class="block py-0.5 text-sm" :class="conditionFilter==='new' ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">New</a>
-          <a href="#" @click.prevent="conditionFilter='used'" class="block py-0.5 text-sm" :class="conditionFilter==='used' ? 'font-bold' : 'text-amz-link hover:text-amz-red hover:underline'">Used</a>
+          <a href="#" @click.prevent="conditionFilter=''" class="block py-0.5 text-sm" :class="!conditionFilter ? 'font-bold' : 'text-druk-link hover:text-druk-red hover:underline'">All</a>
+          <a href="#" @click.prevent="conditionFilter='new'" class="block py-0.5 text-sm" :class="conditionFilter==='new' ? 'font-bold' : 'text-druk-link hover:text-druk-red hover:underline'">New</a>
+          <a href="#" @click.prevent="conditionFilter='used'" class="block py-0.5 text-sm" :class="conditionFilter==='used' ? 'font-bold' : 'text-druk-link hover:text-druk-red hover:underline'">Used</a>
           <hr class="my-3">
           <h4 class="font-bold text-sm mb-2">Shipping</h4>
           <label class="flex items-center gap-1.5 text-sm"><input type="checkbox"> Free Shipping</label>
@@ -647,22 +650,22 @@
                   <img :src="product.image" :alt="product.title" class="max-h-full max-w-full object-contain">
                 </a>
                 <button @click="toggleWishlist(product)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100" :title="isInWishlist(product.id)?'Remove from Wishlist':'Add to Wishlist'">
-                  <svg class="w-5 h-5" :class="isInWishlist(product.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                  <svg class="w-5 h-5" :class="isInWishlist(product.id)?'text-druk-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                 </button>
               </div>
               <!-- Details -->
               <div class="flex-1 min-w-0">
-                <a href="#" @click.prevent="viewProduct(product)" class="text-base text-amz-dark hover:text-amz-red line-clamp-2" x-text="product.title"></a>
+                <a href="#" @click.prevent="viewProduct(product)" class="text-base text-druk-dark hover:text-druk-red line-clamp-2" x-text="product.title"></a>
                 <span x-show="product.condition && product.condition!=='new'" class="inline-block text-xs px-2 py-0.5 rounded font-bold mt-1" :class="product.condition==='like_new'?'bg-blue-100 text-blue-700':product.condition==='good'?'bg-yellow-100 text-yellow-700':product.condition==='fair'?'bg-orange-100 text-orange-700':'bg-red-100 text-red-700'" x-text="product.conditionLabel||'Used'"></span>
                 <div class="flex items-center gap-1 mt-1">
                   <span class="star-rating text-sm" x-text="'★'.repeat(Math.round(product.rating))"></span>
                   <span class="text-gray-400 text-sm" x-text="'★'.repeat(5-Math.round(product.rating))"></span>
-                  <a href="#" class="text-amz-link text-xs ml-1" x-text="product.reviews.toLocaleString()"></a>
+                  <a href="#" class="text-druk-link text-xs ml-1" x-text="product.reviews.toLocaleString()"></a>
                   <span class="text-xs text-gray-500 ml-1" x-text="product.sold.toLocaleString() + '+ bought in past month'"></span>
                 </div>
                 <div class="mt-2">
-                  <span x-show="product.discount>0" class="text-xs bg-amz-red text-white px-1.5 py-0.5 rounded-sm font-bold mr-1" x-text="product.discount+'% off'"></span>
-                  <span x-show="product.discount>0" class="text-xs text-amz-red font-bold mr-2">Limited time deal</span>
+                  <span x-show="product.discount>0" class="text-xs bg-druk-red text-white px-1.5 py-0.5 rounded-sm font-bold mr-1" x-text="product.discount+'% off'"></span>
+                  <span x-show="product.discount>0" class="text-xs text-druk-red font-bold mr-2">Limited time deal</span>
                 </div>
                 <div class="mt-1">
                   <span class="text-[28px]"><span class="text-[13px] align-top">Nu.</span><span class="font-normal" x-text="product.price.toLocaleString()"></span></span>
@@ -672,11 +675,11 @@
                 </div>
                 <div x-show="product.freeShipping" class="text-xs mt-1">FREE delivery <span class="font-bold">within Bhutan</span></div>
                 <div x-show="!product.freeShipping" class="text-xs mt-1 text-gray-600">Delivery: <span class="font-bold">Nu. 500</span></div>
-                <div class="text-xs mt-1" :class="product.stock > 0 ? 'text-amz-green' : 'text-amz-red'" x-text="product.stock > 0 ? 'In Stock' : 'Out of Stock'"></div>
+                <div class="text-xs mt-1" :class="product.stock > 0 ? 'text-druk-green' : 'text-druk-red'" x-text="product.stock > 0 ? 'In Stock' : 'Out of Stock'"></div>
                 <p class="text-xs text-gray-500 mt-1" x-text="'by ' + product.store"></p>
                 <div class="flex items-center gap-3 mt-2">
-                  <button @click="addToCart(product)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Add to Cart</button>
-                  <label class="flex items-center gap-1 text-xs text-gray-500 cursor-pointer"><input type="checkbox" :checked="isInCompare(product.id)" @change="toggleCompare(product)" class="accent-amz-dark"> Compare</label>
+                  <button @click="addToCart(product)" class="druk-btn-cart px-4 py-1.5 text-xs font-bold">Add to Cart</button>
+                  <label class="flex items-center gap-1 text-xs text-gray-500 cursor-pointer"><input type="checkbox" :checked="isInCompare(product.id)" @change="toggleCompare(product)" class="accent-druk-dark"> Compare</label>
                 </div>
               </div>
             </div>
@@ -702,7 +705,7 @@
             <div class="flex gap-2">
               <div x-show="selectedProduct.images && selectedProduct.images.length>1" class="flex flex-col gap-1">
                 <template x-for="(img,i) in selectedProduct.images" :key="i">
-                  <button @click="selectedImage=i" :class="i===selectedImage ? 'border-amz-blue ring-1 ring-amz-blue' : 'border-gray-200'" class="w-12 h-12 border rounded p-0.5">
+                  <button @click="selectedImage=i" :class="i===selectedImage ? 'border-druk-blue ring-1 ring-druk-blue' : 'border-gray-200'" class="w-12 h-12 border rounded p-0.5">
                     <img :src="img" class="w-full h-full object-contain">
                   </button>
                 </template>
@@ -716,15 +719,15 @@
           <div class="md:col-span-4">
             <h1 class="text-xl leading-tight" x-text="selectedProduct.title"></h1>
             <div class="flex items-center gap-1 mt-2">
-              <span class="text-amz-link text-sm" x-text="selectedProduct.rating"></span>
+              <span class="text-druk-link text-sm" x-text="selectedProduct.rating"></span>
               <span class="star-rating text-sm" x-text="'★'.repeat(Math.round(selectedProduct.rating))"></span>
               <span class="text-gray-400 text-sm" x-text="'★'.repeat(5-Math.round(selectedProduct.rating))"></span>
-              <a href="#" class="text-amz-link text-sm ml-1" x-text="selectedProduct.reviews.toLocaleString() + ' ratings'"></a>
+              <a href="#" class="text-druk-link text-sm ml-1" x-text="selectedProduct.reviews.toLocaleString() + ' ratings'"></a>
             </div>
             <div class="text-xs text-gray-500 mt-1" x-text="selectedProduct.sold.toLocaleString() + '+ bought in past month'"></div>
             <hr class="my-3">
             <div x-show="selectedProduct.discount>0">
-              <span class="text-amz-red text-2xl font-light" x-text="'-'+selectedProduct.discount+'%'"></span>
+              <span class="text-druk-red text-2xl font-light" x-text="'-'+selectedProduct.discount+'%'"></span>
               <span class="text-[28px] ml-2"><span class="text-[13px] align-top">Nu.</span><span x-text="selectedProduct.price.toLocaleString()"></span></span>
             </div>
             <div x-show="!selectedProduct.discount || selectedProduct.discount===0">
@@ -765,7 +768,7 @@
               <div class="text-[28px] mb-1"><span class="text-[13px] align-top">Nu.</span><span x-text="selectedProduct.price.toLocaleString()"></span></div>
               <div x-show="selectedProduct.freeShipping" class="text-xs text-gray-600">FREE delivery <span class="font-bold">within Bhutan</span></div>
               <div x-show="!selectedProduct.freeShipping" class="text-xs text-gray-600">Delivery: <span class="font-bold">Nu. 500</span></div>
-              <div class="text-sm mt-3" :class="selectedProduct.stock>0 ? 'text-amz-green text-lg' : 'text-amz-red'" x-text="selectedProduct.stock>0 ? 'In Stock' : 'Currently unavailable'"></div>
+              <div class="text-sm mt-3" :class="selectedProduct.stock>0 ? 'text-druk-green text-lg' : 'text-druk-red'" x-text="selectedProduct.stock>0 ? 'In Stock' : 'Currently unavailable'"></div>
               <div x-show="selectedProduct.stock>0" class="mt-3">
                 <label class="text-sm">Qty:
                   <select x-model.number="quantity" class="border border-gray-400 rounded-lg text-sm py-1 px-2 bg-gray-50 ml-1">
@@ -773,12 +776,12 @@
                   </select>
                 </label>
               </div>
-              <div class="text-xs text-amz-green mt-2" x-text="'FREE delivery ' + getEstDelivery()"></div>
-              <button x-show="selectedProduct.stock>0" @click="addToCart(selectedProduct, quantity)" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3">Add to Cart</button>
-              <button x-show="selectedProduct.stock>0" @click="addToCart(selectedProduct, quantity); checkout()" class="amz-btn-buy w-full py-2 text-sm font-bold mt-2">Buy Now</button>
+              <div class="text-xs text-druk-green mt-2" x-text="'FREE delivery ' + getEstDelivery()"></div>
+              <button x-show="selectedProduct.stock>0" @click="addToCart(selectedProduct, quantity)" class="druk-btn-cart w-full py-2 text-sm font-bold mt-3">Add to Cart</button>
+              <button x-show="selectedProduct.stock>0" @click="addToCart(selectedProduct, quantity); checkout()" class="druk-btn-buy w-full py-2 text-sm font-bold mt-2">Buy Now</button>
               <div class="flex gap-2 mt-2">
                 <button @click="toggleWishlist(selectedProduct)" class="flex-1 border border-gray-300 rounded-full py-1.5 text-xs font-bold hover:bg-gray-50 flex items-center justify-center gap-1">
-                  <svg class="w-4 h-4" :class="isInWishlist(selectedProduct.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                  <svg class="w-4 h-4" :class="isInWishlist(selectedProduct.id)?'text-druk-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                   <span x-text="isInWishlist(selectedProduct.id)?'Wishlisted':'Wishlist'"></span>
                 </button>
                 <div class="relative">
@@ -795,7 +798,7 @@
               </div>
               <div class="text-xs text-gray-500 mt-3 space-y-1">
                 <div class="flex justify-between"><span class="text-gray-500">Ships from</span><span>DrukHub.bt</span></div>
-                <div class="flex justify-between"><span class="text-gray-500">Sold by</span><a href="#" @click.prevent="viewStore(selectedProduct.store)" class="text-amz-link hover:text-amz-red hover:underline" x-text="selectedProduct.store"></a></div>
+                <div class="flex justify-between"><span class="text-gray-500">Sold by</span><a href="#" @click.prevent="viewStore(selectedProduct.store)" class="text-druk-link hover:text-druk-red hover:underline" x-text="selectedProduct.store"></a></div>
                 <div class="flex justify-between"><span class="text-gray-500">Payment</span><span>COD / mBoB / Card</span></div>
               </div>
             </div>
@@ -817,12 +820,12 @@
             <p class="text-sm text-gray-600 mb-3">Share your thoughts with other customers</p>
             <div class="flex gap-1 mb-2">
               <template x-for="n in 5" :key="n">
-                <button @click="reviewRating=n" :class="n<=reviewRating ? 'text-amz-star' : 'text-gray-300'" class="text-2xl">★</button>
+                <button @click="reviewRating=n" :class="n<=reviewRating ? 'text-druk-star' : 'text-gray-300'" class="text-2xl">★</button>
               </template>
             </div>
-            <input type="text" placeholder="Add a headline" x-model="reviewTitle" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mb-2">
-            <textarea placeholder="Write your review..." x-model="reviewComment" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input h-20 mb-2"></textarea>
-            <button @click="submitReview()" class="amz-btn px-4 py-1.5 text-sm">Submit</button>
+            <input type="text" placeholder="Add a headline" x-model="reviewTitle" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input mb-2">
+            <textarea placeholder="Write your review..." x-model="reviewComment" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input h-20 mb-2"></textarea>
+            <button @click="submitReview()" class="druk-btn px-4 py-1.5 text-sm">Submit</button>
           </div>
           <div class="md:col-span-9">
             <h3 class="text-lg font-bold mb-4">Top reviews</h3>
@@ -847,17 +850,17 @@
         <hr class="my-6">
         <h3 class="text-lg font-bold mb-3">Customer Questions & Answers</h3>
         <div x-show="user" class="flex gap-2 mb-4">
-          <input type="text" x-model="qaQuestion" placeholder="Have a question? Ask here..." class="flex-1 border border-gray-400 rounded px-3 py-2 text-sm amz-input">
-          <button @click="askQuestion(selectedProduct.id)" class="amz-btn-cart px-4 py-2 text-sm font-bold">Ask</button>
+          <input type="text" x-model="qaQuestion" placeholder="Have a question? Ask here..." class="flex-1 border border-gray-400 rounded px-3 py-2 text-sm druk-input">
+          <button @click="askQuestion(selectedProduct.id)" class="druk-btn-cart px-4 py-2 text-sm font-bold">Ask</button>
         </div>
         <div class="space-y-3">
           <template x-for="qa in (qaList[selectedProduct.id] || [])" :key="qa.id">
             <div class="bg-gray-50 rounded p-4">
-              <p class="text-sm font-bold"><span class="text-amz-dark">Q:</span> <span x-text="qa.q"></span></p>
+              <p class="text-sm font-bold"><span class="text-druk-dark">Q:</span> <span x-text="qa.q"></span></p>
               <p class="text-xs text-gray-500" x-text="'Asked by ' + qa.user + ' on ' + qa.date"></p>
               <template x-for="ans in qa.answers" :key="ans.text">
-                <div class="mt-2 pl-4 border-l-2 border-amz-orange">
-                  <p class="text-sm"><span class="font-bold text-amz-dark">A:</span> <span x-text="ans.text"></span></p>
+                <div class="mt-2 pl-4 border-l-2 border-druk-orange">
+                  <p class="text-sm"><span class="font-bold text-druk-dark">A:</span> <span x-text="ans.text"></span></p>
                   <p class="text-xs text-gray-500" x-text="'By ' + ans.by + ' - ' + ans.date"></p>
                 </div>
               </template>
@@ -905,7 +908,7 @@
     <template x-if="cart.length === 0">
       <div class="bg-white p-8 rounded">
         <h1 class="text-2xl font-bold">Your DrukHub Cart is empty.</h1>
-        <a href="#" @click.prevent="page='products'" class="text-amz-link text-sm hover:text-amz-red hover:underline">Continue shopping</a>
+        <a href="#" @click.prevent="page='products'" class="text-druk-link text-sm hover:text-druk-red hover:underline">Continue shopping</a>
       </div>
     </template>
     <template x-if="cart.length > 0">
@@ -919,8 +922,8 @@
                 <img :src="item.product.image" class="max-h-full max-w-full object-contain">
               </a>
               <div class="flex-1">
-                <a href="#" @click.prevent="viewProduct(item.product)" class="text-base hover:text-amz-red line-clamp-2" x-text="item.product.title"></a>
-                <div class="text-xs mt-1" :class="item.product.stock>0 ? 'text-amz-green' : 'text-amz-red'" x-text="item.product.stock>0 ? 'In Stock' : 'Out of Stock'"></div>
+                <a href="#" @click.prevent="viewProduct(item.product)" class="text-base hover:text-druk-red line-clamp-2" x-text="item.product.title"></a>
+                <div class="text-xs mt-1" :class="item.product.stock>0 ? 'text-druk-green' : 'text-druk-red'" x-text="item.product.stock>0 ? 'In Stock' : 'Out of Stock'"></div>
                 <p class="text-xs text-gray-500 mt-0.5" x-text="'Sold by: ' + item.product.store"></p>
                 <div x-show="item.product.freeShipping" class="text-xs text-gray-600 mt-0.5">FREE delivery</div>
                 <div class="flex items-center gap-3 mt-3">
@@ -930,7 +933,7 @@
                     <button @click="updateCartQty(index,1)" class="px-3 py-1 hover:bg-gray-200 text-sm font-bold">+</button>
                   </div>
                   <span class="text-gray-300">|</span>
-                  <button @click="removeFromCart(index)" class="text-amz-link text-xs hover:underline">Delete</button>
+                  <button @click="removeFromCart(index)" class="text-druk-link text-xs hover:underline">Delete</button>
                 </div>
               </div>
               <div class="text-right shrink-0">
@@ -944,20 +947,20 @@
         </div>
         <div class="w-[300px] shrink-0 space-y-3">
           <div class="bg-white p-5 rounded">
-            <p x-show="cartSubtotal()>=4000" class="text-amz-green text-sm mb-2">Your order qualifies for <strong>FREE Delivery</strong></p>
+            <p x-show="cartSubtotal()>=4000" class="text-druk-green text-sm mb-2">Your order qualifies for <strong>FREE Delivery</strong></p>
             <p class="text-lg">Subtotal (<span x-text="cart.reduce((s,i)=>s+i.qty,0)"></span> items): <span class="font-bold" x-text="'Nu. ' + cartSubtotal().toLocaleString()"></span></p>
-            <div x-show="promoApplied" class="text-sm text-amz-green mt-1 flex justify-between items-center">
+            <div x-show="promoApplied" class="text-sm text-druk-green mt-1 flex justify-between items-center">
               <span x-text="'Coupon: ' + (promoApplied?.code||'')"></span>
-              <button @click="removePromo()" class="text-amz-red text-xs hover:underline">Remove</button>
+              <button @click="removePromo()" class="text-druk-red text-xs hover:underline">Remove</button>
             </div>
             <div x-show="promoApplied" class="text-sm font-bold mt-1" x-text="'You save: Nu. ' + promoDiscount().toLocaleString()"></div>
-            <button @click="checkout()" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3 rounded-full">Proceed to Checkout</button>
+            <button @click="checkout()" class="druk-btn-cart w-full py-2 text-sm font-bold mt-3 rounded-full">Proceed to Checkout</button>
           </div>
           <!-- Coupon/Promo -->
           <div class="bg-white p-4 rounded">
             <h4 class="text-sm font-bold mb-2">Have a coupon?</h4>
             <div class="flex gap-2">
-              <input type="text" x-model="promoCode" placeholder="Enter code" class="flex-1 border border-gray-400 rounded px-3 py-1.5 text-sm amz-input uppercase">
+              <input type="text" x-model="promoCode" placeholder="Enter code" class="flex-1 border border-gray-400 rounded px-3 py-1.5 text-sm druk-input uppercase">
               <button @click="applyPromo()" class="border border-gray-400 rounded px-3 py-1.5 text-sm hover:bg-gray-100 font-bold">Apply</button>
             </div>
             <p class="text-xs text-gray-500 mt-2">Try: WELCOME10, SAVE500, BHUTAN20, FREESHIP</p>
@@ -972,7 +975,7 @@
                   <p class="text-xs truncate" x-text="w.title"></p>
                   <p class="text-xs font-bold" x-text="'Nu. '+w.price.toLocaleString()"></p>
                 </div>
-                <button @click="addToCart(w); toggleWishlist(w)" class="text-amz-link text-xs hover:underline whitespace-nowrap">Move to Cart</button>
+                <button @click="addToCart(w); toggleWishlist(w)" class="text-druk-link text-xs hover:underline whitespace-nowrap">Move to Cart</button>
               </div>
             </template>
           </div>
@@ -983,16 +986,16 @@
 
   <!-- LOGIN PAGE -->
   <div x-show="page === 'login'" class="max-w-[350px] mx-auto px-4 py-6">
-    <div class="text-center mb-4"><span class="text-2xl font-bold">Druk</span><span class="text-2xl font-bold text-amz-orange">Hub</span><span class="text-sm">.bt</span></div>
+    <div class="text-center mb-4"><span class="text-2xl font-bold">Druk</span><span class="text-2xl font-bold text-druk-orange">Hub</span><span class="text-sm">.bt</span></div>
     <div class="border rounded-lg p-5">
       <h1 class="text-2xl font-normal mb-4">Sign in</h1>
-      <div x-show="authError" class="bg-red-50 border border-red-300 text-sm text-amz-red p-3 rounded mb-3" x-text="authError"></div>
+      <div x-show="authError" class="bg-red-50 border border-red-300 text-sm text-druk-red p-3 rounded mb-3" x-text="authError"></div>
       <form @submit.prevent="loginUser()">
         <label class="text-sm font-bold">Email</label>
-        <input type="email" x-model="loginEmail" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 amz-input">
+        <input type="email" x-model="loginEmail" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 druk-input">
         <label class="text-sm font-bold">Password</label>
-        <input type="password" x-model="loginPassword" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-4 amz-input">
-        <button type="submit" class="amz-btn-cart w-full py-2 text-sm font-bold">Sign in</button>
+        <input type="password" x-model="loginPassword" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-4 druk-input">
+        <button type="submit" class="druk-btn-cart w-full py-2 text-sm font-bold">Sign in</button>
       </form>
       <p class="text-xs text-gray-600 mt-4">By continuing, you agree to DrukHub's Conditions of Use and Privacy Notice.</p>
     </div>
@@ -1002,27 +1005,27 @@
 
   <!-- REGISTER PAGE -->
   <div x-show="page === 'register'" class="max-w-[350px] mx-auto px-4 py-6">
-    <div class="text-center mb-4"><span class="text-2xl font-bold">Druk</span><span class="text-2xl font-bold text-amz-orange">Hub</span><span class="text-sm">.bt</span></div>
+    <div class="text-center mb-4"><span class="text-2xl font-bold">Druk</span><span class="text-2xl font-bold text-druk-orange">Hub</span><span class="text-sm">.bt</span></div>
     <div class="border rounded-lg p-5">
       <h1 class="text-2xl font-normal mb-4">Create account</h1>
-      <div x-show="authError" class="bg-red-50 border border-red-300 text-sm text-amz-red p-3 rounded mb-3" x-text="authError"></div>
+      <div x-show="authError" class="bg-red-50 border border-red-300 text-sm text-druk-red p-3 rounded mb-3" x-text="authError"></div>
       <form @submit.prevent="registerUser()">
         <label class="text-sm font-bold">Your name</label>
-        <input type="text" x-model="regName" required placeholder="First and last name" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 amz-input">
+        <input type="text" x-model="regName" required placeholder="First and last name" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 druk-input">
         <label class="text-sm font-bold">Email</label>
-        <input type="email" x-model="regEmail" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 amz-input">
+        <input type="email" x-model="regEmail" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 druk-input">
         <label class="text-sm font-bold">Password</label>
-        <input type="password" x-model="regPassword" required placeholder="At least 6 characters" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 amz-input">
+        <input type="password" x-model="regPassword" required placeholder="At least 6 characters" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 druk-input">
         <label class="text-sm font-bold">Re-enter password</label>
-        <input type="password" x-model="regConfirm" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 amz-input">
+        <input type="password" x-model="regConfirm" required class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mb-3 druk-input">
         <label class="text-sm font-bold">I want to:</label>
         <div class="flex gap-3 my-3">
-          <label class="flex items-center gap-1.5 text-sm"><input type="radio" value="buyer" x-model="registerRole" class="accent-amz-dark"> Buy products</label>
-          <label class="flex items-center gap-1.5 text-sm"><input type="radio" value="seller" x-model="registerRole" class="accent-amz-dark"> Sell products</label>
+          <label class="flex items-center gap-1.5 text-sm"><input type="radio" value="buyer" x-model="registerRole" class="accent-druk-dark"> Buy products</label>
+          <label class="flex items-center gap-1.5 text-sm"><input type="radio" value="seller" x-model="registerRole" class="accent-druk-dark"> Sell products</label>
         </div>
-        <button type="submit" class="amz-btn-cart w-full py-2 text-sm font-bold">Create your DrukHub account</button>
+        <button type="submit" class="druk-btn-cart w-full py-2 text-sm font-bold">Create your DrukHub account</button>
       </form>
-      <p class="text-xs text-gray-600 mt-3">Already have an account? <a href="#" @click.prevent="page='login'" class="text-amz-link hover:text-amz-red hover:underline">Sign in</a></p>
+      <p class="text-xs text-gray-600 mt-3">Already have an account? <a href="#" @click.prevent="page='login'" class="text-druk-link hover:text-druk-red hover:underline">Sign in</a></p>
     </div>
   </div>
 
@@ -1032,7 +1035,7 @@
     <template x-if="orders.length === 0">
       <div class="bg-white p-8 rounded text-center">
         <p class="text-gray-600">You have not placed any orders yet.</p>
-        <a href="#" @click.prevent="page='products'" class="text-amz-link hover:text-amz-red hover:underline text-sm mt-2 inline-block">Start shopping</a>
+        <a href="#" @click.prevent="page='products'" class="text-druk-link hover:text-druk-red hover:underline text-sm mt-2 inline-block">Start shopping</a>
       </div>
     </template>
     <div class="space-y-4">
@@ -1041,11 +1044,11 @@
           <div class="bg-gray-100 border-b px-5 py-3 flex flex-wrap gap-6 text-xs">
             <div><span class="text-gray-500 uppercase">Order Placed</span><br><span x-text="order.date"></span></div>
             <div><span class="text-gray-500 uppercase">Total</span><br><span class="font-bold" x-text="'Nu. ' + order.total.toLocaleString()"></span></div>
-            <div class="ml-auto"><span class="text-gray-500 uppercase">Order #</span><br><span class="text-amz-link" x-text="order.id"></span></div>
+            <div class="ml-auto"><span class="text-gray-500 uppercase">Order #</span><br><span class="text-druk-link" x-text="order.id"></span></div>
           </div>
           <div class="p-5">
             <div class="text-base font-bold mb-1"
-              :class="{'text-amz-green': order.status==='delivered', 'text-amz-blue': order.status==='shipped'}"
+              :class="{'text-druk-green': order.status==='delivered', 'text-druk-blue': order.status==='shipped'}"
               x-text="order.status === 'delivered' ? 'Delivered' : order.status === 'shipped' ? 'Shipped' : order.status === 'processing' ? 'Processing' : 'Order Placed'"></div>
             <p x-show="order.estimatedDelivery" class="text-xs text-gray-500 mb-3" x-text="'Estimated delivery: ' + order.estimatedDelivery"></p>
             <!-- Order Tracking -->
@@ -1053,11 +1056,11 @@
               <template x-for="(step,si) in (order.tracking||[])" :key="si">
                 <div class="flex items-center">
                   <div class="flex flex-col items-center text-center min-w-[80px]">
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" :class="step.done ? 'bg-amz-green text-white' : 'bg-gray-200 text-gray-400'" x-text="step.done ? '✓' : si+1"></div>
-                    <p class="text-[10px] mt-1 font-bold" :class="step.done ? 'text-amz-green' : 'text-gray-400'" x-text="step.status"></p>
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" :class="step.done ? 'bg-druk-green text-white' : 'bg-gray-200 text-gray-400'" x-text="step.done ? '✓' : si+1"></div>
+                    <p class="text-[10px] mt-1 font-bold" :class="step.done ? 'text-druk-green' : 'text-gray-400'" x-text="step.status"></p>
                     <p x-show="step.date" class="text-[9px] text-gray-400" x-text="step.date"></p>
                   </div>
-                  <div x-show="si < (order.tracking||[]).length - 1" class="w-8 h-0.5 -mt-4" :class="step.done ? 'bg-amz-green' : 'bg-gray-200'"></div>
+                  <div x-show="si < (order.tracking||[]).length - 1" class="w-8 h-0.5 -mt-4" :class="step.done ? 'bg-druk-green' : 'bg-gray-200'"></div>
                 </div>
               </template>
             </div>
@@ -1094,25 +1097,25 @@
     </div>
     <div class="flex justify-between items-center mb-3">
       <h2 class="text-lg font-bold">Manage Products</h2>
-      <button @click="showProductForm=!showProductForm" class="amz-btn-cart px-5 py-2 text-sm font-bold">+ Add a Product</button>
+      <button @click="showProductForm=!showProductForm" class="druk-btn-cart px-5 py-2 text-sm font-bold">+ Add a Product</button>
     </div>
     <div x-show="showProductForm" x-cloak class="bg-white p-5 rounded mb-4 grid md:grid-cols-2 gap-3">
-      <div><label class="text-xs font-bold">Product Title</label><input type="text" x-model="newProduct.title" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+      <div><label class="text-xs font-bold">Product Title</label><input type="text" x-model="newProduct.title" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
       <div><label class="text-xs font-bold">Category</label><select x-model="newProduct.category" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mt-1"><template x-for="cat in categories" :key="cat.name"><option :value="cat.name" x-text="cat.name"></option></template></select></div>
-      <div><label class="text-xs font-bold">Price (Nu.)</label><input type="number" x-model="newProduct.price" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
-      <div><label class="text-xs font-bold">Stock</label><input type="number" x-model="newProduct.stock" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
-      <div><label class="text-xs font-bold">Image URL</label><input type="text" x-model="newProduct.image" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+      <div><label class="text-xs font-bold">Price (Nu.)</label><input type="number" x-model="newProduct.price" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
+      <div><label class="text-xs font-bold">Stock</label><input type="number" x-model="newProduct.stock" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
+      <div><label class="text-xs font-bold">Image URL</label><input type="text" x-model="newProduct.image" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
       <div><label class="text-xs font-bold">Condition</label><select x-model="newProduct.condition" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm mt-1"><option value="new">New</option><option value="like_new">Like New</option><option value="good">Good</option><option value="fair">Fair</option><option value="poor">Poor</option></select></div>
-      <div class="md:col-span-2"><label class="text-xs font-bold">Description</label><textarea x-model="newProduct.description" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm amz-input mt-1 h-16"></textarea></div>
+      <div class="md:col-span-2"><label class="text-xs font-bold">Description</label><textarea x-model="newProduct.description" class="w-full border border-gray-400 rounded px-3 py-1.5 text-sm druk-input mt-1 h-16"></textarea></div>
       <template x-if="newProduct.condition !== 'new'">
         <div class="md:col-span-2 grid md:grid-cols-2 gap-3 bg-amber-50 border border-amber-200 rounded p-3">
-          <div><label class="text-xs font-bold">Usage Duration</label><input type="text" x-model="newProduct.usageDuration" placeholder="e.g. 6 months" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
-          <div><label class="text-xs font-bold">Reason for Selling</label><input type="text" x-model="newProduct.reason" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
-          <div><label class="text-xs font-bold">Any Defects</label><input type="text" x-model="newProduct.defects" placeholder="e.g. Minor scratch" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
-          <div><label class="text-xs font-bold">Included Accessories</label><input type="text" x-model="newProduct.accessories" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input mt-1"></div>
+          <div><label class="text-xs font-bold">Usage Duration</label><input type="text" x-model="newProduct.usageDuration" placeholder="e.g. 6 months" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
+          <div><label class="text-xs font-bold">Reason for Selling</label><input type="text" x-model="newProduct.reason" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
+          <div><label class="text-xs font-bold">Any Defects</label><input type="text" x-model="newProduct.defects" placeholder="e.g. Minor scratch" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
+          <div><label class="text-xs font-bold">Included Accessories</label><input type="text" x-model="newProduct.accessories" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input mt-1"></div>
         </div>
       </template>
-      <div class="md:col-span-2 flex gap-2"><button @click="addProduct()" class="amz-btn-cart px-5 py-1.5 text-sm font-bold">Save</button><button @click="showProductForm=false" class="border border-gray-400 rounded px-5 py-1.5 text-sm hover:bg-gray-100">Cancel</button></div>
+      <div class="md:col-span-2 flex gap-2"><button @click="addProduct()" class="druk-btn-cart px-5 py-1.5 text-sm font-bold">Save</button><button @click="showProductForm=false" class="border border-gray-400 rounded px-5 py-1.5 text-sm hover:bg-gray-100">Cancel</button></div>
     </div>
     <div class="bg-white rounded overflow-hidden">
       <table class="w-full text-sm">
@@ -1125,7 +1128,7 @@
               <td class="p-3" x-text="p.stock"></td>
               <td class="p-3" x-text="p.sold.toLocaleString()"></td>
               <td class="p-3"><span class="star-rating" x-text="'★'.repeat(Math.round(p.rating))"></span></td>
-              <td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-amz-green font-bold">Active</span></td>
+              <td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-green-100 text-druk-green font-bold">Active</span></td>
             </tr>
           </template>
         </tbody>
@@ -1139,25 +1142,25 @@
       <div class="bg-white p-10 rounded text-center">
         <h2 class="text-xl font-bold mb-2">Sign in to start selling</h2>
         <p class="text-gray-600 mb-4">Anyone can sell on DrukHub.bt — new or used items!</p>
-        <button @click="page='login'" class="amz-btn-cart px-8 py-2 font-bold text-sm">Sign In</button>
+        <button @click="page='login'" class="druk-btn-cart px-8 py-2 font-bold text-sm">Sign In</button>
       </div>
     </template>
     <template x-if="user">
       <div>
-        <div class="bg-amz-dark2 text-white p-5 rounded-t flex items-center justify-between">
+        <div class="bg-druk-dark2 text-white p-5 rounded-t flex items-center justify-between">
           <div>
             <h1 class="text-xl font-bold">Sell on DrukHub.bt</h1>
             <p class="text-sm text-gray-300 mt-1">List new or pre-owned items — open to all registered users</p>
           </div>
-          <span class="bg-amz-orange text-amz-dark text-xs font-bold px-3 py-1 rounded-full">Any User Can Sell</span>
+          <span class="bg-druk-orange text-druk-dark text-xs font-bold px-3 py-1 rounded-full">Any User Can Sell</span>
         </div>
         <div class="bg-white p-6 rounded-b">
           <div class="grid md:grid-cols-2 gap-4">
-            <div><label class="text-xs font-bold block mb-1">Product Title *</label><input type="text" x-model="newProduct.title" placeholder="e.g. Samsung Galaxy S24 Ultra" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Product Title *</label><input type="text" x-model="newProduct.title" placeholder="e.g. Samsung Galaxy S24 Ultra" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
             <div><label class="text-xs font-bold block mb-1">Category *</label><select x-model="newProduct.category" class="w-full border border-gray-400 rounded px-3 py-2 text-sm"><template x-for="cat in categories" :key="cat.name"><option :value="cat.name" x-text="cat.name"></option></template></select></div>
-            <div><label class="text-xs font-bold block mb-1">Selling Price (Nu.) *</label><input type="number" x-model="newProduct.price" placeholder="e.g. 5000" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-            <div><label class="text-xs font-bold block mb-1">Quantity</label><input type="number" x-model="newProduct.stock" placeholder="1" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-            <div><label class="text-xs font-bold block mb-1">Image URL</label><input type="text" x-model="newProduct.image" placeholder="Paste image link" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Selling Price (Nu.) *</label><input type="number" x-model="newProduct.price" placeholder="e.g. 5000" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Quantity</label><input type="number" x-model="newProduct.stock" placeholder="1" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+            <div><label class="text-xs font-bold block mb-1">Image URL</label><input type="text" x-model="newProduct.image" placeholder="Paste image link" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
 
             <!-- Condition Selector -->
             <div>
@@ -1171,25 +1174,25 @@
               </select>
             </div>
 
-            <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Description *</label><textarea x-model="newProduct.description" placeholder="Describe your item in detail — brand, model, features, what's included..." class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input h-20"></textarea></div>
+            <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Description *</label><textarea x-model="newProduct.description" placeholder="Describe your item in detail — brand, model, features, what's included..." class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input h-20"></textarea></div>
 
             <!-- Used Item Details (shown only when condition is not new) -->
             <template x-if="newProduct.condition !== 'new'">
               <div class="md:col-span-2 bg-amber-50 border border-amber-200 rounded p-4">
                 <h3 class="font-bold text-sm mb-3 flex items-center gap-2"><svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Pre-Owned Item Details</h3>
                 <div class="grid md:grid-cols-2 gap-3">
-                  <div><label class="text-xs font-bold block mb-1">How long have you used it?</label><input type="text" x-model="newProduct.usageDuration" placeholder="e.g. 6 months, 2 years" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
-                  <div><label class="text-xs font-bold block mb-1">Reason for selling</label><input type="text" x-model="newProduct.reason" placeholder="e.g. Upgrading, no longer needed" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
-                  <div><label class="text-xs font-bold block mb-1">Any defects or issues?</label><input type="text" x-model="newProduct.defects" placeholder="e.g. Minor scratch on back, None" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
-                  <div><label class="text-xs font-bold block mb-1">Included accessories</label><input type="text" x-model="newProduct.accessories" placeholder="e.g. Charger, box, earphones" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input"></div>
-                  <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Additional condition notes</label><textarea x-model="newProduct.conditionNote" placeholder="Anything else the buyer should know about the item's condition..." class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm amz-input h-14"></textarea></div>
+                  <div><label class="text-xs font-bold block mb-1">How long have you used it?</label><input type="text" x-model="newProduct.usageDuration" placeholder="e.g. 6 months, 2 years" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input"></div>
+                  <div><label class="text-xs font-bold block mb-1">Reason for selling</label><input type="text" x-model="newProduct.reason" placeholder="e.g. Upgrading, no longer needed" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input"></div>
+                  <div><label class="text-xs font-bold block mb-1">Any defects or issues?</label><input type="text" x-model="newProduct.defects" placeholder="e.g. Minor scratch on back, None" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input"></div>
+                  <div><label class="text-xs font-bold block mb-1">Included accessories</label><input type="text" x-model="newProduct.accessories" placeholder="e.g. Charger, box, earphones" class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input"></div>
+                  <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Additional condition notes</label><textarea x-model="newProduct.conditionNote" placeholder="Anything else the buyer should know about the item's condition..." class="w-full border border-gray-300 rounded px-3 py-1.5 text-sm druk-input h-14"></textarea></div>
                 </div>
               </div>
             </template>
           </div>
 
           <div class="flex gap-3 mt-5 pt-4 border-t">
-            <button @click="addProduct(); if(allProducts[0]?.id){page='product-detail'; selectedProduct=allProducts[0]; selectedImage=0;}" class="amz-btn-cart px-8 py-2 text-sm font-bold">List Item for Sale</button>
+            <button @click="addProduct(); if(allProducts[0]?.id){page='product-detail'; selectedProduct=allProducts[0]; selectedImage=0;}" class="druk-btn-cart px-8 py-2 text-sm font-bold">List Item for Sale</button>
             <button @click="page='home'" class="border border-gray-400 rounded px-6 py-2 text-sm hover:bg-gray-100">Cancel</button>
           </div>
         </div>
@@ -1211,7 +1214,7 @@
                     <span class="text-xs px-2 py-0.5 rounded-full font-bold" :class="p.condition==='new'?'bg-green-100 text-green-700':p.condition==='like_new'?'bg-blue-100 text-blue-700':p.condition==='good'?'bg-yellow-100 text-yellow-700':p.condition==='fair'?'bg-orange-100 text-orange-700':'bg-red-100 text-red-700'" x-text="p.conditionLabel||'New'"></span>
                   </div>
                 </div>
-                <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-amz-green font-bold">Active</span>
+                <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-druk-green font-bold">Active</span>
               </div>
             </template>
           </div>
@@ -1226,7 +1229,7 @@
     <div class="grid md:grid-cols-3 gap-4" style="height:550px">
       <div class="bg-white rounded overflow-y-auto border">
         <template x-for="conv in conversations" :key="conv.id">
-          <button @click="openConversation(conv)" class="w-full p-4 text-left border-b hover:bg-gray-50" :class="activeConv?.id===conv.id ? 'bg-[#f0f9ff] border-l-4 border-l-amz-blue' : ''">
+          <button @click="openConversation(conv)" class="w-full p-4 text-left border-b hover:bg-gray-50" :class="activeConv?.id===conv.id ? 'bg-[#f0f9ff] border-l-4 border-l-druk-blue' : ''">
             <p class="text-sm font-bold" x-text="conv.name"></p>
             <p class="text-xs text-gray-500 truncate mt-0.5" x-text="conv.lastMessage"></p>
           </button>
@@ -1240,7 +1243,7 @@
             <div class="flex-1 overflow-y-auto p-4 space-y-3">
               <template x-for="msg in activeConv.messages" :key="msg.id">
                 <div :class="msg.sent ? 'justify-end' : 'justify-start'" class="flex">
-                  <div :class="msg.sent ? 'bg-amz-dark2 text-white' : 'bg-gray-100'" class="max-w-[70%] px-4 py-2 rounded-lg">
+                  <div :class="msg.sent ? 'bg-druk-dark2 text-white' : 'bg-gray-100'" class="max-w-[70%] px-4 py-2 rounded-lg">
                     <p class="text-sm" x-text="msg.text"></p>
                     <p class="text-[10px] opacity-60 mt-1" x-text="msg.time"></p>
                   </div>
@@ -1248,8 +1251,8 @@
               </template>
             </div>
             <form @submit.prevent="sendMessage()" class="p-3 border-t flex gap-2">
-              <input type="text" x-model="newMessage" placeholder="Type a message..." class="flex-1 border border-gray-400 rounded px-3 py-1.5 text-sm amz-input">
-              <button type="submit" class="amz-btn-cart px-5 py-1.5 text-sm font-bold">Send</button>
+              <input type="text" x-model="newMessage" placeholder="Type a message..." class="flex-1 border border-gray-400 rounded px-3 py-1.5 text-sm druk-input">
+              <button type="submit" class="druk-btn-cart px-5 py-1.5 text-sm font-bold">Send</button>
             </form>
           </div>
         </template>
@@ -1266,10 +1269,10 @@
       <template x-for="(step, idx) in ['Address', 'Payment', 'Review']" :key="step">
         <div class="flex items-center">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" :class="checkoutStep > idx ? 'bg-amz-green text-white' : checkoutStep === idx+1 ? 'bg-amz-yellow text-amz-dark' : 'bg-gray-200 text-gray-500'" x-text="checkoutStep > idx ? '✓' : idx+1"></div>
-            <span class="text-sm font-bold" :class="checkoutStep >= idx+1 ? 'text-amz-dark' : 'text-gray-400'" x-text="step"></span>
+            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" :class="checkoutStep > idx ? 'bg-druk-green text-white' : checkoutStep === idx+1 ? 'bg-druk-yellow text-druk-dark' : 'bg-gray-200 text-gray-500'" x-text="checkoutStep > idx ? '✓' : idx+1"></div>
+            <span class="text-sm font-bold" :class="checkoutStep >= idx+1 ? 'text-druk-dark' : 'text-gray-400'" x-text="step"></span>
           </div>
-          <div x-show="idx < 2" class="w-16 h-0.5 mx-2" :class="checkoutStep > idx+1 ? 'bg-amz-green' : 'bg-gray-200'"></div>
+          <div x-show="idx < 2" class="w-16 h-0.5 mx-2" :class="checkoutStep > idx+1 ? 'bg-druk-green' : 'bg-gray-200'"></div>
         </div>
       </template>
     </div>
@@ -1282,7 +1285,7 @@
         <h4 class="text-sm font-bold mb-2">Saved Addresses</h4>
         <div class="grid md:grid-cols-2 gap-3 mb-3">
           <template x-for="(addr, i) in savedAddresses" :key="i">
-            <button @click="deliveryAddress={...addr}" class="text-left border rounded p-3 text-sm hover:border-amz-blue" :class="deliveryAddress.street===addr.street ? 'border-amz-blue bg-blue-50' : 'border-gray-300'">
+            <button @click="deliveryAddress={...addr}" class="text-left border rounded p-3 text-sm hover:border-druk-blue" :class="deliveryAddress.street===addr.street ? 'border-druk-blue bg-blue-50' : 'border-gray-300'">
               <p class="font-bold" x-text="addr.name"></p>
               <p x-text="addr.street + ', ' + addr.city"></p>
               <p x-text="addr.district + ' - ' + addr.zip"></p>
@@ -1293,9 +1296,9 @@
         <p class="text-sm font-bold">Or enter a new address:</p>
       </div>
       <div class="grid md:grid-cols-2 gap-3">
-        <div><label class="text-xs font-bold block mb-1">Full Name *</label><input type="text" x-model="deliveryAddress.name" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-        <div><label class="text-xs font-bold block mb-1">Phone Number *</label><input type="tel" x-model="deliveryAddress.phone" placeholder="+975" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-        <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Street Address *</label><input type="text" x-model="deliveryAddress.street" placeholder="House/Flat No., Street, Landmark" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Full Name *</label><input type="text" x-model="deliveryAddress.name" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Phone Number *</label><input type="tel" x-model="deliveryAddress.phone" placeholder="+975" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+        <div class="md:col-span-2"><label class="text-xs font-bold block mb-1">Street Address *</label><input type="text" x-model="deliveryAddress.street" placeholder="House/Flat No., Street, Landmark" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
         <div><label class="text-xs font-bold block mb-1">City/Town</label>
           <select x-model="deliveryAddress.city" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
             <option>Thimphu</option><option>Paro</option><option>Punakha</option><option>Wangdue Phodrang</option><option>Bumthang</option><option>Trongsa</option><option>Mongar</option><option>Trashigang</option><option>Samdrup Jongkhar</option><option>Phuentsholing</option><option>Gelephu</option><option>Haa</option>
@@ -1306,53 +1309,53 @@
             <option>Thimphu</option><option>Paro</option><option>Punakha</option><option>Wangdue Phodrang</option><option>Bumthang</option><option>Trongsa</option><option>Mongar</option><option>Trashigang</option><option>Samdrup Jongkhar</option><option>Chhukha</option><option>Sarpang</option><option>Haa</option><option>Dagana</option><option>Tsirang</option><option>Zhemgang</option><option>Pemagatshel</option><option>Lhuentse</option><option>Trashi Yangtse</option><option>Gasa</option><option>Samtse</option>
           </select>
         </div>
-        <div><label class="text-xs font-bold block mb-1">ZIP Code</label><input type="text" x-model="deliveryAddress.zip" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">ZIP Code</label><input type="text" x-model="deliveryAddress.zip" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
       </div>
-      <button @click="nextCheckoutStep()" class="amz-btn-cart px-8 py-2 text-sm font-bold mt-5">Continue to Payment</button>
+      <button @click="nextCheckoutStep()" class="druk-btn-cart px-8 py-2 text-sm font-bold mt-5">Continue to Payment</button>
     </div>
 
     <!-- Step 2: Payment -->
     <div x-show="checkoutStep===2" class="bg-white p-6 rounded">
       <h2 class="text-lg font-bold mb-4">Payment Method</h2>
       <div class="space-y-3">
-        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='cod' ? 'border-amz-blue bg-blue-50' : ''">
-          <input type="radio" value="cod" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='cod' ? 'border-druk-blue bg-blue-50' : ''">
+          <input type="radio" value="cod" x-model="paymentMethod" class="mt-1 accent-druk-dark">
           <div>
             <p class="font-bold text-sm">Cash on Delivery (COD)</p>
             <p class="text-xs text-gray-500">Pay when your order is delivered to your doorstep</p>
           </div>
         </label>
-        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='mbob' ? 'border-amz-blue bg-blue-50' : ''">
-          <input type="radio" value="mbob" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='mbob' ? 'border-druk-blue bg-blue-50' : ''">
+          <input type="radio" value="mbob" x-model="paymentMethod" class="mt-1 accent-druk-dark">
           <div>
             <p class="font-bold text-sm">mBoB (Mobile Banking of Bhutan)</p>
             <p class="text-xs text-gray-500">Pay using your Bank of Bhutan mobile banking app</p>
           </div>
         </label>
-        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='bnb' ? 'border-amz-blue bg-blue-50' : ''">
-          <input type="radio" value="bnb" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='bnb' ? 'border-druk-blue bg-blue-50' : ''">
+          <input type="radio" value="bnb" x-model="paymentMethod" class="mt-1 accent-druk-dark">
           <div>
             <p class="font-bold text-sm">BNB mPay</p>
             <p class="text-xs text-gray-500">Bhutan National Bank mobile payment</p>
           </div>
         </label>
-        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='card' ? 'border-amz-blue bg-blue-50' : ''">
-          <input type="radio" value="card" x-model="paymentMethod" class="mt-1 accent-amz-dark">
+        <label class="flex items-start gap-3 p-4 border rounded cursor-pointer hover:bg-gray-50" :class="paymentMethod==='card' ? 'border-druk-blue bg-blue-50' : ''">
+          <input type="radio" value="card" x-model="paymentMethod" class="mt-1 accent-druk-dark">
           <div>
             <p class="font-bold text-sm">Credit/Debit Card</p>
             <p class="text-xs text-gray-500">Visa, MasterCard, RuPay</p>
             <div x-show="paymentMethod==='card'" class="mt-3 grid grid-cols-2 gap-2" @click.stop>
-              <input type="text" placeholder="Card Number" maxlength="19" class="col-span-2 border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
-              <input type="text" placeholder="MM/YY" maxlength="5" class="border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
-              <input type="text" placeholder="CVV" maxlength="4" class="border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
-              <input type="text" placeholder="Name on Card" class="col-span-2 border border-gray-300 rounded px-3 py-1.5 text-sm amz-input">
+              <input type="text" placeholder="Card Number" maxlength="19" class="col-span-2 border border-gray-300 rounded px-3 py-1.5 text-sm druk-input">
+              <input type="text" placeholder="MM/YY" maxlength="5" class="border border-gray-300 rounded px-3 py-1.5 text-sm druk-input">
+              <input type="text" placeholder="CVV" maxlength="4" class="border border-gray-300 rounded px-3 py-1.5 text-sm druk-input">
+              <input type="text" placeholder="Name on Card" class="col-span-2 border border-gray-300 rounded px-3 py-1.5 text-sm druk-input">
             </div>
           </div>
         </label>
       </div>
       <div class="flex gap-3 mt-5">
         <button @click="checkoutStep=1" class="border border-gray-400 rounded px-6 py-2 text-sm hover:bg-gray-100">Back</button>
-        <button @click="nextCheckoutStep()" class="amz-btn-cart px-8 py-2 text-sm font-bold">Review Order</button>
+        <button @click="nextCheckoutStep()" class="druk-btn-cart px-8 py-2 text-sm font-bold">Review Order</button>
       </div>
     </div>
 
@@ -1362,17 +1365,17 @@
         <h2 class="text-lg font-bold mb-3">Review Your Order</h2>
         <div class="grid md:grid-cols-2 gap-4">
           <div class="border rounded p-4">
-            <h4 class="text-sm font-bold mb-2 text-amz-dark">Shipping Address</h4>
+            <h4 class="text-sm font-bold mb-2 text-druk-dark">Shipping Address</h4>
             <p class="text-sm" x-text="selectedAddress?.name"></p>
             <p class="text-sm" x-text="selectedAddress?.street"></p>
             <p class="text-sm" x-text="(selectedAddress?.city||'') + ', ' + (selectedAddress?.district||'')"></p>
             <p class="text-sm" x-text="selectedAddress?.phone"></p>
-            <button @click="checkoutStep=1" class="text-amz-link text-xs mt-2 hover:underline">Change</button>
+            <button @click="checkoutStep=1" class="text-druk-link text-xs mt-2 hover:underline">Change</button>
           </div>
           <div class="border rounded p-4">
-            <h4 class="text-sm font-bold mb-2 text-amz-dark">Payment Method</h4>
+            <h4 class="text-sm font-bold mb-2 text-druk-dark">Payment Method</h4>
             <p class="text-sm" x-text="paymentMethod==='cod'?'Cash on Delivery':paymentMethod==='mbob'?'mBoB Mobile Banking':paymentMethod==='bnb'?'BNB mPay':'Credit/Debit Card'"></p>
-            <button @click="checkoutStep=2" class="text-amz-link text-xs mt-2 hover:underline">Change</button>
+            <button @click="checkoutStep=2" class="text-druk-link text-xs mt-2 hover:underline">Change</button>
           </div>
         </div>
       </div>
@@ -1395,13 +1398,13 @@
           <div class="flex justify-between"><span>Items:</span><span x-text="'Nu. '+cartSubtotal().toLocaleString()"></span></div>
           <div class="flex justify-between"><span>Shipping:</span><span x-text="(promoApplied?.type==='freeship')?'FREE':'Nu. '+cartShipping().toLocaleString()"></span></div>
           <div class="flex justify-between"><span>Tax (10%):</span><span x-text="'Nu. '+cartTax().toLocaleString()"></span></div>
-          <div x-show="promoApplied && promoApplied.type!=='freeship'" class="flex justify-between text-amz-green"><span x-text="'Coupon ('+promoApplied?.code+')'"></span><span x-text="'-Nu. '+promoDiscount().toLocaleString()"></span></div>
+          <div x-show="promoApplied && promoApplied.type!=='freeship'" class="flex justify-between text-druk-green"><span x-text="'Coupon ('+promoApplied?.code+')'"></span><span x-text="'-Nu. '+promoDiscount().toLocaleString()"></span></div>
           <hr class="my-2">
-          <div class="flex justify-between text-lg font-bold text-amz-red"><span>Order Total:</span><span x-text="'Nu. '+cartTotalWithPromo().toLocaleString()"></span></div>
+          <div class="flex justify-between text-lg font-bold text-druk-red"><span>Order Total:</span><span x-text="'Nu. '+cartTotalWithPromo().toLocaleString()"></span></div>
         </div>
         <div class="flex gap-3 mt-4">
           <button @click="checkoutStep=2" class="border border-gray-400 rounded px-6 py-2 text-sm hover:bg-gray-100">Back</button>
-          <button @click="placeOrder()" class="amz-btn-buy px-8 py-2.5 text-sm font-bold">Place Order & Pay</button>
+          <button @click="placeOrder()" class="druk-btn-buy px-8 py-2.5 text-sm font-bold">Place Order & Pay</button>
         </div>
       </div>
     </div>
@@ -1414,7 +1417,7 @@
       <div class="bg-white p-8 rounded text-center">
         <svg class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
         <p class="text-gray-600">Your wishlist is empty.</p>
-        <a href="#" @click.prevent="page='products'" class="text-amz-link text-sm hover:underline mt-2 inline-block">Continue shopping</a>
+        <a href="#" @click.prevent="page='products'" class="text-druk-link text-sm hover:underline mt-2 inline-block">Continue shopping</a>
       </div>
     </template>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -1425,15 +1428,15 @@
               <img :src="product.image" class="max-h-full max-w-full object-contain">
             </a>
             <button @click="toggleWishlist(product)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-red-50">
-              <svg class="w-5 h-5 text-amz-red fill-current" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <svg class="w-5 h-5 text-druk-red fill-current" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             </button>
           </div>
           <div class="p-4">
-            <a href="#" @click.prevent="viewProduct(product)" class="text-sm line-clamp-2 hover:text-amz-red" x-text="product.title"></a>
+            <a href="#" @click.prevent="viewProduct(product)" class="text-sm line-clamp-2 hover:text-druk-red" x-text="product.title"></a>
             <div class="star-rating text-xs mt-1" x-text="'★'.repeat(Math.round(product.rating)) + ' ' + product.reviews"></div>
             <p class="text-lg font-bold mt-1"><span class="text-xs align-top">Nu.</span><span x-text="product.price.toLocaleString()"></span></p>
-            <div class="text-xs mt-1" :class="product.stock>0?'text-amz-green':'text-amz-red'" x-text="product.stock>0?'In Stock':'Out of Stock'"></div>
-            <button @click="addToCart(product)" class="amz-btn-cart w-full py-1.5 text-xs font-bold mt-3">Add to Cart</button>
+            <div class="text-xs mt-1" :class="product.stock>0?'text-druk-green':'text-druk-red'" x-text="product.stock>0?'In Stock':'Out of Stock'"></div>
+            <button @click="addToCart(product)" class="druk-btn-cart w-full py-1.5 text-xs font-bold mt-3">Add to Cart</button>
           </div>
         </div>
       </template>
@@ -1446,7 +1449,7 @@
     <template x-if="compareList.length < 2">
       <div class="bg-white p-8 rounded text-center">
         <p class="text-gray-600">Add at least 2 products to compare. Browse products and click "Compare" checkbox.</p>
-        <a href="#" @click.prevent="page='products'" class="text-amz-link text-sm hover:underline mt-2 inline-block">Browse products</a>
+        <a href="#" @click.prevent="page='products'" class="text-druk-link text-sm hover:underline mt-2 inline-block">Browse products</a>
       </div>
     </template>
     <template x-if="compareList.length >= 2">
@@ -1459,7 +1462,7 @@
                 <td class="p-4 text-center min-w-[200px]">
                   <a href="#" @click.prevent="viewProduct(p)"><img :src="p.image" class="w-24 h-24 object-contain mx-auto mb-2"></a>
                   <p class="text-xs line-clamp-2 font-medium" x-text="p.title"></p>
-                  <button @click="toggleCompare(p)" class="text-amz-red text-xs mt-1 hover:underline">Remove</button>
+                  <button @click="toggleCompare(p)" class="text-druk-red text-xs mt-1 hover:underline">Remove</button>
                 </td>
               </template>
             </tr>
@@ -1478,7 +1481,7 @@
               <template x-for="p in compareList" :key="'cat-'+p.id"><td class="p-3 text-center" x-text="p.category"></td></template>
             </tr>
             <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Stock</td>
-              <template x-for="p in compareList" :key="'stock-'+p.id"><td class="p-3 text-center" :class="p.stock>0?'text-amz-green':'text-amz-red'" x-text="p.stock>0?p.stock+' available':'Out of Stock'"></td></template>
+              <template x-for="p in compareList" :key="'stock-'+p.id"><td class="p-3 text-center" :class="p.stock>0?'text-druk-green':'text-druk-red'" x-text="p.stock>0?p.stock+' available':'Out of Stock'"></td></template>
             </tr>
             <tr class="border-b"><td class="p-3 font-bold bg-gray-50">Shipping</td>
               <template x-for="p in compareList" :key="'ship-'+p.id"><td class="p-3 text-center" x-text="p.freeShipping?'FREE':'Nu. 500'"></td></template>
@@ -1487,7 +1490,7 @@
               <template x-for="p in compareList" :key="'sold-'+p.id"><td class="p-3 text-center" x-text="p.sold.toLocaleString()+'+'"></td></template>
             </tr>
             <tr><td class="p-3 font-bold bg-gray-50">Action</td>
-              <template x-for="p in compareList" :key="'act-'+p.id"><td class="p-3 text-center"><button @click="addToCart(p)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Add to Cart</button></td></template>
+              <template x-for="p in compareList" :key="'act-'+p.id"><td class="p-3 text-center"><button @click="addToCart(p)" class="druk-btn-cart px-4 py-1.5 text-xs font-bold">Add to Cart</button></td></template>
             </tr>
           </tbody>
         </table>
@@ -1500,19 +1503,19 @@
     <h1 class="text-2xl font-bold mb-4">Your Account</h1>
     <div class="flex gap-4 mb-6">
       <template x-for="tab in ['info','addresses','security']" :key="tab">
-        <button @click="profileTab=tab" class="px-4 py-2 rounded-lg text-sm font-bold" :class="profileTab===tab ? 'bg-amz-dark2 text-white' : 'bg-gray-100 hover:bg-gray-200'" x-text="tab==='info'?'Personal Info':tab==='addresses'?'Addresses':'Security'"></button>
+        <button @click="profileTab=tab" class="px-4 py-2 rounded-lg text-sm font-bold" :class="profileTab===tab ? 'bg-druk-dark2 text-white' : 'bg-gray-100 hover:bg-gray-200'" x-text="tab==='info'?'Personal Info':tab==='addresses'?'Addresses':'Security'"></button>
       </template>
     </div>
     <!-- Personal Info -->
     <div x-show="profileTab==='info'" class="bg-white p-6 rounded">
       <h2 class="text-lg font-bold mb-4">Personal Information</h2>
       <div class="grid md:grid-cols-2 gap-4">
-        <div><label class="text-xs font-bold block mb-1">Full Name</label><input type="text" x-model="editProfile.name" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-        <div><label class="text-xs font-bold block mb-1">Email</label><input type="email" x-model="editProfile.email" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-        <div><label class="text-xs font-bold block mb-1">Phone</label><input type="tel" x-model="editProfile.phone" placeholder="+975" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Full Name</label><input type="text" x-model="editProfile.name" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Email</label><input type="email" x-model="editProfile.email" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Phone</label><input type="tel" x-model="editProfile.phone" placeholder="+975" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
         <div><label class="text-xs font-bold block mb-1">Role</label><input type="text" :value="user?.role" disabled class="w-full border border-gray-200 rounded px-3 py-2 text-sm bg-gray-50"></div>
       </div>
-      <button @click="saveProfile()" class="amz-btn-cart px-6 py-2 text-sm font-bold mt-4">Save Changes</button>
+      <button @click="saveProfile()" class="druk-btn-cart px-6 py-2 text-sm font-bold mt-4">Save Changes</button>
     </div>
     <!-- Addresses -->
     <div x-show="profileTab==='addresses'" class="bg-white p-6 rounded">
@@ -1525,7 +1528,7 @@
             <p class="text-sm" x-text="addr.street"></p>
             <p class="text-sm" x-text="addr.city + ', ' + addr.district + ' ' + addr.zip"></p>
             <p class="text-sm" x-text="addr.phone"></p>
-            <button @click="savedAddresses.splice(i,1); showToast('Address removed')" class="text-amz-red text-xs mt-2 hover:underline">Remove</button>
+            <button @click="savedAddresses.splice(i,1); showToast('Address removed')" class="text-druk-red text-xs mt-2 hover:underline">Remove</button>
           </div>
         </template>
       </div>
@@ -1536,7 +1539,7 @@
       <div class="space-y-4">
         <div class="flex justify-between items-center border-b pb-3"><div><p class="text-sm font-bold">Password</p><p class="text-xs text-gray-500">Last changed: Never</p></div><button class="border border-gray-400 rounded px-4 py-1.5 text-sm hover:bg-gray-100">Change</button></div>
         <div class="flex justify-between items-center border-b pb-3"><div><p class="text-sm font-bold">Two-Step Verification</p><p class="text-xs text-gray-500">Add an extra layer of security</p></div><button class="border border-gray-400 rounded px-4 py-1.5 text-sm hover:bg-gray-100">Enable</button></div>
-        <div class="flex justify-between items-center"><div><p class="text-sm font-bold text-amz-red">Delete Account</p><p class="text-xs text-gray-500">Permanently delete your account and data</p></div><button class="border border-red-300 text-amz-red rounded px-4 py-1.5 text-sm hover:bg-red-50">Delete</button></div>
+        <div class="flex justify-between items-center"><div><p class="text-sm font-bold text-druk-red">Delete Account</p><p class="text-xs text-gray-500">Permanently delete your account and data</p></div><button class="border border-red-300 text-druk-red rounded px-4 py-1.5 text-sm hover:bg-red-50">Delete</button></div>
       </div>
     </div>
   </div>
@@ -1561,7 +1564,7 @@
     <!-- Delivery Location -->
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2">
-        <svg class="w-5 h-5 text-amz-red" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <svg class="w-5 h-5 text-druk-red" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
         <span class="text-sm"><span class="font-bold">Delivering to:</span> <span x-text="deliveryAddress.city || 'Thimphu'"></span>, Bhutan</span>
       </div>
       <div class="flex gap-2 text-xs">
@@ -1680,7 +1683,7 @@
         </div>
 
         <!-- Menu Category Tabs -->
-        <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4 sticky top-[99px] z-30 bg-[#e3e6e6] py-2">
+        <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4 sticky top-[99px] z-30 bg-[#F5F0E8] py-2">
           <template x-for="cat in selectedRestaurant.menuCategories" :key="cat">
             <button @click="foodMenuCat=cat" class="shrink-0 px-4 py-2 rounded-full text-sm font-bold transition" :class="foodMenuCat===cat ? 'bg-red-500 text-white' : 'bg-white hover:bg-gray-100'" x-text="cat"></button>
           </template>
@@ -1729,7 +1732,7 @@
 
   <!-- FOOD CART PAGE -->
   <div x-show="page === 'food-cart'" class="max-w-[700px] mx-auto px-4 py-4">
-    <button @click="page=selectedRestaurant?'restaurant':'food'" class="text-amz-link text-sm hover:underline mb-3 inline-flex items-center gap-1">
+    <button @click="page=selectedRestaurant?'restaurant':'food'" class="text-druk-link text-sm hover:underline mb-3 inline-flex items-center gap-1">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Back to menu
     </button>
     <template x-if="foodCart.length === 0">
@@ -1770,7 +1773,7 @@
           </template>
           <!-- Special Instructions -->
           <div class="mt-4 pt-3 border-t">
-            <textarea x-model="foodNote" placeholder="Add cooking instructions, allergies, etc. (optional)" class="w-full border rounded-lg px-3 py-2 text-sm h-16 amz-input"></textarea>
+            <textarea x-model="foodNote" placeholder="Add cooking instructions, allergies, etc. (optional)" class="w-full border rounded-lg px-3 py-2 text-sm h-16 druk-input"></textarea>
           </div>
         </div>
 
@@ -1791,9 +1794,9 @@
         <div class="bg-white rounded-xl p-5">
           <h3 class="font-bold text-sm mb-3">Delivery Address</h3>
           <div class="grid md:grid-cols-2 gap-3">
-            <input type="text" x-model="deliveryAddress.name" placeholder="Full Name" class="border rounded-lg px-3 py-2 text-sm amz-input">
-            <input type="tel" x-model="deliveryAddress.phone" placeholder="Phone (+975)" class="border rounded-lg px-3 py-2 text-sm amz-input">
-            <input type="text" x-model="deliveryAddress.street" placeholder="Full Address, Landmark" class="border rounded-lg px-3 py-2 text-sm amz-input md:col-span-2">
+            <input type="text" x-model="deliveryAddress.name" placeholder="Full Name" class="border rounded-lg px-3 py-2 text-sm druk-input">
+            <input type="tel" x-model="deliveryAddress.phone" placeholder="Phone (+975)" class="border rounded-lg px-3 py-2 text-sm druk-input">
+            <input type="text" x-model="deliveryAddress.street" placeholder="Full Address, Landmark" class="border rounded-lg px-3 py-2 text-sm druk-input md:col-span-2">
           </div>
         </div>
 
@@ -1932,14 +1935,14 @@
             <a href="#" @click.prevent="viewHardware(hw)" class="h-[200px] flex items-center justify-center p-4 bg-gray-50">
               <img :src="hw.image" :alt="hw.name" class="max-h-full max-w-full object-contain hover:scale-105 transition">
             </a>
-            <span x-show="hw.discount" class="absolute top-2 left-2 bg-amz-red text-white text-xs font-bold px-2 py-0.5 rounded" x-text="'-'+hw.discount+'%'"></span>
+            <span x-show="hw.discount" class="absolute top-2 left-2 bg-druk-red text-white text-xs font-bold px-2 py-0.5 rounded" x-text="'-'+hw.discount+'%'"></span>
             <button @click="toggleWishlist(hw)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-white shadow flex items-center justify-center hover:bg-gray-100">
-              <svg class="w-4 h-4" :class="isInWishlist(hw.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <svg class="w-4 h-4" :class="isInWishlist(hw.id)?'text-druk-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             </button>
           </div>
           <div class="p-4">
             <p class="text-xs text-gray-500 font-bold" x-text="hw.brand"></p>
-            <a href="#" @click.prevent="viewHardware(hw)" class="text-sm line-clamp-2 hover:text-amz-red font-medium mt-0.5" x-text="hw.name"></a>
+            <a href="#" @click.prevent="viewHardware(hw)" class="text-sm line-clamp-2 hover:text-druk-red font-medium mt-0.5" x-text="hw.name"></a>
             <div class="flex items-center gap-1 mt-1">
               <span class="text-xs font-bold px-1.5 py-0.5 rounded" :class="hw.rating>=4.5?'bg-green-600 text-white':hw.rating>=4?'bg-green-500 text-white':'bg-yellow-500 text-white'" x-text="hw.rating + ' ★'"></span>
               <span class="text-xs text-gray-500" x-text="'(' + hw.reviews + ')'"></span>
@@ -1955,11 +1958,11 @@
               </template>
             </div>
             <div class="flex items-center gap-2 mt-2 text-xs">
-              <span x-show="hw.inStock" class="text-amz-green font-bold">In Stock</span>
-              <span x-show="!hw.inStock" class="text-amz-red font-bold">Out of Stock</span>
+              <span x-show="hw.inStock" class="text-druk-green font-bold">In Stock</span>
+              <span x-show="!hw.inStock" class="text-druk-red font-bold">Out of Stock</span>
               <span x-show="hw.freeShipping" class="text-gray-500">FREE Delivery</span>
             </div>
-            <button x-show="hw.inStock" @click="addToCart(hw)" class="amz-btn-cart w-full py-1.5 text-xs font-bold mt-3">Add to Cart</button>
+            <button x-show="hw.inStock" @click="addToCart(hw)" class="druk-btn-cart w-full py-1.5 text-xs font-bold mt-3">Add to Cart</button>
           </div>
         </div>
       </template>
@@ -1971,7 +1974,7 @@
   <div x-show="page === 'hw-detail'" class="max-w-[1200px] mx-auto px-4 py-4">
     <template x-if="selectedHW">
       <div>
-        <button @click="page='hardware'" class="text-amz-link text-sm hover:underline mb-3 inline-flex items-center gap-1">
+        <button @click="page='hardware'" class="text-druk-link text-sm hover:underline mb-3 inline-flex items-center gap-1">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg> Back to Hardware
         </button>
         <div class="bg-white rounded-lg p-6">
@@ -1992,7 +1995,7 @@
               </div>
               <hr class="my-3">
               <div>
-                <span x-show="selectedHW.discount" class="text-amz-red text-2xl font-light" x-text="'-'+selectedHW.discount+'%'"></span>
+                <span x-show="selectedHW.discount" class="text-druk-red text-2xl font-light" x-text="'-'+selectedHW.discount+'%'"></span>
                 <span class="text-[28px] ml-2"><span class="text-[13px] align-top">Nu.</span><span x-text="selectedHW.price.toLocaleString()"></span></span>
               </div>
               <div x-show="selectedHW.originalPrice" class="text-sm text-gray-500 mt-1">M.R.P.: <span class="line-through" x-text="'Nu. '+(selectedHW.originalPrice||0).toLocaleString()"></span></div>
@@ -2028,21 +2031,21 @@
               <div class="border rounded-lg p-4">
                 <div class="text-[28px] mb-1"><span class="text-[13px] align-top">Nu.</span><span x-text="selectedHW.price.toLocaleString()"></span></div>
                 <div class="text-xs text-gray-600" x-text="selectedHW.freeShipping ? 'FREE delivery within Bhutan' : 'Delivery: Nu. 500'"></div>
-                <div class="text-xs text-amz-green mt-1" x-text="'Estimated: ' + getEstDelivery()"></div>
-                <div class="text-sm mt-3" :class="selectedHW.inStock ? 'text-amz-green text-lg font-bold' : 'text-amz-red'" x-text="selectedHW.inStock ? 'In Stock' : 'Out of Stock'"></div>
+                <div class="text-xs text-druk-green mt-1" x-text="'Estimated: ' + getEstDelivery()"></div>
+                <div class="text-sm mt-3" :class="selectedHW.inStock ? 'text-druk-green text-lg font-bold' : 'text-druk-red'" x-text="selectedHW.inStock ? 'In Stock' : 'Out of Stock'"></div>
                 <div x-show="selectedHW.warranty" class="text-xs text-gray-600 mt-1 flex items-center gap-1">
                   <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                   <span x-text="selectedHW.warranty"></span>
                 </div>
-                <button x-show="selectedHW.inStock" @click="addToCart(selectedHW)" class="amz-btn-cart w-full py-2 text-sm font-bold mt-3">Add to Cart</button>
-                <button x-show="selectedHW.inStock" @click="addToCart(selectedHW); checkout()" class="amz-btn-buy w-full py-2 text-sm font-bold mt-2">Buy Now</button>
+                <button x-show="selectedHW.inStock" @click="addToCart(selectedHW)" class="druk-btn-cart w-full py-2 text-sm font-bold mt-3">Add to Cart</button>
+                <button x-show="selectedHW.inStock" @click="addToCart(selectedHW); checkout()" class="druk-btn-buy w-full py-2 text-sm font-bold mt-2">Buy Now</button>
                 <button @click="toggleWishlist(selectedHW)" class="border border-gray-300 rounded-full w-full py-1.5 text-xs font-bold mt-2 hover:bg-gray-50 flex items-center justify-center gap-1">
-                  <svg class="w-4 h-4" :class="isInWishlist(selectedHW.id)?'text-amz-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                  <svg class="w-4 h-4" :class="isInWishlist(selectedHW.id)?'text-druk-red fill-current':'text-gray-400'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                   <span x-text="isInWishlist(selectedHW.id)?'Wishlisted':'Add to Wishlist'"></span>
                 </button>
                 <div class="text-xs text-gray-500 mt-3 space-y-1">
                   <div class="flex justify-between"><span>Ships from</span><span>DrukHub.bt</span></div>
-                  <div class="flex justify-between"><span>Sold by</span><span class="text-amz-link" x-text="selectedHW.seller"></span></div>
+                  <div class="flex justify-between"><span>Sold by</span><span class="text-druk-link" x-text="selectedHW.seller"></span></div>
                   <div x-show="selectedHW.warranty" class="flex justify-between"><span>Warranty</span><span x-text="selectedHW.warranty"></span></div>
                 </div>
               </div>
@@ -2060,7 +2063,7 @@
         <h1 class="text-2xl font-bold flex items-center gap-2">🏗️ Project Builder</h1>
         <p class="text-sm text-gray-500 mt-1">Select materials for your construction project — estimate costs instantly</p>
       </div>
-      <button @click="page='hardware'" class="text-amz-link text-sm hover:underline">Browse Hardware</button>
+      <button @click="page='hardware'" class="text-druk-link text-sm hover:underline">Browse Hardware</button>
     </div>
 
     <!-- Builder Components -->
@@ -2091,7 +2094,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                   <span class="font-bold text-sm" x-text="'Nu. ' + (hardwareProducts.find(p=>p.id===pcBuild[slot.key])?.price||0).toLocaleString()"></span>
-                  <button @click="removePCPart(slot.key)" class="text-amz-red text-xs hover:underline">Remove</button>
+                  <button @click="removePCPart(slot.key)" class="text-druk-red text-xs hover:underline">Remove</button>
                 </div>
               </div>
             </template>
@@ -2171,15 +2174,15 @@
     <div class="grid md:grid-cols-3 gap-4 mb-6">
       <div class="bg-white rounded-lg p-5 text-center border-2" :class="loyaltyPoints >= 100 ? 'border-green-400' : 'border-gray-200'">
         <p class="text-3xl mb-2">🎫</p><h3 class="font-bold">Nu. 10 Off</h3><p class="text-xs text-gray-500 mb-3">100 points</p>
-        <button @click="redeemPoints(100, 10)" :disabled="loyaltyPoints < 100" class="amz-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
+        <button @click="redeemPoints(100, 10)" :disabled="loyaltyPoints < 100" class="druk-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
       </div>
       <div class="bg-white rounded-lg p-5 text-center border-2" :class="loyaltyPoints >= 250 ? 'border-green-400' : 'border-gray-200'">
         <p class="text-3xl mb-2">🎁</p><h3 class="font-bold">Nu. 30 Off</h3><p class="text-xs text-gray-500 mb-3">250 points</p>
-        <button @click="redeemPoints(250, 30)" :disabled="loyaltyPoints < 250" class="amz-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
+        <button @click="redeemPoints(250, 30)" :disabled="loyaltyPoints < 250" class="druk-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
       </div>
       <div class="bg-white rounded-lg p-5 text-center border-2" :class="loyaltyPoints >= 500 ? 'border-green-400' : 'border-gray-200'">
         <p class="text-3xl mb-2">💎</p><h3 class="font-bold">Nu. 75 Off</h3><p class="text-xs text-gray-500 mb-3">500 points</p>
-        <button @click="redeemPoints(500, 75)" :disabled="loyaltyPoints < 500" class="amz-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
+        <button @click="redeemPoints(500, 75)" :disabled="loyaltyPoints < 500" class="druk-btn-cart px-4 py-1.5 text-xs font-bold disabled:opacity-40">Redeem</button>
       </div>
     </div>
 
@@ -2247,7 +2250,7 @@
       <h2 class="font-bold mb-3">Your Referral Code</h2>
       <div class="flex gap-2">
         <div class="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono font-bold text-lg tracking-widest text-center" x-text="referralCode"></div>
-        <button @click="navigator.clipboard?.writeText(referralCode); showToast('Referral code copied!')" class="amz-btn-cart px-6 font-bold text-sm">Copy</button>
+        <button @click="navigator.clipboard?.writeText(referralCode); showToast('Referral code copied!')" class="druk-btn-cart px-6 font-bold text-sm">Copy</button>
       </div>
       <div class="flex gap-2 mt-3">
         <button @click="window.open('https://wa.me/?text=Join%20DrukHub%20with%20my%20code:%20' + referralCode + '%20and%20get%20Nu.50%20off!')" class="flex-1 bg-green-500 text-white py-2 rounded text-sm font-bold">Share on WhatsApp</button>
@@ -2262,8 +2265,8 @@
         <div class="flex items-center gap-4"><div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center font-bold text-purple-700">3</div><div><p class="font-bold text-sm">You earn rewards</p><p class="text-xs text-gray-500">Get 50 loyalty points + Nu. 50 coupon per referral</p></div></div>
       </div>
       <div class="mt-4 pt-4 border-t">
-        <p class="text-sm"><span class="font-bold">Total Referrals:</span> <span x-text="referralCount" class="text-amz-green font-bold"></span></p>
-        <p class="text-sm"><span class="font-bold">Total Earned:</span> <span x-text="'Nu. ' + (referralCount * 50)" class="text-amz-green font-bold"></span></p>
+        <p class="text-sm"><span class="font-bold">Total Referrals:</span> <span x-text="referralCount" class="text-druk-green font-bold"></span></p>
+        <p class="text-sm"><span class="font-bold">Total Earned:</span> <span x-text="'Nu. ' + (referralCount * 50)" class="text-druk-green font-bold"></span></p>
       </div>
     </div>
   </div>
@@ -2273,17 +2276,17 @@
     <h1 class="text-2xl font-bold mb-4 flex items-center gap-2">💳 Buy Now, Pay Later (EMI)</h1>
     <div class="bg-white rounded-lg p-6 mb-4">
       <div class="grid md:grid-cols-2 gap-4">
-        <div><label class="text-xs font-bold block mb-1">Product Price (Nu.)</label><input type="number" x-model="emiPrice" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input" placeholder="Enter amount"></div>
-        <div><label class="text-xs font-bold block mb-1">Down Payment (Nu.)</label><input type="number" x-model="emiDown" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input" placeholder="0"></div>
+        <div><label class="text-xs font-bold block mb-1">Product Price (Nu.)</label><input type="number" x-model="emiPrice" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input" placeholder="Enter amount"></div>
+        <div><label class="text-xs font-bold block mb-1">Down Payment (Nu.)</label><input type="number" x-model="emiDown" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input" placeholder="0"></div>
         <div>
           <label class="text-xs font-bold block mb-1">Tenure</label>
           <select x-model="emiTenure" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
             <option value="3">3 Months</option><option value="6">6 Months</option><option value="9">9 Months</option><option value="12">12 Months</option>
           </select>
         </div>
-        <div><label class="text-xs font-bold block mb-1">Interest Rate (%)</label><input type="number" x-model="emiRate" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input" placeholder="12"></div>
+        <div><label class="text-xs font-bold block mb-1">Interest Rate (%)</label><input type="number" x-model="emiRate" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input" placeholder="12"></div>
       </div>
-      <button @click="calculateEMI()" class="amz-btn-cart px-8 py-2 text-sm font-bold mt-4">Calculate EMI</button>
+      <button @click="calculateEMI()" class="druk-btn-cart px-8 py-2 text-sm font-bold mt-4">Calculate EMI</button>
     </div>
     <template x-if="emiResult">
       <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-lg p-6">
@@ -2305,13 +2308,13 @@
 
   <!-- SELLER STORE PAGE -->
   <div x-show="page === 'store'" class="max-w-[1100px] mx-auto px-4 py-4">
-    <div class="bg-gradient-to-r from-amz-dark to-amz-dark2 text-white rounded-lg p-6 mb-6">
+    <div class="bg-gradient-to-r from-druk-dark to-druk-dark2 text-white rounded-lg p-6 mb-6">
       <div class="flex items-center gap-4">
-        <div class="w-20 h-20 bg-amz-orange rounded-full flex items-center justify-center text-3xl font-bold text-amz-dark" x-text="(viewingStore?.name || 'S')[0].toUpperCase()"></div>
+        <div class="w-20 h-20 bg-druk-orange rounded-full flex items-center justify-center text-3xl font-bold text-druk-dark" x-text="(viewingStore?.name || 'S')[0].toUpperCase()"></div>
         <div>
           <h1 class="text-2xl font-bold" x-text="viewingStore?.name || 'Store'"></h1>
           <div class="flex items-center gap-3 mt-1">
-            <span class="text-amz-star text-sm" x-text="'★'.repeat(Math.round(viewingStore?.rating || 4))"></span>
+            <span class="text-druk-star text-sm" x-text="'★'.repeat(Math.round(viewingStore?.rating || 4))"></span>
             <span class="text-xs opacity-80" x-text="(viewingStore?.rating || 4) + ' rating'"></span>
             <span class="text-xs bg-green-500 px-2 py-0.5 rounded-full">Verified Seller</span>
           </div>
@@ -2325,7 +2328,7 @@
         <a href="#" @click.prevent="viewProduct(product)" class="bg-white rounded-lg overflow-hidden product-card">
           <div class="h-[180px] flex items-center justify-center p-3 bg-gray-50"><img :src="product.image" class="max-h-full max-w-full object-contain"></div>
           <div class="p-3">
-            <p class="text-xs line-clamp-2 hover:text-amz-red" x-text="product.title"></p>
+            <p class="text-xs line-clamp-2 hover:text-druk-red" x-text="product.title"></p>
             <div class="star-rating text-xs mt-1" x-text="'★'.repeat(Math.round(product.rating)) + ' (' + product.reviews + ')'"></div>
             <p class="font-bold text-sm mt-1" x-text="'Nu. ' + product.price.toLocaleString()"></p>
           </div>
@@ -2345,7 +2348,7 @@
           <span class="text-4xl block mb-3" x-text="svc.icon"></span>
           <h3 class="font-bold text-sm" x-text="svc.name"></h3>
           <p class="text-xs text-gray-500 mt-1" x-text="svc.providers + ' providers'"></p>
-          <p class="text-xs text-amz-green font-bold mt-1" x-text="'Starting Nu. ' + svc.startPrice"></p>
+          <p class="text-xs text-druk-green font-bold mt-1" x-text="'Starting Nu. ' + svc.startPrice"></p>
         </div>
       </template>
     </div>
@@ -2353,7 +2356,7 @@
 
   <!-- SERVICE DETAIL PAGE -->
   <div x-show="page === 'service-detail'" class="max-w-[900px] mx-auto px-4 py-4">
-    <button @click="page='services'" class="text-amz-link text-sm hover:underline mb-4 block">← Back to Services</button>
+    <button @click="page='services'" class="text-druk-link text-sm hover:underline mb-4 block">← Back to Services</button>
     <h1 class="text-2xl font-bold mb-4 flex items-center gap-2"><span x-text="selectedService?.icon"></span> <span x-text="selectedService?.name"></span></h1>
     <div class="space-y-3">
       <template x-for="p in (selectedService?.providerList || [])" :key="p.name">
@@ -2362,7 +2365,7 @@
           <div class="flex-1">
             <h3 class="font-bold" x-text="p.name"></h3>
             <div class="flex items-center gap-2 mt-0.5">
-              <span class="text-amz-star text-xs" x-text="'★'.repeat(Math.round(p.rating))"></span>
+              <span class="text-druk-star text-xs" x-text="'★'.repeat(Math.round(p.rating))"></span>
               <span class="text-xs text-gray-500" x-text="p.rating + ' (' + p.jobs + ' jobs done)'"></span>
             </div>
             <p class="text-xs text-gray-500 mt-1" x-text="p.area"></p>
@@ -2370,7 +2373,7 @@
           <div class="text-right">
             <p class="font-bold" x-text="'Nu. ' + p.price"></p>
             <p class="text-xs text-gray-500">per job</p>
-            <button @click="showToast('Booking request sent to ' + p.name + '!')" class="amz-btn-cart px-4 py-1 text-xs font-bold mt-2">Book Now</button>
+            <button @click="showToast('Booking request sent to ' + p.name + '!')" class="druk-btn-cart px-4 py-1 text-xs font-bold mt-2">Book Now</button>
           </div>
         </div>
       </template>
@@ -2383,7 +2386,7 @@
     <p class="text-gray-500 text-sm mb-6">Quick recharge and bill payments</p>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       <template x-for="bill in billTypes" :key="bill.name">
-        <button @click="selectedBill=bill.name" class="bg-white rounded-lg p-5 text-center hover:shadow-lg transition border-2" :class="selectedBill===bill.name ? 'border-amz-blue' : 'border-transparent'">
+        <button @click="selectedBill=bill.name" class="bg-white rounded-lg p-5 text-center hover:shadow-lg transition border-2" :class="selectedBill===bill.name ? 'border-druk-blue' : 'border-transparent'">
           <span class="text-3xl block mb-2" x-text="bill.icon"></span>
           <p class="text-xs font-bold" x-text="bill.name"></p>
         </button>
@@ -2392,15 +2395,15 @@
     <div class="bg-white rounded-lg p-6" x-show="selectedBill">
       <h2 class="font-bold mb-4" x-text="selectedBill + ' Payment'"></h2>
       <div class="space-y-3">
-        <div><label class="text-xs font-bold block mb-1">Account / Phone Number</label><input type="text" x-model="billAccount" placeholder="Enter number" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
-        <div><label class="text-xs font-bold block mb-1">Amount (Nu.)</label><input type="number" x-model="billAmount" placeholder="Enter amount" class="w-full border border-gray-400 rounded px-3 py-2 text-sm amz-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Account / Phone Number</label><input type="text" x-model="billAccount" placeholder="Enter number" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
+        <div><label class="text-xs font-bold block mb-1">Amount (Nu.)</label><input type="number" x-model="billAmount" placeholder="Enter amount" class="w-full border border-gray-400 rounded px-3 py-2 text-sm druk-input"></div>
         <div>
           <label class="text-xs font-bold block mb-1">Payment Method</label>
           <select x-model="billPayMethod" class="w-full border border-gray-400 rounded px-3 py-2 text-sm">
             <option value="mBoB">mBoB (Mobile Banking)</option><option value="bnb">BNB mPay</option><option value="card">Debit/Credit Card</option>
           </select>
         </div>
-        <button @click="payBill()" class="amz-btn-cart px-8 py-2 text-sm font-bold w-full">Pay Now</button>
+        <button @click="payBill()" class="druk-btn-cart px-8 py-2 text-sm font-bold w-full">Pay Now</button>
       </div>
     </div>
   </div>
@@ -2502,7 +2505,7 @@
             <div class="flex-1">
               <p class="font-bold" x-text="activeTaxiRide.driver.name"></p>
               <div class="flex items-center gap-2 text-sm">
-                <span class="text-amz-star">★ <span x-text="activeTaxiRide.driver.rating"></span></span>
+                <span class="text-druk-star">★ <span x-text="activeTaxiRide.driver.rating"></span></span>
                 <span class="text-gray-400">•</span>
                 <span class="text-gray-500" x-text="activeTaxiRide.driver.trips + ' trips'"></span>
               </div>
@@ -2653,7 +2656,7 @@
     <!-- Pharmacy Tab -->
     <div x-show="healthTab==='pharmacy'">
       <div class="flex gap-2 mb-4">
-        <input type="text" x-model="pharmaSearch" placeholder="Search medicines, vitamins, first-aid..." class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input">
+        <input type="text" x-model="pharmaSearch" placeholder="Search medicines, vitamins, first-aid..." class="flex-1 border rounded-lg px-4 py-2 text-sm druk-input">
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <template x-for="med in filteredMedicines()" :key="med.id">
@@ -2680,7 +2683,7 @@
               <h3 class="font-bold" x-text="doc.name"></h3>
               <p class="text-xs text-blue-600 font-medium" x-text="doc.specialty"></p>
               <div class="flex items-center gap-2 mt-1">
-                <span class="text-amz-star text-xs" x-text="'★'.repeat(Math.round(doc.rating))"></span>
+                <span class="text-druk-star text-xs" x-text="'★'.repeat(Math.round(doc.rating))"></span>
                 <span class="text-xs text-gray-500" x-text="doc.experience + ' yrs exp'"></span>
               </div>
               <p class="text-xs text-gray-500" x-text="doc.hospital"></p>
@@ -2688,7 +2691,7 @@
             <div class="text-right">
               <p class="font-bold" x-text="'Nu. ' + doc.fee"></p>
               <p class="text-xs text-gray-500">consultation</p>
-              <button @click="showToast('Appointment booked with ' + doc.name + '!')" class="amz-btn-cart px-4 py-1 text-xs font-bold mt-2">Book Now</button>
+              <button @click="showToast('Appointment booked with ' + doc.name + '!')" class="druk-btn-cart px-4 py-1 text-xs font-bold mt-2">Book Now</button>
             </div>
           </div>
         </template>
@@ -2709,7 +2712,7 @@
             </ul>
             <div class="flex justify-between items-center mt-4 pt-3 border-t">
               <div><span class="font-bold text-lg" x-text="'Nu. ' + pkg.price"></span> <span class="text-xs text-gray-400 line-through" x-text="'Nu. ' + pkg.originalPrice" x-show="pkg.originalPrice"></span></div>
-              <button @click="showToast(pkg.name + ' booked! Visit date will be confirmed.')" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Book Package</button>
+              <button @click="showToast(pkg.name + ' booked! Visit date will be confirmed.')" class="druk-btn-cart px-4 py-1.5 text-xs font-bold">Book Package</button>
             </div>
           </div>
         </template>
@@ -2726,7 +2729,7 @@
     </div>
 
     <div class="flex gap-3 mb-4">
-      <input type="text" x-model="jobSearch" placeholder="Search jobs, companies, skills..." class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input">
+      <input type="text" x-model="jobSearch" placeholder="Search jobs, companies, skills..." class="flex-1 border rounded-lg px-4 py-2 text-sm druk-input">
       <select x-model="jobType" class="border rounded-lg px-3 py-2 text-sm">
         <option value="">All Types</option><option value="Full-time">Full-time</option><option value="Part-time">Part-time</option><option value="Contract">Contract</option><option value="Internship">Internship</option>
       </select>
@@ -2759,7 +2762,7 @@
           </div>
           <p class="text-xs text-gray-600 mt-2 line-clamp-2" x-text="job.desc"></p>
           <div class="flex gap-2 mt-3">
-            <button @click="showToast('Application submitted for ' + job.title + '!')" class="amz-btn-cart px-5 py-1.5 text-xs font-bold">Apply Now</button>
+            <button @click="showToast('Application submitted for ' + job.title + '!')" class="druk-btn-cart px-5 py-1.5 text-xs font-bold">Apply Now</button>
             <button @click="showToast('Job saved!')" class="border border-gray-300 px-4 py-1.5 rounded-full text-xs hover:bg-gray-50">Save</button>
           </div>
         </div>
@@ -2819,7 +2822,7 @@
                 </template>
               </div>
               <div class="flex gap-2 mt-4">
-                <button @click="showToast('Inquiry sent to ' + prop.owner + '!')" class="amz-btn-cart px-5 py-1.5 text-xs font-bold">Contact Owner</button>
+                <button @click="showToast('Inquiry sent to ' + prop.owner + '!')" class="druk-btn-cart px-5 py-1.5 text-xs font-bold">Contact Owner</button>
                 <button @click="showToast('Viewing scheduled!')" class="border border-gray-300 px-4 py-1.5 rounded-full text-xs hover:bg-gray-50">Schedule Visit</button>
               </div>
             </div>
@@ -2863,7 +2866,7 @@
           <div><label class="text-xs font-bold block mb-1">To</label><select x-model="busTo" class="w-full border rounded px-3 py-2 text-sm"><option value="">Select city</option><template x-for="c in busCities" :key="c"><option :value="c" x-text="c"></option></template></select></div>
           <div><label class="text-xs font-bold block mb-1">Date</label><input type="date" x-model="busDate" class="w-full border rounded px-3 py-2 text-sm"></div>
         </div>
-        <button @click="searchBuses()" class="amz-btn-cart px-8 py-2 text-sm font-bold mt-3 w-full">Search Buses</button>
+        <button @click="searchBuses()" class="druk-btn-cart px-8 py-2 text-sm font-bold mt-3 w-full">Search Buses</button>
       </div>
       <div class="space-y-3">
         <template x-for="bus in busResults" :key="bus.id">
@@ -2874,7 +2877,7 @@
             <div class="text-right ml-4">
               <p class="font-bold text-lg" x-text="'Nu. ' + bus.fare"></p>
               <p class="text-xs text-gray-500" x-text="bus.operator"></p>
-              <button @click="showToast('Bus ticket booked! ' + bus.from + ' → ' + bus.to)" class="amz-btn-cart px-4 py-1 text-xs font-bold mt-1">Book</button>
+              <button @click="showToast('Bus ticket booked! ' + bus.from + ' → ' + bus.to)" class="druk-btn-cart px-4 py-1 text-xs font-bold mt-1">Book</button>
             </div>
           </div>
         </template>
@@ -2893,13 +2896,13 @@
                   <div>
                     <h3 class="font-bold" x-text="hotel.name"></h3>
                     <p class="text-xs text-gray-500 mt-0.5" x-text="'📍 ' + hotel.location"></p>
-                    <div class="flex items-center gap-1 mt-1"><span class="text-amz-star text-xs" x-text="'★'.repeat(hotel.stars)"></span><span class="text-xs text-gray-500" x-text="hotel.rating + ' rating'"></span></div>
+                    <div class="flex items-center gap-1 mt-1"><span class="text-druk-star text-xs" x-text="'★'.repeat(hotel.stars)"></span><span class="text-xs text-gray-500" x-text="hotel.rating + ' rating'"></span></div>
                     <div class="flex gap-1 mt-2"><template x-for="a in hotel.amenities.slice(0,4)" :key="a"><span class="text-xs bg-gray-100 px-2 py-0.5 rounded" x-text="a"></span></template></div>
                   </div>
                   <div class="text-right">
                     <p class="text-lg font-bold" x-text="'Nu. ' + hotel.price.toLocaleString()"></p>
                     <p class="text-xs text-gray-500">/night</p>
-                    <button @click="showToast('Room booked at ' + hotel.name + '!')" class="amz-btn-cart px-4 py-1.5 text-xs font-bold mt-2">Book Room</button>
+                    <button @click="showToast('Room booked at ' + hotel.name + '!')" class="druk-btn-cart px-4 py-1.5 text-xs font-bold mt-2">Book Room</button>
                   </div>
                 </div>
               </div>
@@ -2920,12 +2923,12 @@
               <div class="flex items-center gap-3 mt-1 text-xs text-gray-500">
                 <span x-text="'📅 ' + tour.days + ' days'"></span>
                 <span x-text="'📍 ' + tour.places + ' places'"></span>
-                <span class="text-amz-star" x-text="'★ ' + tour.rating"></span>
+                <span class="text-druk-star" x-text="'★ ' + tour.rating"></span>
               </div>
               <p class="text-xs text-gray-600 mt-2 line-clamp-2" x-text="tour.desc"></p>
               <div class="flex justify-between items-center mt-3 pt-3 border-t">
                 <div><span class="text-lg font-bold" x-text="'Nu. ' + tour.price.toLocaleString()"></span><span class="text-xs text-gray-500"> /person</span></div>
-                <button @click="showToast('Tour booked! ' + tour.name)" class="amz-btn-cart px-4 py-1.5 text-xs font-bold">Book Tour</button>
+                <button @click="showToast('Tour booked! ' + tour.name)" class="druk-btn-cart px-4 py-1.5 text-xs font-bold">Book Tour</button>
               </div>
             </div>
           </div>
@@ -3033,7 +3036,7 @@
     </div>
 
     <div class="flex gap-3 mb-4">
-      <input type="text" x-model="classifiedSearch" placeholder="Search items..." class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input">
+      <input type="text" x-model="classifiedSearch" placeholder="Search items..." class="flex-1 border rounded-lg px-4 py-2 text-sm druk-input">
       <select x-model="classifiedCat" class="border rounded-lg px-3 py-2 text-sm">
         <option value="">All Categories</option>
         <template x-for="cc in classifiedCategories" :key="cc"><option :value="cc" x-text="cc"></option></template>
@@ -3054,7 +3057,7 @@
               <span x-text="'🕐 ' + item.posted"></span>
             </div>
             <div class="flex gap-2 mt-3">
-              <button @click="showToast('Message sent to ' + item.seller + '!')" class="flex-1 amz-btn-cart px-3 py-1.5 text-xs font-bold">Contact</button>
+              <button @click="showToast('Message sent to ' + item.seller + '!')" class="flex-1 druk-btn-cart px-3 py-1.5 text-xs font-bold">Contact</button>
               <button @click="showToast('Item saved!')" class="border border-gray-300 px-3 py-1.5 rounded-full text-xs hover:bg-gray-50">♡</button>
             </div>
           </div>
@@ -3072,23 +3075,23 @@
   <!-- AI CHATBOT (Floating Widget) -->
   <div class="fixed bottom-6 right-6 z-50" x-data="{ chatOpen: false, chatMessages: [{from:'bot',text:'Hi! I\'m DrukBot 🤖 How can I help you today?'}], chatInput: '' }">
     <div x-show="chatOpen" class="bg-white rounded-xl shadow-2xl w-[350px] mb-3 overflow-hidden border" x-cloak>
-      <div class="bg-gradient-to-r from-amz-dark to-amz-dark2 text-white p-4 flex justify-between items-center">
+      <div class="bg-gradient-to-r from-druk-dark to-druk-dark2 text-white p-4 flex justify-between items-center">
         <div class="flex items-center gap-2"><span class="text-xl">🤖</span><div><p class="font-bold text-sm">DrukBot</p><p class="text-xs opacity-70">Online • AI Assistant</p></div></div>
         <button @click="chatOpen=false" class="text-white hover:text-gray-300 text-xl">&times;</button>
       </div>
       <div class="h-[300px] overflow-y-auto p-3 space-y-2 bg-gray-50">
         <template x-for="(msg, i) in chatMessages" :key="i">
           <div :class="msg.from==='user' ? 'text-right' : 'text-left'">
-            <span class="inline-block px-3 py-2 rounded-xl text-sm max-w-[80%]" :class="msg.from==='user' ? 'bg-amz-dark2 text-white' : 'bg-white border text-gray-700'" x-text="msg.text"></span>
+            <span class="inline-block px-3 py-2 rounded-xl text-sm max-w-[80%]" :class="msg.from==='user' ? 'bg-druk-dark2 text-white' : 'bg-white border text-gray-700'" x-text="msg.text"></span>
           </div>
         </template>
       </div>
       <div class="p-3 border-t flex gap-2">
-        <input type="text" x-model="chatInput" @keyup.enter="if(chatInput.trim()){chatMessages.push({from:'user',text:chatInput}); let q=chatInput.toLowerCase(); chatInput=''; setTimeout(()=>{let r='I can help with orders, products, payments, and more! Try asking about your order status, return policy, or delivery times.'; if(q.includes('order'))r='You can track your orders from My Orders page. Need help with a specific order?'; else if(q.includes('return'))r='We offer 7-day easy returns on most products. Visit the order details page to initiate a return.'; else if(q.includes('deliver'))r='Standard delivery takes 2-5 days within Bhutan. Express delivery available in Thimphu & Paro (1-2 days).'; else if(q.includes('pay'))r='We accept mBoB, Cash on Delivery, and bank transfer. DrukPay wallet coming soon!'; else if(q.includes('hello')||q.includes('hi'))r='Hello! 👋 How can I help you today?'; else if(q.includes('thank'))r='You\'re welcome! 😊 Is there anything else I can help with?'; chatMessages.push({from:'bot',text:r});},800);}" placeholder="Type a message..." class="flex-1 border rounded-full px-4 py-2 text-sm amz-input">
-        <button @click="if(chatInput.trim()){chatMessages.push({from:'user',text:chatInput}); let q=chatInput.toLowerCase(); chatInput=''; setTimeout(()=>{let r='I can help with orders, products, payments, and more!'; if(q.includes('order'))r='Track orders from My Orders page.'; else if(q.includes('return'))r='7-day easy returns on most products.'; else if(q.includes('deliver'))r='2-5 days standard, 1-2 days express in Thimphu/Paro.'; chatMessages.push({from:'bot',text:r});},800);}" class="bg-amz-dark2 text-white px-3 py-2 rounded-full text-sm font-bold hover:bg-amz-dark">➤</button>
+        <input type="text" x-model="chatInput" @keyup.enter="if(chatInput.trim()){chatMessages.push({from:'user',text:chatInput}); let q=chatInput.toLowerCase(); chatInput=''; setTimeout(()=>{let r='I can help with orders, products, payments, and more! Try asking about your order status, return policy, or delivery times.'; if(q.includes('order'))r='You can track your orders from My Orders page. Need help with a specific order?'; else if(q.includes('return'))r='We offer 7-day easy returns on most products. Visit the order details page to initiate a return.'; else if(q.includes('deliver'))r='Standard delivery takes 2-5 days within Bhutan. Express delivery available in Thimphu & Paro (1-2 days).'; else if(q.includes('pay'))r='We accept mBoB, Cash on Delivery, and bank transfer. DrukPay wallet coming soon!'; else if(q.includes('hello')||q.includes('hi'))r='Hello! 👋 How can I help you today?'; else if(q.includes('thank'))r='You\'re welcome! 😊 Is there anything else I can help with?'; chatMessages.push({from:'bot',text:r});},800);}" placeholder="Type a message..." class="flex-1 border rounded-full px-4 py-2 text-sm druk-input">
+        <button @click="if(chatInput.trim()){chatMessages.push({from:'user',text:chatInput}); let q=chatInput.toLowerCase(); chatInput=''; setTimeout(()=>{let r='I can help with orders, products, payments, and more!'; if(q.includes('order'))r='Track orders from My Orders page.'; else if(q.includes('return'))r='7-day easy returns on most products.'; else if(q.includes('deliver'))r='2-5 days standard, 1-2 days express in Thimphu/Paro.'; chatMessages.push({from:'bot',text:r});},800);}" class="bg-druk-dark2 text-white px-3 py-2 rounded-full text-sm font-bold hover:bg-druk-dark">➤</button>
       </div>
     </div>
-    <button @click="chatOpen=!chatOpen" class="bg-gradient-to-r from-amz-orange to-amz-orange2 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition-transform">
+    <button @click="chatOpen=!chatOpen" class="bg-gradient-to-r from-druk-red to-[#5B1A18] w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition-transform text-white">
       <span x-show="!chatOpen">🤖</span><span x-show="chatOpen" x-cloak>✕</span>
     </button>
   </div>
@@ -3113,14 +3116,14 @@
           <button @click="walletTopupAmt=amt" class="border rounded-lg py-2 text-sm font-bold" :class="walletTopupAmt===amt ? 'border-purple-500 bg-purple-50' : 'hover:bg-gray-50'" x-text="'Nu. ' + amt"></button>
         </template>
       </div>
-      <input type="number" x-model="walletTopupAmt" placeholder="Enter amount" class="w-full border rounded-lg px-4 py-2 text-sm amz-input mb-3">
+      <input type="number" x-model="walletTopupAmt" placeholder="Enter amount" class="w-full border rounded-lg px-4 py-2 text-sm druk-input mb-3">
       <button @click="topUpWallet()" class="w-full bg-purple-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-purple-700">Add Nu. <span x-text="walletTopupAmt"></span></button>
     </div>
 
     <div x-show="walletAction==='send'" class="bg-white rounded-lg p-5 mb-4">
       <h3 class="font-bold mb-3">Send Money</h3>
-      <input type="text" x-model="walletSendTo" placeholder="Phone number or name" class="w-full border rounded-lg px-4 py-2 text-sm amz-input mb-2">
-      <input type="number" x-model="walletSendAmt" placeholder="Amount (Nu.)" class="w-full border rounded-lg px-4 py-2 text-sm amz-input mb-3">
+      <input type="text" x-model="walletSendTo" placeholder="Phone number or name" class="w-full border rounded-lg px-4 py-2 text-sm druk-input mb-2">
+      <input type="number" x-model="walletSendAmt" placeholder="Amount (Nu.)" class="w-full border rounded-lg px-4 py-2 text-sm druk-input mb-3">
       <button @click="sendMoney()" class="w-full bg-purple-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-purple-700">Send Money</button>
     </div>
 
@@ -3166,7 +3169,7 @@
             <p class="text-xs text-gray-600 mt-2" x-text="evt.desc"></p>
             <div class="flex justify-between items-center mt-3 pt-3 border-t">
               <div><span class="font-bold text-lg" x-text="evt.price ? 'Nu. ' + evt.price : 'FREE'"></span><span class="text-xs text-gray-400" x-show="evt.price"> /person</span></div>
-              <button @click="showToast('Ticket booked for ' + evt.title + '! 🎫')" class="amz-btn-cart px-5 py-1.5 text-xs font-bold">Book Ticket</button>
+              <button @click="showToast('Ticket booked for ' + evt.title + '! 🎫')" class="druk-btn-cart px-5 py-1.5 text-xs font-bold">Book Ticket</button>
             </div>
           </div>
         </div>
@@ -3259,7 +3262,7 @@
       <h3 class="font-bold text-lg mb-1 flex items-center gap-2">🧠 Bhutan Quiz</h3>
       <p class="text-xs text-gray-500 mb-4">Answer correctly to earn 10 loyalty points per question!</p>
       <template x-if="!quizActive">
-        <button @click="startQuiz()" class="amz-btn-cart px-8 py-2 text-sm font-bold">Start Quiz</button>
+        <button @click="startQuiz()" class="druk-btn-cart px-8 py-2 text-sm font-bold">Start Quiz</button>
       </template>
       <template x-if="quizActive && quizQ < quizQuestions.length">
         <div>
@@ -3270,7 +3273,7 @@
               <button @click="answerQuiz(oi)" class="w-full text-left border rounded-lg px-4 py-2.5 text-sm hover:bg-gray-50 transition" :class="quizAnswered && oi===quizQuestions[quizQ].answer ? 'border-green-500 bg-green-50' : quizAnswered && oi===quizSelected ? 'border-red-500 bg-red-50' : ''" x-text="opt" :disabled="quizAnswered"></button>
             </template>
           </div>
-          <button x-show="quizAnswered" @click="nextQuizQ()" class="amz-btn-cart px-6 py-2 text-xs font-bold mt-3" x-text="quizQ < quizQuestions.length - 1 ? 'Next Question →' : 'See Results'"></button>
+          <button x-show="quizAnswered" @click="nextQuizQ()" class="druk-btn-cart px-6 py-2 text-xs font-bold mt-3" x-text="quizQ < quizQuestions.length - 1 ? 'Next Question →' : 'See Results'"></button>
         </div>
       </template>
       <template x-if="quizActive && quizQ >= quizQuestions.length">
@@ -3278,7 +3281,7 @@
           <p class="text-4xl mb-2">🎉</p>
           <p class="text-xl font-bold" x-text="'You scored ' + quizScore + '/' + quizQuestions.length + '!'"></p>
           <p class="text-sm text-gray-500 mt-1" x-text="'You earned ' + (quizScore * 10) + ' loyalty points!'"></p>
-          <button @click="quizActive=false" class="amz-btn-cart px-6 py-2 text-xs font-bold mt-3">Play Again</button>
+          <button @click="quizActive=false" class="druk-btn-cart px-6 py-2 text-xs font-bold mt-3">Play Again</button>
         </div>
       </template>
     </div>
@@ -3288,12 +3291,12 @@
       <h3 class="font-bold text-lg mb-1 flex items-center gap-2">🔢 Number Guess</h3>
       <p class="text-xs text-gray-500 mb-4">Guess the number (1-100) in fewest tries. Win 20 pts!</p>
       <template x-if="!guessActive">
-        <button @click="guessActive=true; guessTarget=Math.floor(Math.random()*100)+1; guessAttempts=0; guessHint=''" class="amz-btn-cart px-8 py-2 text-sm font-bold">Start Game</button>
+        <button @click="guessActive=true; guessTarget=Math.floor(Math.random()*100)+1; guessAttempts=0; guessHint=''" class="druk-btn-cart px-8 py-2 text-sm font-bold">Start Game</button>
       </template>
       <template x-if="guessActive">
         <div>
           <div class="flex gap-2 mb-2">
-            <input type="number" x-model="guessInput" min="1" max="100" placeholder="Enter 1-100" class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input" @keyup.enter="makeGuess()">
+            <input type="number" x-model="guessInput" min="1" max="100" placeholder="Enter 1-100" class="flex-1 border rounded-lg px-4 py-2 text-sm druk-input" @keyup.enter="makeGuess()">
             <button @click="makeGuess()" class="bg-fuchsia-600 text-white px-4 py-2 rounded-lg text-sm font-bold">Guess</button>
           </div>
           <p class="text-sm" x-text="guessHint"></p>
@@ -3307,7 +3310,7 @@
       <h3 class="font-bold text-lg mb-1 flex items-center gap-2">🃏 Memory Match</h3>
       <p class="text-xs text-gray-500 mb-4">Match pairs of Bhutanese symbols. Win 15 pts!</p>
       <template x-if="!memoryActive">
-        <button @click="startMemoryGame()" class="amz-btn-cart px-8 py-2 text-sm font-bold">Start Game</button>
+        <button @click="startMemoryGame()" class="druk-btn-cart px-8 py-2 text-sm font-bold">Start Game</button>
       </template>
       <template x-if="memoryActive">
         <div>
@@ -3422,7 +3425,7 @@
             <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
               <span x-text="'⏱️ ' + recipe.time"></span>
               <span x-text="'🍽️ ' + recipe.servings + ' servings'"></span>
-              <span class="text-amz-star" x-text="'★ ' + recipe.rating"></span>
+              <span class="text-druk-star" x-text="'★ ' + recipe.rating"></span>
             </div>
             <div x-show="selectedRecipe?.id === recipe.id" class="mt-4 pt-3 border-t">
               <h4 class="font-bold text-sm mb-2">Ingredients:</h4>
@@ -3488,8 +3491,8 @@
 </main>
 
 <!-- Footer -->
-<footer class="bg-amz-dark2 text-white mt-6">
-  <div class="text-center py-3 bg-amz-dark3 hover:bg-[#485769] cursor-pointer">
+<footer class="bg-druk-dark2 text-white mt-6">
+  <div class="text-center py-3 bg-druk-dark3 hover:bg-[#485769] cursor-pointer">
     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;" class="text-sm">Back to top</a>
   </div>
   <div class="max-w-[1000px] mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
@@ -3530,8 +3533,8 @@
   </div>
   <div class="border-t border-gray-600">
     <div class="max-w-[1000px] mx-auto px-4 py-4 text-center">
-      <div class="mb-2"><span class="text-lg font-bold">Druk</span><span class="text-lg font-bold text-amz-orange">Hub</span><span class="text-xs">.bt</span></div>
-      <p class="text-xs text-gray-400">&copy; 2024 DrukHub.bt | Bhutan's Premier Online Marketplace</p>
+      <div class="mb-2"><span class="text-lg font-bold">Druk</span><span class="text-lg font-bold text-druk-orange">Hub</span><span class="text-xs">.bt</span></div>
+      <p class="text-xs text-gray-400">&copy; 2026 DrukHub.bt | Bhutan's Super App | Made with 🇧🇹 in the Land of the Thunder Dragon</p>
     </div>
   </div>
 </footer>
@@ -3550,7 +3553,7 @@
 </div>
 
 <!-- Floating Compare Bar -->
-<div x-show="compareList.length > 0 && page==='products'" x-cloak x-transition class="fixed bottom-0 left-0 right-0 bg-amz-dark2 text-white py-3 px-4 z-40 shadow-lg">
+<div x-show="compareList.length > 0 && page==='products'" x-cloak x-transition class="fixed bottom-0 left-0 right-0 bg-druk-dark2 text-white py-3 px-4 z-40 shadow-lg">
   <div class="max-w-[1500px] mx-auto flex items-center justify-between">
     <div class="flex items-center gap-3">
       <span class="text-sm font-bold" x-text="compareList.length + ' items selected'"></span>
@@ -3558,21 +3561,21 @@
         <template x-for="cp in compareList" :key="cp.id">
           <div class="relative">
             <img :src="cp.image" class="w-10 h-10 object-contain bg-white rounded p-0.5">
-            <button @click="toggleCompare(cp)" class="absolute -top-1 -right-1 w-4 h-4 bg-amz-red text-white rounded-full text-[10px] flex items-center justify-center">×</button>
+            <button @click="toggleCompare(cp)" class="absolute -top-1 -right-1 w-4 h-4 bg-druk-red text-white rounded-full text-[10px] flex items-center justify-center">×</button>
           </div>
         </template>
       </div>
     </div>
     <div class="flex gap-2">
-      <button @click="page='compare'" class="amz-btn-cart px-5 py-1.5 text-sm font-bold text-amz-dark">Compare Now</button>
+      <button @click="page='compare'" class="druk-btn-cart px-5 py-1.5 text-sm font-bold text-druk-dark">Compare Now</button>
       <button @click="compareList=[]" class="text-gray-400 hover:text-white text-sm">Clear All</button>
     </div>
   </div>
 </div>
 
 <!-- Toast -->
-<div x-show="toast" x-transition x-cloak class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-amz-dark text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 text-sm">
-  <svg class="w-5 h-5 text-amz-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
+<div x-show="toast" x-transition x-cloak class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-druk-dark text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 text-sm">
+  <svg class="w-5 h-5 text-druk-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>
   <span x-text="toast"></span>
 </div>
 
