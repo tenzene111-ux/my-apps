@@ -285,6 +285,18 @@
       <a href="#" @click.prevent="page='weather'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🌤️ Weather</a>
       <a href="#" @click.prevent="page='news'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">📰 DrukNews</a>
       <a href="#" @click.prevent="page='classifieds'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-orange-600">🏷️ Buy & Sell (Classifieds)</a>
+      <a href="#" @click.prevent="page='recipes'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🍳 Recipes</a>
+      <a href="#" @click.prevent="page='calendar'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">📅 Bhutan Calendar</a>
+
+      <!-- 🎮 ENTERTAINMENT & MORE -->
+      <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">🎮 Entertainment & More</div>
+      <a href="#" @click.prevent="page='events'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🎫 Events & Tickets</a>
+      <a href="#" @click.prevent="page='games'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🎮 Mini Games</a>
+      <a href="#" @click.prevent="page='scratch'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🎴 Scratch & Win</a>
+      <a href="#" @click.prevent="page='donate'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🙏 Donate</a>
+      <a href="#" @click.prevent="page='lostfound'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm">🔍 Lost & Found</a>
+      <a href="#" @click.prevent="page='wallet'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-purple-600">💳 DrukPay Wallet</a>
+      <a href="#" @click.prevent="page='sos'; sideMenu=false" class="flex items-center gap-3 px-6 py-2.5 hover:bg-gray-100 text-sm font-bold text-red-600">🆘 Emergency SOS</a>
 
       <!-- 🛠️ SERVICES & PAYMENTS -->
       <div class="px-6 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider bg-gray-50 mt-1">💼 Services & Payments</div>
@@ -521,6 +533,38 @@
         <a href="#" @click.prevent="page='classifieds'" class="bg-gradient-to-br from-orange-500 to-amber-600 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
           <p class="text-2xl mb-1">🏷️</p><p class="font-bold text-sm">Classifieds</p><p class="text-xs opacity-80 mt-1">Buy & sell used</p>
         </a>
+      </div>
+    </div>
+
+    <!-- 🎮 Entertainment & More -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center gap-2">🎮 Entertainment & More</h2>
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <a href="#" @click.prevent="page='events'" class="bg-gradient-to-br from-pink-600 to-rose-700 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🎫</p><p class="font-bold text-sm">Events</p><p class="text-xs opacity-80 mt-1">Tshechu & more</p>
+        </a>
+        <a href="#" @click.prevent="page='wallet'" class="bg-gradient-to-br from-violet-600 to-purple-800 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">💳</p><p class="font-bold text-sm">DrukPay</p><p class="text-xs opacity-80 mt-1" x-text="'Nu. ' + walletBalance"></p>
+        </a>
+        <a href="#" @click.prevent="page='games'" class="bg-gradient-to-br from-fuchsia-600 to-pink-700 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🎮</p><p class="font-bold text-sm">Games</p><p class="text-xs opacity-80 mt-1">Play & earn</p>
+        </a>
+        <a href="#" @click.prevent="page='donate'" class="bg-gradient-to-br from-rose-500 to-pink-700 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🙏</p><p class="font-bold text-sm">Donate</p><p class="text-xs opacity-80 mt-1">Give back</p>
+        </a>
+        <a href="#" @click.prevent="page='sos'" class="bg-gradient-to-br from-red-600 to-red-800 text-white rounded-lg p-5 hover:shadow-lg transition text-center">
+          <p class="text-2xl mb-1">🆘</p><p class="font-bold text-sm">SOS</p><p class="text-xs opacity-80 mt-1">Emergency</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Links Row -->
+    <div class="max-w-[1500px] mx-auto px-4 mt-6">
+      <div class="flex gap-3 overflow-x-auto hide-scrollbar">
+        <a href="#" @click.prevent="page='scratch'" class="shrink-0 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-xs font-bold hover:bg-yellow-200">🎴 Scratch & Win</a>
+        <a href="#" @click.prevent="page='lostfound'" class="shrink-0 bg-teal-100 text-teal-800 px-4 py-2 rounded-full text-xs font-bold hover:bg-teal-200">🔍 Lost & Found</a>
+        <a href="#" @click.prevent="page='recipes'" class="shrink-0 bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-xs font-bold hover:bg-orange-200">🍳 Recipes</a>
+        <a href="#" @click.prevent="page='calendar'" class="shrink-0 bg-amber-100 text-amber-800 px-4 py-2 rounded-full text-xs font-bold hover:bg-amber-200">📅 Bhutan Calendar</a>
       </div>
     </div>
 
@@ -3025,6 +3069,411 @@
     </div>
   </div>
 
+  <!-- AI CHATBOT (Floating Widget) -->
+  <div class="fixed bottom-6 right-6 z-50" x-data="{ chatOpen: false, chatMessages: [{from:'bot',text:'Hi! I\'m DrukBot 🤖 How can I help you today?'}], chatInput: '' }">
+    <div x-show="chatOpen" class="bg-white rounded-xl shadow-2xl w-[350px] mb-3 overflow-hidden border" x-cloak>
+      <div class="bg-gradient-to-r from-amz-dark to-amz-dark2 text-white p-4 flex justify-between items-center">
+        <div class="flex items-center gap-2"><span class="text-xl">🤖</span><div><p class="font-bold text-sm">DrukBot</p><p class="text-xs opacity-70">Online • AI Assistant</p></div></div>
+        <button @click="chatOpen=false" class="text-white hover:text-gray-300 text-xl">&times;</button>
+      </div>
+      <div class="h-[300px] overflow-y-auto p-3 space-y-2 bg-gray-50">
+        <template x-for="(msg, i) in chatMessages" :key="i">
+          <div :class="msg.from==='user' ? 'text-right' : 'text-left'">
+            <span class="inline-block px-3 py-2 rounded-xl text-sm max-w-[80%]" :class="msg.from==='user' ? 'bg-amz-dark2 text-white' : 'bg-white border text-gray-700'" x-text="msg.text"></span>
+          </div>
+        </template>
+      </div>
+      <div class="p-3 border-t flex gap-2">
+        <input type="text" x-model="chatInput" @keyup.enter="if(chatInput.trim()){chatMessages.push({from:'user',text:chatInput}); let q=chatInput.toLowerCase(); chatInput=''; setTimeout(()=>{let r='I can help with orders, products, payments, and more! Try asking about your order status, return policy, or delivery times.'; if(q.includes('order'))r='You can track your orders from My Orders page. Need help with a specific order?'; else if(q.includes('return'))r='We offer 7-day easy returns on most products. Visit the order details page to initiate a return.'; else if(q.includes('deliver'))r='Standard delivery takes 2-5 days within Bhutan. Express delivery available in Thimphu & Paro (1-2 days).'; else if(q.includes('pay'))r='We accept mBoB, Cash on Delivery, and bank transfer. DrukPay wallet coming soon!'; else if(q.includes('hello')||q.includes('hi'))r='Hello! 👋 How can I help you today?'; else if(q.includes('thank'))r='You\'re welcome! 😊 Is there anything else I can help with?'; chatMessages.push({from:'bot',text:r});},800);}" placeholder="Type a message..." class="flex-1 border rounded-full px-4 py-2 text-sm amz-input">
+        <button @click="if(chatInput.trim()){chatMessages.push({from:'user',text:chatInput}); let q=chatInput.toLowerCase(); chatInput=''; setTimeout(()=>{let r='I can help with orders, products, payments, and more!'; if(q.includes('order'))r='Track orders from My Orders page.'; else if(q.includes('return'))r='7-day easy returns on most products.'; else if(q.includes('deliver'))r='2-5 days standard, 1-2 days express in Thimphu/Paro.'; chatMessages.push({from:'bot',text:r});},800);}" class="bg-amz-dark2 text-white px-3 py-2 rounded-full text-sm font-bold hover:bg-amz-dark">➤</button>
+      </div>
+    </div>
+    <button @click="chatOpen=!chatOpen" class="bg-gradient-to-r from-amz-orange to-amz-orange2 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-2xl hover:scale-110 transition-transform">
+      <span x-show="!chatOpen">🤖</span><span x-show="chatOpen" x-cloak>✕</span>
+    </button>
+  </div>
+
+  <!-- DIGITAL WALLET PAGE -->
+  <div x-show="page === 'wallet'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-violet-600 to-purple-800 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <p class="text-sm opacity-80">DrukPay Wallet</p>
+      <p class="text-4xl font-bold mt-1" x-text="'Nu. ' + walletBalance.toLocaleString()"></p>
+      <div class="flex gap-3 mt-4">
+        <button @click="walletAction='topup'" class="bg-white/20 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/30">+ Add Money</button>
+        <button @click="walletAction='send'" class="bg-white/20 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/30">Send Money</button>
+        <button @click="walletAction=''" class="bg-white/20 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/30">QR Pay</button>
+      </div>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">💳💰</div>
+    </div>
+
+    <div x-show="walletAction==='topup'" class="bg-white rounded-lg p-5 mb-4">
+      <h3 class="font-bold mb-3">Add Money to Wallet</h3>
+      <div class="grid grid-cols-4 gap-2 mb-3">
+        <template x-for="amt in [500, 1000, 2000, 5000]" :key="amt">
+          <button @click="walletTopupAmt=amt" class="border rounded-lg py-2 text-sm font-bold" :class="walletTopupAmt===amt ? 'border-purple-500 bg-purple-50' : 'hover:bg-gray-50'" x-text="'Nu. ' + amt"></button>
+        </template>
+      </div>
+      <input type="number" x-model="walletTopupAmt" placeholder="Enter amount" class="w-full border rounded-lg px-4 py-2 text-sm amz-input mb-3">
+      <button @click="topUpWallet()" class="w-full bg-purple-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-purple-700">Add Nu. <span x-text="walletTopupAmt"></span></button>
+    </div>
+
+    <div x-show="walletAction==='send'" class="bg-white rounded-lg p-5 mb-4">
+      <h3 class="font-bold mb-3">Send Money</h3>
+      <input type="text" x-model="walletSendTo" placeholder="Phone number or name" class="w-full border rounded-lg px-4 py-2 text-sm amz-input mb-2">
+      <input type="number" x-model="walletSendAmt" placeholder="Amount (Nu.)" class="w-full border rounded-lg px-4 py-2 text-sm amz-input mb-3">
+      <button @click="sendMoney()" class="w-full bg-purple-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-purple-700">Send Money</button>
+    </div>
+
+    <h3 class="font-bold mb-3">Transaction History</h3>
+    <div class="space-y-2">
+      <template x-for="tx in walletTransactions" :key="tx.id">
+        <div class="bg-white rounded-lg p-4 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center text-xl" :class="tx.type==='credit' ? 'bg-green-100' : 'bg-red-100'" x-text="tx.type==='credit' ? '↓' : '↑'"></div>
+          <div class="flex-1"><p class="text-sm font-medium" x-text="tx.desc"></p><p class="text-xs text-gray-400" x-text="tx.date"></p></div>
+          <p class="font-bold text-sm" :class="tx.type==='credit' ? 'text-green-600' : 'text-red-600'" x-text="(tx.type==='credit' ? '+' : '-') + ' Nu. ' + tx.amount"></p>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- EVENT & TICKETS PAGE -->
+  <div x-show="page === 'events'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-pink-600 to-rose-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🎫 DrukEvents</h1>
+      <p class="text-sm opacity-90 mt-1">Tshechu, concerts, movies & more</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🎭🎪</div>
+    </div>
+
+    <div class="flex gap-2 overflow-x-auto hide-scrollbar mb-4">
+      <button @click="eventCat=''" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="!eventCat ? 'bg-pink-700 text-white' : 'bg-white hover:bg-gray-100'">All</button>
+      <template x-for="ec in ['Tshechu', 'Concert', 'Movie', 'Sports', 'Workshop', 'Exhibition']" :key="ec">
+        <button @click="eventCat=ec" class="shrink-0 px-4 py-2 rounded-full text-xs font-bold" :class="eventCat===ec ? 'bg-pink-700 text-white' : 'bg-white hover:bg-gray-100'" x-text="ec"></button>
+      </template>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <template x-for="evt in filteredEvents()" :key="evt.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition">
+          <div class="h-[180px] bg-gray-100 relative"><img :src="evt.image" class="w-full h-full object-cover">
+            <span class="absolute top-3 right-3 bg-pink-600 text-white text-xs px-2 py-1 rounded-full font-bold" x-text="evt.category"></span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold" x-text="evt.title"></h3>
+            <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+              <span x-text="'📅 ' + evt.date"></span>
+              <span x-text="'📍 ' + evt.venue"></span>
+            </div>
+            <p class="text-xs text-gray-600 mt-2" x-text="evt.desc"></p>
+            <div class="flex justify-between items-center mt-3 pt-3 border-t">
+              <div><span class="font-bold text-lg" x-text="evt.price ? 'Nu. ' + evt.price : 'FREE'"></span><span class="text-xs text-gray-400" x-show="evt.price"> /person</span></div>
+              <button @click="showToast('Ticket booked for ' + evt.title + '! 🎫')" class="amz-btn-cart px-5 py-1.5 text-xs font-bold">Book Ticket</button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- EMERGENCY SOS PAGE -->
+  <div x-show="page === 'sos'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-red-600 to-red-800 text-white rounded-xl p-6 mb-6 text-center">
+      <h1 class="text-2xl font-bold">🆘 Emergency SOS</h1>
+      <p class="text-sm opacity-90 mt-1">Quick access to emergency services in Bhutan</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+      <template x-for="em in emergencyContacts" :key="em.name">
+        <button @click="showToast('Calling ' + em.name + ' at ' + em.number + '...')" class="bg-white rounded-xl p-6 text-center hover:shadow-lg transition border-2 border-transparent hover:border-red-500">
+          <p class="text-4xl mb-2" x-text="em.icon"></p>
+          <p class="font-bold text-sm" x-text="em.name"></p>
+          <p class="text-lg font-bold text-red-600 mt-1" x-text="em.number"></p>
+          <p class="text-xs text-gray-500 mt-1" x-text="em.desc"></p>
+        </button>
+      </template>
+    </div>
+
+    <div class="bg-red-50 rounded-lg p-5 text-center border border-red-200">
+      <p class="text-3xl mb-2">📍</p>
+      <h3 class="font-bold">Share Your Location</h3>
+      <p class="text-sm text-gray-600 mt-1 mb-3">Send your GPS location to emergency services</p>
+      <button @click="showToast('Location shared with emergency services! Help is on the way.')" class="bg-red-600 text-white px-8 py-3 rounded-lg font-bold text-sm hover:bg-red-700">📍 Share Location Now</button>
+    </div>
+
+    <div class="bg-white rounded-lg p-5 mt-4">
+      <h3 class="font-bold mb-3">Nearby Hospitals</h3>
+      <div class="space-y-2">
+        <template x-for="h in [{name:'JDWNRH',loc:'Thimphu',dist:'2.3 km',phone:'02-322496'},{name:'Paro Hospital',loc:'Paro',dist:'55 km',phone:'08-271260'},{name:'Punakha Hospital',loc:'Punakha',dist:'77 km',phone:'02-584112'}]" :key="h.name">
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <span class="text-2xl">🏥</span>
+            <div class="flex-1"><p class="font-bold text-sm" x-text="h.name"></p><p class="text-xs text-gray-500" x-text="h.loc + ' • ' + h.dist"></p></div>
+            <button @click="showToast('Calling ' + h.name + '...')" class="text-xs bg-red-100 text-red-600 px-3 py-1 rounded-full font-bold" x-text="h.phone"></button>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRATCH CARDS PAGE -->
+  <div x-show="page === 'scratch'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-yellow-500 to-amber-600 text-white rounded-xl p-6 mb-6 text-center relative overflow-hidden">
+      <h1 class="text-2xl font-bold">🎴 Scratch & Win</h1>
+      <p class="text-sm opacity-90 mt-1">Scratch cards to reveal amazing coupons!</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🎁💰</div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <template x-for="(card, i) in scratchCards" :key="i">
+        <div class="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition text-center">
+          <div class="p-6 cursor-pointer" @click="scratchCard(i)">
+            <template x-if="!card.scratched">
+              <div class="bg-gradient-to-br from-gray-300 to-gray-400 rounded-xl h-[120px] flex items-center justify-center">
+                <p class="text-white font-bold text-sm">🪙 Tap to Scratch!</p>
+              </div>
+            </template>
+            <template x-if="card.scratched">
+              <div class="h-[120px] flex flex-col items-center justify-center" :class="card.prize.type==='big' ? 'bg-gradient-to-br from-yellow-100 to-amber-100' : 'bg-gradient-to-br from-green-50 to-emerald-50'" style="border-radius:12px">
+                <p class="text-3xl mb-1" x-text="card.prize.icon"></p>
+                <p class="font-bold text-sm" x-text="card.prize.label"></p>
+                <p class="text-xs text-gray-500 mt-1" x-text="card.prize.desc"></p>
+              </div>
+            </template>
+          </div>
+          <div class="px-4 pb-4">
+            <p class="text-xs text-gray-400" x-text="card.scratched ? 'Revealed!' : 'Available'"></p>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- MINI GAMES PAGE -->
+  <div x-show="page === 'games'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-fuchsia-600 to-pink-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🎮 DrukGames</h1>
+      <p class="text-sm opacity-90 mt-1">Play games & earn loyalty points!</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🕹️🎯</div>
+    </div>
+
+    <!-- Bhutan Quiz -->
+    <div class="bg-white rounded-xl p-6 mb-4">
+      <h3 class="font-bold text-lg mb-1 flex items-center gap-2">🧠 Bhutan Quiz</h3>
+      <p class="text-xs text-gray-500 mb-4">Answer correctly to earn 10 loyalty points per question!</p>
+      <template x-if="!quizActive">
+        <button @click="startQuiz()" class="amz-btn-cart px-8 py-2 text-sm font-bold">Start Quiz</button>
+      </template>
+      <template x-if="quizActive && quizQ < quizQuestions.length">
+        <div>
+          <p class="text-xs text-gray-400 mb-1" x-text="'Question ' + (quizQ+1) + ' of ' + quizQuestions.length"></p>
+          <p class="font-bold mb-3" x-text="quizQuestions[quizQ].q"></p>
+          <div class="space-y-2">
+            <template x-for="(opt, oi) in quizQuestions[quizQ].options" :key="oi">
+              <button @click="answerQuiz(oi)" class="w-full text-left border rounded-lg px-4 py-2.5 text-sm hover:bg-gray-50 transition" :class="quizAnswered && oi===quizQuestions[quizQ].answer ? 'border-green-500 bg-green-50' : quizAnswered && oi===quizSelected ? 'border-red-500 bg-red-50' : ''" x-text="opt" :disabled="quizAnswered"></button>
+            </template>
+          </div>
+          <button x-show="quizAnswered" @click="nextQuizQ()" class="amz-btn-cart px-6 py-2 text-xs font-bold mt-3" x-text="quizQ < quizQuestions.length - 1 ? 'Next Question →' : 'See Results'"></button>
+        </div>
+      </template>
+      <template x-if="quizActive && quizQ >= quizQuestions.length">
+        <div class="text-center">
+          <p class="text-4xl mb-2">🎉</p>
+          <p class="text-xl font-bold" x-text="'You scored ' + quizScore + '/' + quizQuestions.length + '!'"></p>
+          <p class="text-sm text-gray-500 mt-1" x-text="'You earned ' + (quizScore * 10) + ' loyalty points!'"></p>
+          <button @click="quizActive=false" class="amz-btn-cart px-6 py-2 text-xs font-bold mt-3">Play Again</button>
+        </div>
+      </template>
+    </div>
+
+    <!-- Number Guess Game -->
+    <div class="bg-white rounded-xl p-6 mb-4">
+      <h3 class="font-bold text-lg mb-1 flex items-center gap-2">🔢 Number Guess</h3>
+      <p class="text-xs text-gray-500 mb-4">Guess the number (1-100) in fewest tries. Win 20 pts!</p>
+      <template x-if="!guessActive">
+        <button @click="guessActive=true; guessTarget=Math.floor(Math.random()*100)+1; guessAttempts=0; guessHint=''" class="amz-btn-cart px-8 py-2 text-sm font-bold">Start Game</button>
+      </template>
+      <template x-if="guessActive">
+        <div>
+          <div class="flex gap-2 mb-2">
+            <input type="number" x-model="guessInput" min="1" max="100" placeholder="Enter 1-100" class="flex-1 border rounded-lg px-4 py-2 text-sm amz-input" @keyup.enter="makeGuess()">
+            <button @click="makeGuess()" class="bg-fuchsia-600 text-white px-4 py-2 rounded-lg text-sm font-bold">Guess</button>
+          </div>
+          <p class="text-sm" x-text="guessHint"></p>
+          <p class="text-xs text-gray-400 mt-1" x-text="'Attempts: ' + guessAttempts"></p>
+        </div>
+      </template>
+    </div>
+
+    <!-- Memory Match -->
+    <div class="bg-white rounded-xl p-6">
+      <h3 class="font-bold text-lg mb-1 flex items-center gap-2">🃏 Memory Match</h3>
+      <p class="text-xs text-gray-500 mb-4">Match pairs of Bhutanese symbols. Win 15 pts!</p>
+      <template x-if="!memoryActive">
+        <button @click="startMemoryGame()" class="amz-btn-cart px-8 py-2 text-sm font-bold">Start Game</button>
+      </template>
+      <template x-if="memoryActive">
+        <div>
+          <div class="grid grid-cols-4 gap-2 max-w-[300px] mx-auto">
+            <template x-for="(card, ci) in memoryCards" :key="ci">
+              <button @click="flipMemoryCard(ci)" class="h-16 rounded-lg font-bold text-xl flex items-center justify-center transition" :class="card.flipped || card.matched ? 'bg-white border-2 border-purple-300' : 'bg-gradient-to-br from-purple-500 to-fuchsia-600 text-white'" :disabled="card.flipped || card.matched">
+                <span x-text="card.flipped || card.matched ? card.symbol : '?'"></span>
+              </button>
+            </template>
+          </div>
+          <p class="text-center text-sm mt-3" x-text="'Pairs found: ' + memoryMatched + '/6 | Moves: ' + memoryMoves"></p>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- DONATION & CHARITY PAGE -->
+  <div x-show="page === 'donate'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-rose-500 to-pink-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🙏 DrukGive</h1>
+      <p class="text-sm opacity-90 mt-1">Support monasteries, schools & communities</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🙏🕉️</div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <template x-for="cause in donations" :key="cause.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition">
+          <div class="h-[180px] bg-gray-100"><img :src="cause.image" class="w-full h-full object-cover"></div>
+          <div class="p-5">
+            <span class="text-xs bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-bold" x-text="cause.category"></span>
+            <h3 class="font-bold mt-2" x-text="cause.title"></h3>
+            <p class="text-xs text-gray-600 mt-1" x-text="cause.desc"></p>
+            <div class="mt-3">
+              <div class="flex justify-between text-xs text-gray-500 mb-1"><span x-text="'Raised: Nu. ' + cause.raised.toLocaleString()"></span><span x-text="'Goal: Nu. ' + cause.goal.toLocaleString()"></span></div>
+              <div class="w-full bg-gray-200 rounded-full h-2"><div class="bg-pink-500 rounded-full h-2 transition-all" :style="'width:' + Math.min(100, cause.raised/cause.goal*100) + '%'"></div></div>
+              <p class="text-xs text-gray-400 mt-1" x-text="cause.donors + ' donors'"></p>
+            </div>
+            <div class="flex gap-2 mt-3">
+              <template x-for="amt in [100, 500, 1000]" :key="amt">
+                <button @click="cause.raised += amt; cause.donors++; earnPoints(amt/10, 'Donation to ' + cause.title); showToast('Thank you for donating Nu. ' + amt + ' to ' + cause.title + '! 🙏')" class="flex-1 border border-pink-300 text-pink-600 rounded-lg py-1.5 text-xs font-bold hover:bg-pink-50" x-text="'Nu. ' + amt"></button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- LOST & FOUND PAGE -->
+  <div x-show="page === 'lostfound'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-teal-600 to-cyan-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🔍 Lost & Found</h1>
+      <p class="text-sm opacity-90 mt-1">Report lost items or help reunite found belongings</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🔎📦</div>
+    </div>
+
+    <div class="flex gap-3 mb-4">
+      <button @click="lfTab='lost'" class="px-6 py-2 rounded-lg text-sm font-bold" :class="lfTab==='lost' ? 'bg-red-600 text-white' : 'bg-white border'">❌ Lost Items</button>
+      <button @click="lfTab='found'" class="px-6 py-2 rounded-lg text-sm font-bold" :class="lfTab==='found' ? 'bg-green-600 text-white' : 'bg-white border'">✅ Found Items</button>
+    </div>
+
+    <div class="space-y-3">
+      <template x-for="item in lostFoundItems.filter(i => i.type === lfTab)" :key="item.id">
+        <div class="bg-white rounded-lg p-5 hover:shadow-md transition border-l-4" :class="item.type==='lost' ? 'border-red-500' : 'border-green-500'">
+          <div class="flex gap-4">
+            <div class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center text-3xl" x-text="item.icon"></div>
+            <div class="flex-1">
+              <div class="flex justify-between">
+                <h3 class="font-bold" x-text="item.title"></h3>
+                <span class="text-xs px-2 py-0.5 rounded-full font-bold" :class="item.type==='lost' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'" x-text="item.type==='lost' ? 'LOST' : 'FOUND'"></span>
+              </div>
+              <p class="text-xs text-gray-600 mt-1" x-text="item.desc"></p>
+              <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                <span x-text="'📍 ' + item.location"></span>
+                <span x-text="'📅 ' + item.date"></span>
+                <span x-text="'👤 ' + item.contact"></span>
+              </div>
+              <button @click="showToast('Message sent to ' + item.contact + '!')" class="mt-2 text-xs font-bold px-4 py-1 rounded-full" :class="item.type==='lost' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'">Contact</button>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class="bg-teal-50 rounded-lg p-5 mt-6 text-center border border-teal-200">
+      <h3 class="font-bold mb-1">Report a Lost or Found Item</h3>
+      <p class="text-sm text-gray-600 mb-3">Help the community by posting what you've lost or found</p>
+      <div class="flex gap-3 justify-center">
+        <button @click="showToast('Lost item report form coming soon!')" class="bg-red-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-red-700">Report Lost</button>
+        <button @click="showToast('Found item report form coming soon!')" class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-green-700">Report Found</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECIPE HUB PAGE -->
+  <div x-show="page === 'recipes'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-orange-600 to-red-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">🍳 DrukRecipes</h1>
+      <p class="text-sm opacity-90 mt-1">Authentic Bhutanese recipes & cooking guides</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🥘🌶️</div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4">
+      <template x-for="recipe in recipes" :key="recipe.id">
+        <div class="bg-white rounded-lg overflow-hidden hover:shadow-md transition cursor-pointer" @click="selectedRecipe = selectedRecipe?.id === recipe.id ? null : recipe">
+          <div class="h-[180px] bg-gray-100"><img :src="recipe.image" class="w-full h-full object-cover"></div>
+          <div class="p-4">
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold" x-text="recipe.name"></h3>
+              <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full" x-text="recipe.difficulty"></span>
+            </div>
+            <div class="flex items-center gap-3 mt-2 text-xs text-gray-500">
+              <span x-text="'⏱️ ' + recipe.time"></span>
+              <span x-text="'🍽️ ' + recipe.servings + ' servings'"></span>
+              <span class="text-amz-star" x-text="'★ ' + recipe.rating"></span>
+            </div>
+            <div x-show="selectedRecipe?.id === recipe.id" class="mt-4 pt-3 border-t">
+              <h4 class="font-bold text-sm mb-2">Ingredients:</h4>
+              <ul class="space-y-1 mb-3"><template x-for="ing in recipe.ingredients" :key="ing"><li class="text-xs text-gray-600 flex items-center gap-1">• <span x-text="ing"></span></li></template></ul>
+              <h4 class="font-bold text-sm mb-2">Steps:</h4>
+              <ol class="space-y-1"><template x-for="(step, si) in recipe.steps" :key="si"><li class="text-xs text-gray-600"><span class="font-bold" x-text="(si+1) + '. '"></span><span x-text="step"></span></li></template></ol>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- BHUTAN CALENDAR PAGE -->
+  <div x-show="page === 'calendar'" class="max-w-[1100px] mx-auto px-4 py-4">
+    <div class="bg-gradient-to-r from-amber-600 to-yellow-700 text-white rounded-xl p-6 mb-6 relative overflow-hidden">
+      <h1 class="text-2xl font-bold flex items-center gap-2">📅 Bhutan Calendar</h1>
+      <p class="text-sm opacity-90 mt-1">Festivals, holidays & auspicious dates</p>
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 text-6xl opacity-15">🕉️📿</div>
+    </div>
+
+    <div class="bg-white rounded-xl p-5 mb-4">
+      <h3 class="font-bold mb-1">Today</h3>
+      <p class="text-sm text-gray-500" x-text="new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})"></p>
+      <template x-for="evt in calendarEvents.filter(e => e.upcoming)" :key="evt.name">
+        <div class="mt-2 bg-amber-50 rounded-lg p-3 flex items-center gap-3">
+          <span class="text-2xl" x-text="evt.icon"></span>
+          <div><p class="font-bold text-sm" x-text="evt.name"></p><p class="text-xs text-gray-500" x-text="evt.date + ' • ' + evt.type"></p></div>
+          <span class="ml-auto text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-bold" x-text="evt.daysAway + ' days away'"></span>
+        </div>
+      </template>
+    </div>
+
+    <h3 class="font-bold mb-3">Upcoming Events & Holidays</h3>
+    <div class="space-y-2">
+      <template x-for="evt in calendarEvents" :key="evt.name">
+        <div class="bg-white rounded-lg p-4 flex items-center gap-4 hover:shadow-sm">
+          <div class="w-12 h-12 rounded-lg flex items-center justify-center text-2xl" :class="evt.type==='Tshechu' ? 'bg-red-100' : evt.type==='Holiday' ? 'bg-blue-100' : evt.type==='Auspicious' ? 'bg-amber-100' : 'bg-green-100'" x-text="evt.icon"></div>
+          <div class="flex-1">
+            <p class="font-bold text-sm" x-text="evt.name"></p>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-xs text-gray-500" x-text="evt.date"></span>
+              <span class="text-xs px-2 py-0.5 rounded-full font-bold" :class="evt.type==='Tshechu' ? 'bg-red-100 text-red-600' : evt.type==='Holiday' ? 'bg-blue-100 text-blue-600' : evt.type==='Auspicious' ? 'bg-amber-100 text-amber-600' : 'bg-green-100 text-green-600'" x-text="evt.type"></span>
+            </div>
+            <p class="text-xs text-gray-500 mt-0.5" x-text="evt.desc"></p>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
   <!-- ADMIN PAGE -->
   <div x-show="page === 'admin'" class="max-w-[1500px] mx-auto px-4 py-4">
     <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
@@ -3637,6 +4086,112 @@ function marketplace() {
       { id: 'cl10', title: 'Sofa Set 3+1+1 - Wooden Frame', price: 25000, condition: 'Fair', category: 'Furniture', location: 'Wangdue', posted: '1 week ago', seller: 'Rinzin P.', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop' },
     ],
 
+    // Digital Wallet
+    walletBalance: 2500,
+    walletAction: '',
+    walletTopupAmt: 1000,
+    walletSendTo: '',
+    walletSendAmt: '',
+    walletTransactions: [
+      { id: 'tx1', desc: 'Welcome Bonus', amount: 2000, type: 'credit', date: 'Jun 20, 2026' },
+      { id: 'tx2', desc: 'Cashback - Food Order', amount: 50, type: 'credit', date: 'Jun 19, 2026' },
+      { id: 'tx3', desc: 'Mobile Recharge', amount: 200, type: 'debit', date: 'Jun 18, 2026' },
+      { id: 'tx4', desc: 'Referral Bonus', amount: 500, type: 'credit', date: 'Jun 17, 2026' },
+      { id: 'tx5', desc: 'DrukRide Payment', amount: 350, type: 'debit', date: 'Jun 16, 2026' },
+    ],
+
+    // Events & Tickets
+    eventCat: '',
+    events: [
+      { id: 'ev1', title: 'Thimphu Tshechu 2026', category: 'Tshechu', date: 'Oct 10-12, 2026', venue: 'Tashichho Dzong, Thimphu', price: 0, desc: 'Annual religious festival with sacred mask dances, unfurling of Thongdrol, and cultural performances.', image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400&h=250&fit=crop' },
+      { id: 'ev2', title: 'Bhutan International Music Festival', category: 'Concert', date: 'Aug 15-16, 2026', venue: 'Changlimithang Stadium', price: 500, desc: 'Live performances by Bhutanese and international artists. Two days of music, food, and fun.', image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=250&fit=crop' },
+      { id: 'ev3', title: 'Paro Tshechu', category: 'Tshechu', date: 'Mar 20-24, 2026', venue: 'Paro Rinpung Dzong', price: 0, desc: 'One of the most popular festivals featuring the famous Guru Thongdrol unfurling at dawn.', image: 'https://images.unsplash.com/photo-1553856622-d1b352e9a211?w=400&h=250&fit=crop' },
+      { id: 'ev4', title: 'DrukStar Movie Premiere', category: 'Movie', date: 'Jul 5, 2026', venue: 'Lugar Cinema, Thimphu', price: 250, desc: 'Premiere of the latest Bhutanese blockbuster film featuring top actors.', image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400&h=250&fit=crop' },
+      { id: 'ev5', title: 'Bhutan Premier League Finals', category: 'Sports', date: 'Sep 28, 2026', venue: 'Changlimithang Stadium', price: 200, desc: 'Football finals of the Bhutan Premier League. Cheer for your favorite team!', image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=250&fit=crop' },
+      { id: 'ev6', title: 'Traditional Weaving Workshop', category: 'Workshop', date: 'Jul 20, 2026', venue: 'National Textile Museum', price: 800, desc: 'Learn the ancient art of Bhutanese textile weaving from master weavers.', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop' },
+      { id: 'ev7', title: 'Bumthang Jambay Lhakhang Drup', category: 'Tshechu', date: 'Nov 1-3, 2026', venue: 'Jambay Lhakhang, Bumthang', price: 0, desc: 'Famous fire dance festival with the spectacular Mewang (fire blessing) ceremony.', image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=400&h=250&fit=crop' },
+      { id: 'ev8', title: 'Bhutan Art Exhibition', category: 'Exhibition', date: 'Aug 1-10, 2026', venue: 'VAST Gallery, Thimphu', price: 100, desc: 'Contemporary Bhutanese art showcasing paintings, sculpture, and mixed media.', image: 'https://images.unsplash.com/photo-1531243269054-5ebf6f34081e?w=400&h=250&fit=crop' },
+    ],
+
+    // Emergency SOS
+    emergencyContacts: [
+      { name: 'Police', number: '113', icon: '🚔', desc: 'Royal Bhutan Police' },
+      { name: 'Ambulance', number: '112', icon: '🚑', desc: 'Emergency Medical' },
+      { name: 'Fire', number: '110', icon: '🚒', desc: 'Fire & Rescue' },
+      { name: 'Disaster', number: '1010', icon: '🌊', desc: 'Disaster Management' },
+      { name: 'Women Helpline', number: '1098', icon: '👩', desc: 'NCWC Helpline' },
+      { name: 'Child Helpline', number: '1099', icon: '👶', desc: 'Child Protection' },
+    ],
+
+    // Scratch Cards
+    scratchCards: [
+      { scratched: false, prize: { icon: '🎉', label: 'Nu. 50 Off!', desc: 'On orders above Nu. 500', type: 'big' } },
+      { scratched: false, prize: { icon: '🏆', label: '25 Points', desc: 'Added to loyalty', type: 'small' } },
+      { scratched: false, prize: { icon: '🚚', label: 'Free Delivery', desc: 'On next order', type: 'big' } },
+      { scratched: false, prize: { icon: '💫', label: '10 Points', desc: 'Added to loyalty', type: 'small' } },
+      { scratched: false, prize: { icon: '🎁', label: 'Nu. 100 Off!', desc: 'On orders above Nu. 1000', type: 'big' } },
+      { scratched: false, prize: { icon: '⭐', label: '15 Points', desc: 'Added to loyalty', type: 'small' } },
+    ],
+
+    // Mini Games
+    quizActive: false, quizQ: 0, quizScore: 0, quizAnswered: false, quizSelected: -1,
+    quizQuestions: [
+      { q: 'What is the capital of Bhutan?', options: ['Paro', 'Thimphu', 'Punakha', 'Bumthang'], answer: 1 },
+      { q: 'What is the national animal of Bhutan?', options: ['Snow Leopard', 'Red Panda', 'Takin', 'Tiger'], answer: 2 },
+      { q: 'What does GNH stand for?', options: ['Great National Heritage', 'Gross National Happiness', 'Grand National Highway', 'General National Health'], answer: 1 },
+      { q: 'Which dzong is the seat of Bhutan\'s government?', options: ['Punakha Dzong', 'Paro Dzong', 'Tashichho Dzong', 'Trongsa Dzong'], answer: 2 },
+      { q: 'What is Bhutan\'s national sport?', options: ['Football', 'Cricket', 'Archery', 'Basketball'], answer: 2 },
+      { q: 'What is Ema Datshi?', options: ['Rice dish', 'Chili & cheese', 'Meat stew', 'Noodle soup'], answer: 1 },
+      { q: 'What is the national flower of Bhutan?', options: ['Lotus', 'Blue Poppy', 'Sunflower', 'Orchid'], answer: 1 },
+      { q: 'Which monastery is known as Tiger\'s Nest?', options: ['Gangtey', 'Chimi Lhakhang', 'Taktsang', 'Kurjey'], answer: 2 },
+    ],
+    guessActive: false, guessTarget: 0, guessAttempts: 0, guessInput: '', guessHint: '',
+    memoryActive: false, memoryCards: [], memoryFlipped: [], memoryMatched: 0, memoryMoves: 0,
+
+    // Donations
+    donations: [
+      { id: 'd1', title: 'Restore Punakha Dzong Heritage', category: 'Heritage', raised: 450000, goal: 1000000, donors: 234, desc: 'Help restore and preserve the historic Punakha Dzong for future generations.', image: 'https://images.unsplash.com/photo-1609766857041-ed402ea8069a?w=400&h=250&fit=crop' },
+      { id: 'd2', title: 'Rural School Computer Lab', category: 'Education', raised: 120000, goal: 300000, donors: 89, desc: 'Set up computer labs in 5 rural schools in eastern Bhutan for digital literacy.', image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&h=250&fit=crop' },
+      { id: 'd3', title: 'Stray Animal Rescue Center', category: 'Animal Welfare', raised: 85000, goal: 200000, donors: 156, desc: 'Build a rescue shelter for stray dogs and cats in Thimphu with veterinary care.', image: 'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400&h=250&fit=crop' },
+      { id: 'd4', title: 'Plant 10,000 Trees in Bhutan', category: 'Environment', raised: 250000, goal: 500000, donors: 412, desc: 'Reforestation drive to plant native trees across degraded areas in southern Bhutan.', image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop' },
+    ],
+
+    // Lost & Found
+    lfTab: 'lost',
+    lostFoundItems: [
+      { id: 'lf1', type: 'lost', title: 'Black Wallet with ID Cards', icon: '👛', desc: 'Lost near Clock Tower area. Contains citizenship ID card and driving license.', location: 'Thimphu, Clock Tower', date: 'Jun 22, 2026', contact: 'Karma D. (17123456)' },
+      { id: 'lf2', type: 'lost', title: 'Gold Bracelet', icon: '💍', desc: 'Lost at Centenary Farmers Market. Sentimental value, gold bracelet with prayer engravings.', location: 'Thimphu, CFM', date: 'Jun 21, 2026', contact: 'Pema W. (17234567)' },
+      { id: 'lf3', type: 'found', title: 'Samsung Phone (Cracked Screen)', icon: '📱', desc: 'Found on the road near Lungtenphu. Samsung Galaxy with blue case.', location: 'Thimphu, Lungtenphu', date: 'Jun 23, 2026', contact: 'Dorji T. (17345678)' },
+      { id: 'lf4', type: 'lost', title: 'Brown Backpack with Laptop', icon: '🎒', desc: 'Left in a taxi. Contains Dell laptop and important documents.', location: 'Paro - Thimphu Route', date: 'Jun 20, 2026', contact: 'Sonam L. (17456789)' },
+      { id: 'lf5', type: 'found', title: 'House Keys with Keychain', icon: '🔑', desc: 'Found near Norzin Lam. Set of 3 keys with a small Buddha keychain.', location: 'Thimphu, Norzin Lam', date: 'Jun 22, 2026', contact: 'Tshering K. (17567890)' },
+      { id: 'lf6', type: 'found', title: 'Child\'s School Bag', icon: '🎒', desc: 'Found at Changlimithang parking area. Blue bag with Motithang School badge.', location: 'Thimphu, Changlimithang', date: 'Jun 23, 2026', contact: 'Ugyen P. (17678901)' },
+    ],
+
+    // Recipes
+    selectedRecipe: null,
+    recipes: [
+      { id: 'r1', name: 'Ema Datshi', time: '30 min', servings: 4, difficulty: 'Easy', rating: 4.9, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=250&fit=crop', ingredients: ['10 green chilies', '200g local cheese (datshi)', '2 tomatoes', '1 onion', '2 tbsp butter', 'Salt to taste'], steps: ['Slit chilies lengthwise and remove seeds if less spicy preferred.', 'Slice onions and tomatoes.', 'Melt butter in a pan, add onions and cook till soft.', 'Add chilies and tomatoes, cook for 5 minutes.', 'Add cheese and a little water, stir gently.', 'Simmer until cheese melts into a creamy sauce. Serve with red rice.'] },
+      { id: 'r2', name: 'Shakam Paa', time: '45 min', servings: 4, difficulty: 'Medium', rating: 4.7, image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&h=250&fit=crop', ingredients: ['300g dried beef strips', '5 dried red chilies', '1 cup dried turnip greens', '2 tbsp oil', '1 onion', 'Salt to taste'], steps: ['Soak dried beef in warm water for 30 minutes.', 'Cut beef into thin strips.', 'Heat oil, fry onions till golden.', 'Add beef strips and fry for 10 minutes.', 'Add chilies and turnip greens.', 'Stir-fry on high heat for 5 minutes. Serve hot with red rice.'] },
+      { id: 'r3', name: 'Jasha Maroo', time: '40 min', servings: 4, difficulty: 'Easy', rating: 4.8, image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=250&fit=crop', ingredients: ['500g chicken pieces', '3 tomatoes', '2 onions', '5 green chilies', 'Ginger-garlic paste', 'Coriander leaves', 'Salt'], steps: ['Cut chicken into pieces, wash and drain.', 'Chop onions, tomatoes, and chilies.', 'In a pot, add chicken with ginger-garlic paste.', 'Add tomatoes, onions, chilies, and water.', 'Simmer for 30 minutes until chicken is tender.', 'Garnish with fresh coriander. Serve with red rice.'] },
+      { id: 'r4', name: 'Kewa Datshi', time: '25 min', servings: 3, difficulty: 'Easy', rating: 4.6, image: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&h=250&fit=crop', ingredients: ['4 potatoes', '150g cheese', '2 green chilies', '1 tomato', 'Butter', 'Salt'], steps: ['Peel and slice potatoes thinly.', 'Boil potato slices until just tender.', 'In a pan, melt butter and add sliced chilies.', 'Add potatoes, tomato, and a little water.', 'Add cheese on top, cover and simmer.', 'Stir gently when cheese melts. Serve with rice.'] },
+      { id: 'r5', name: 'Hoentay (Buckwheat Momo)', time: '60 min', servings: 6, difficulty: 'Hard', rating: 4.5, image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&h=250&fit=crop', ingredients: ['2 cups buckwheat flour', 'Turnip greens', 'Cheese', 'Spinach', 'Butter', 'Salt'], steps: ['Make dough with buckwheat flour and water.', 'Prepare filling: mix chopped turnip greens, cheese, and spinach.', 'Roll out small circles of dough.', 'Place filling and fold into crescent shapes.', 'Steam for 15-20 minutes.', 'Serve hot with ezay (chili sauce).'] },
+      { id: 'r6', name: 'Suja (Butter Tea)', time: '15 min', servings: 4, difficulty: 'Easy', rating: 4.4, image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400&h=250&fit=crop', ingredients: ['4 cups water', '2 tbsp tea leaves', '2 tbsp butter', 'Pinch of salt', '1/4 cup milk'], steps: ['Boil water and add tea leaves, simmer for 5 minutes.', 'Strain the tea into a jug.', 'Add butter, salt, and milk.', 'Churn vigorously (or blend) until frothy.', 'Serve hot in traditional cups.'] },
+    ],
+
+    // Bhutan Calendar
+    calendarEvents: [
+      { name: 'Thimphu Tshechu', date: 'Oct 10-12, 2026', type: 'Tshechu', icon: '🎭', desc: 'Three-day festival at Tashichho Dzong with sacred mask dances', upcoming: true, daysAway: 108 },
+      { name: 'Birth of Guru Rinpoche', date: 'Jul 10, 2026', type: 'Holiday', icon: '🕉️', desc: 'National holiday celebrating the birth of Padmasambhava', upcoming: true, daysAway: 16 },
+      { name: 'Blessed Rainy Day', date: 'Sep 22, 2026', type: 'Holiday', icon: '🌧️', desc: 'First day of rain — traditional bathing day for purification', upcoming: true, daysAway: 90 },
+      { name: 'Coronation Day', date: 'Nov 1, 2026', type: 'Holiday', icon: '👑', desc: 'Anniversary of the coronation of His Majesty the King', upcoming: false, daysAway: 130 },
+      { name: 'Jambay Lhakhang Drup', date: 'Nov 1-3, 2026', type: 'Tshechu', icon: '🔥', desc: 'Fire festival at Jambay Lhakhang, Bumthang with Mewang ceremony', upcoming: false, daysAway: 130 },
+      { name: 'National Day', date: 'Dec 17, 2026', type: 'Holiday', icon: '🇧🇹', desc: 'Bhutan National Day celebrating the establishment of monarchy', upcoming: false, daysAway: 176 },
+      { name: 'Winter Solstice', date: 'Dec 21, 2026', type: 'Auspicious', icon: '☀️', desc: 'Traditional winter solstice celebrations and offerings', upcoming: false, daysAway: 180 },
+      { name: 'Losar (New Year)', date: 'Feb 17, 2027', type: 'Holiday', icon: '🎊', desc: 'Bhutanese/Tibetan New Year celebrations', upcoming: false, daysAway: 238 },
+      { name: 'Paro Tshechu', date: 'Mar 20-24, 2027', type: 'Tshechu', icon: '🎭', desc: 'Paro\'s famous 5-day festival with Thongdrol unfurling', upcoming: false, daysAway: 269 },
+      { name: 'Full Moon Day', date: 'Jul 7, 2026', type: 'Auspicious', icon: '🌕', desc: 'Auspicious full moon day — offerings and prayers at temples', upcoming: true, daysAway: 13 },
+    ],
+
     init() {
       this.filteredRestaurants = [...this.restaurants];
       this.filteredHW = [...this.hardwareProducts];
@@ -4026,6 +4581,28 @@ function marketplace() {
 
     // Travel methods
     searchBuses() { if (!this.busFrom || !this.busTo) { this.showToast('Please select From and To cities'); return; } if (this.busFrom === this.busTo) { this.showToast('From and To cannot be the same'); return; } const operators = ['BRTC', 'Metho Transport', 'Sernya Transport', 'Meto Express']; this.busResults = []; for (let i = 0; i < 4; i++) { const h = 6 + i * 3; const dur = 2 + Math.floor(Math.random() * 6); this.busResults.push({ id: 'bus' + i, from: this.busFrom, to: this.busTo, depart: (h < 10 ? '0' : '') + h + ':00 AM', arrive: ((h + dur) % 12 || 12) + ':00 ' + (h + dur >= 12 ? 'PM' : 'AM'), duration: dur + 'h', fare: 200 + dur * 150 + Math.floor(Math.random() * 300), operator: operators[i] }); } },
+
+    // Wallet methods
+    topUpWallet() { const amt = Number(this.walletTopupAmt); if (amt <= 0) return; this.walletBalance += amt; this.walletTransactions.unshift({ id: 'tx' + Date.now(), desc: 'Wallet Top-up', amount: amt, type: 'credit', date: new Date().toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) }); this.showToast('Nu. ' + amt + ' added to DrukPay wallet!'); this.walletAction = ''; },
+    sendMoney() { const amt = Number(this.walletSendAmt); if (!this.walletSendTo || amt <= 0) { this.showToast('Please enter recipient and amount'); return; } if (amt > this.walletBalance) { this.showToast('Insufficient wallet balance'); return; } this.walletBalance -= amt; this.walletTransactions.unshift({ id: 'tx' + Date.now(), desc: 'Sent to ' + this.walletSendTo, amount: amt, type: 'debit', date: new Date().toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}) }); this.showToast('Nu. ' + amt + ' sent to ' + this.walletSendTo + '!'); this.walletSendTo = ''; this.walletSendAmt = ''; this.walletAction = ''; },
+
+    // Events methods
+    filteredEvents() { if (!this.eventCat) return this.events; return this.events.filter(e => e.category === this.eventCat); },
+
+    // Scratch Card methods
+    scratchCard(i) { if (this.scratchCards[i].scratched) return; this.scratchCards[i].scratched = true; const prize = this.scratchCards[i].prize; if (prize.label.includes('Points')) { const pts = parseInt(prize.label); this.earnPoints(pts, 'Scratch card win'); } this.showToast('You won: ' + prize.label + '! 🎉'); },
+
+    // Quiz methods
+    startQuiz() { this.quizActive = true; this.quizQ = 0; this.quizScore = 0; this.quizAnswered = false; this.quizSelected = -1; },
+    answerQuiz(oi) { if (this.quizAnswered) return; this.quizAnswered = true; this.quizSelected = oi; if (oi === this.quizQuestions[this.quizQ].answer) { this.quizScore++; this.showToast('Correct! +10 points 🎉'); } else { this.showToast('Wrong answer! The correct answer was: ' + this.quizQuestions[this.quizQ].options[this.quizQuestions[this.quizQ].answer]); } },
+    nextQuizQ() { this.quizQ++; this.quizAnswered = false; this.quizSelected = -1; if (this.quizQ >= this.quizQuestions.length) { this.earnPoints(this.quizScore * 10, 'Bhutan Quiz'); } },
+
+    // Number Guess methods
+    makeGuess() { const g = Number(this.guessInput); if (!g || g < 1 || g > 100) return; this.guessAttempts++; if (g === this.guessTarget) { this.guessHint = '🎉 Correct! You got it in ' + this.guessAttempts + ' tries!'; this.earnPoints(20, 'Number Guess game'); this.guessActive = false; } else if (g < this.guessTarget) { this.guessHint = '⬆️ Too low! Try higher.'; } else { this.guessHint = '⬇️ Too high! Try lower.'; } this.guessInput = ''; },
+
+    // Memory Game methods
+    startMemoryGame() { const symbols = ['🏯', '🐉', '🏔️', '🎭', '🕉️', '🇧🇹']; let cards = []; symbols.forEach(s => { cards.push({symbol: s, flipped: false, matched: false}); cards.push({symbol: s, flipped: false, matched: false}); }); for (let i = cards.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [cards[i], cards[j]] = [cards[j], cards[i]]; } this.memoryCards = cards; this.memoryFlipped = []; this.memoryMatched = 0; this.memoryMoves = 0; this.memoryActive = true; },
+    flipMemoryCard(i) { if (this.memoryCards[i].flipped || this.memoryCards[i].matched || this.memoryFlipped.length >= 2) return; this.memoryCards[i].flipped = true; this.memoryFlipped.push(i); if (this.memoryFlipped.length === 2) { this.memoryMoves++; const [a, b] = this.memoryFlipped; if (this.memoryCards[a].symbol === this.memoryCards[b].symbol) { this.memoryCards[a].matched = true; this.memoryCards[b].matched = true; this.memoryMatched++; this.memoryFlipped = []; if (this.memoryMatched === 6) { this.earnPoints(15, 'Memory Match game'); this.showToast('You won Memory Match! +15 points 🎉'); } } else { setTimeout(() => { this.memoryCards[a].flipped = false; this.memoryCards[b].flipped = false; this.memoryFlipped = []; }, 800); } } },
 
     showToast(msg) { this.toast=msg; setTimeout(()=>this.toast='',3000); }
   };
